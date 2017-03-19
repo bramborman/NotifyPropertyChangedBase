@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if !NET40
 using System.Runtime.CompilerServices;
+#endif
 
 namespace NotifyPropertyChangedBase
 {
@@ -39,7 +41,11 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+#if NET40
+        protected object GetValue(string propertyName)
+#else
         protected object GetValue([CallerMemberName]string propertyName = null)
+#endif
         {
             // Using try-catch since it's faster than if conditions when there's no problem
             try
@@ -55,12 +61,20 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+#if NET40
+        protected void ForceSetValue<T>(T newValue, string propertyName)
+#else
         protected void ForceSetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
+#endif
         {
             SetValue(newValue, propertyName, true);
         }
 
+#if NET40
+        protected void SetValue<T>(T newValue, string propertyName)
+#else
         protected void SetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
+#endif
         {
             SetValue(newValue, propertyName, false);
         }
@@ -94,19 +108,23 @@ namespace NotifyPropertyChangedBase
                 throw exception;
             }
         }
-        
+
+#if NET40
+        protected void OnPropertyChanged(string propertyName)
+#else
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+#endif
+        {
+            ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void ValidatePropertyName(string propertyName)
         {
             if (!backingStore.ContainsKey(propertyName))
             {
                 throw new ArgumentException($"There is no registered property called {propertyName}.");
             }
-        }
-
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void ValidateNotNull(object obj, string parameterName)
