@@ -11,7 +11,12 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+after_build:
+- ps: >-
+    7z a NotifyPropertyChangedBase.Net40.zip NotifyPropertyChangedBase.Net40\bin\Release\**\*
+
+    7z a NotifyPropertyChangedBase.Net45.zip NotifyPropertyChangedBase.Net45\bin\Release\**\*
+
+    7z a NotifyPropertyChangedBase.Uap.zip NotifyPropertyChangedBase.Uap\bin\Release\**\*
 artifacts:
-- path: 7z a NotifyPropertyChangedBase.Net40.zip NotifyPropertyChangedBase.Net40\bin\Release\**\*
-- path: 7z a NotifyPropertyChangedBase.Net45.zip NotifyPropertyChangedBase.Net45\bin\Release\**\*
-- path: 7z a NotifyPropertyChangedBase.Uap.zip NotifyPropertyChangedBase.Uap\bin\Release\**\*
+- path: '*\bin\Release\**\*'
