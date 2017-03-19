@@ -13,16 +13,14 @@ build:
   verbosity: minimal
 after_build:
 - ps: >-
-    7z a NotifyPropertyChangedBase.Net40.zip NotifyPropertyChangedBase.Net40\bin\Release\**\*
+    7z a NotifyPropertyChangedBase.Net40.zip %APPVEYOR_BUILD_FOLDER%\NotifyPropertyChangedBase.Net40\bin\Release\**\*
 
-    7z a NotifyPropertyChangedBase.Net45.zip NotifyPropertyChangedBase.Net45\bin\Release\**\*
+    7z a NotifyPropertyChangedBase.Net45.zip %APPVEYOR_BUILD_FOLDER%\NotifyPropertyChangedBase.Net45\bin\Release\**\*
 
-    7z a NotifyPropertyChangedBase.Uap.zip NotifyPropertyChangedBase.Uap\bin\Release\**\*
+    7z a NotifyPropertyChangedBase.Uap.zip %APPVEYOR_BUILD_FOLDER%\NotifyPropertyChangedBase.Uap\bin\Release\**\*
 
     Push-AppveyorArtifact NotifyPropertyChangedBase.Net40.zip
 
     Push-AppveyorArtifact NotifyPropertyChangedBase.Net45.zip
 
     Push-AppveyorArtifact NotifyPropertyChangedBase.Uap.zip
-artifacts:
-- path: '*\bin\Release\**\*'
