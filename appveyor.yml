@@ -1,11 +1,11 @@
-version: 0.1.0.{build}_{branch}
+version: 0.2.0.{build}_{branch}
 image: Visual Studio 2017
 assembly_info:
   patch: true
   file: SharedAssemblyInfo.cs
-  assembly_version: 0.1.0.{build}
-  assembly_file_version: 0.1.0.{build}
-  assembly_informational_version: 0.1.0.{build}
+  assembly_version: 0.2.0.{build}
+  assembly_file_version: 0.2.0.{build}
+  assembly_informational_version: 0.2.0.{build}
 before_build:
 - cmd: nuget restore
 build:

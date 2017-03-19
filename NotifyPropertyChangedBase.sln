@@ -25,6 +25,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems*{036f1706-a135-46ea-a881-c2b334e9936d}*SharedItemsImports = 13
 		NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems*{53cf9f37-5693-46ea-b722-0e083ae61582}*SharedItemsImports = 4
+		NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems*{a08ceae6-7fe6-4b0d-9a3b-c0687bef4d35}*SharedItemsImports = 4
 		NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems*{ac23ef0b-d5bd-401e-a074-4072dca935ac}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

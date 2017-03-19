@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if !NET40
+#if !NET_40
 using System.Runtime.CompilerServices;
 #endif
 
@@ -41,7 +41,7 @@ namespace NotifyPropertyChangedBase
             }
         }
 
-#if NET40
+#if NET_40
         protected object GetValue(string propertyName)
 #else
         protected object GetValue([CallerMemberName]string propertyName = null)
@@ -61,7 +61,7 @@ namespace NotifyPropertyChangedBase
             }
         }
 
-#if NET40
+#if NET_40
         protected void ForceSetValue<T>(T newValue, string propertyName)
 #else
         protected void ForceSetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
@@ -70,7 +70,7 @@ namespace NotifyPropertyChangedBase
             SetValue(newValue, propertyName, true);
         }
 
-#if NET40
+#if NET_40
         protected void SetValue<T>(T newValue, string propertyName)
 #else
         protected void SetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
@@ -109,7 +109,7 @@ namespace NotifyPropertyChangedBase
             }
         }
 
-#if NET40
+#if NET_40
         protected void OnPropertyChanged(string propertyName)
 #else
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
