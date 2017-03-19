@@ -7,7 +7,7 @@
     <ProjectGuid>{A08CEAE6-7FE6-4B0D-9A3B-C0687BEF4D35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NotifyPropertyChangedBase.Uap</RootNamespace>
+    <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <AssemblyName>NotifyPropertyChangedBase.Uap</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -113,6 +113,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\NotifyPropertyChangedBase.Uap.rd.xml" />
   </ItemGroup>
+  <Import Project="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
