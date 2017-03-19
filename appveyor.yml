@@ -11,4 +11,4 @@ before_build:
 build:
   verbosity: minimal
 artifacts:
-- path: NotifyPropertyChangedBase*\bin\Release\**\*
+- path: *\bin\Release\**\*
