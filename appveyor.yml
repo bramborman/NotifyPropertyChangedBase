@@ -6,5 +6,7 @@ assembly_info:
   assembly_version: 0.1.0.{build}
   assembly_file_version: 0.1.0.{build}
   assembly_informational_version: 0.1.0.{build}
+before_build:
+- cmd: nuget restore
 build:
   verbosity: minimal
