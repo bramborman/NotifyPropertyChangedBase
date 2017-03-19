@@ -2,7 +2,7 @@ version: 0.2.0.{build}_{branch}
 image: Visual Studio 2017
 assembly_info:
   patch: true
-  file: SharedAssemblyInfo.cs
+  file: '**\*AssemblyInfo.*'
   assembly_version: 0.2.0.{build}
   assembly_file_version: 0.2.0.{build}
   assembly_informational_version: 0.2.0.{build}
@@ -11,4 +11,4 @@ before_build:
 build:
   verbosity: minimal
 artifacts:
-- path: *\bin\Release\**\*
+- path: '*\bin\Release\**\*'
