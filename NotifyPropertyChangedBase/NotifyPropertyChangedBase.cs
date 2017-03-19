@@ -20,8 +20,8 @@ namespace NotifyPropertyChangedBase
 
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedAction propertyChangedAction)
         {
-            ExceptionHelper.ValidateNotNullOrWhiteSpace(name, nameof(name));
-            ExceptionHelper.ValidateNotNull(type, nameof(type));
+            ValidateNotNullOrWhiteSpace(name, nameof(name));
+            ValidateNotNull(type, nameof(type));
 
             // Using try-catch since it's faster than if conditions when there's no problem
             try
@@ -48,7 +48,7 @@ namespace NotifyPropertyChangedBase
             }
             catch (Exception exception)
             {
-                ExceptionHelper.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+                ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
                 ValidatePropertyName(propertyName);
 
                 throw exception;
@@ -88,7 +88,7 @@ namespace NotifyPropertyChangedBase
             }
             catch (Exception exception)
             {
-                ExceptionHelper.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+                ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
                 ValidatePropertyName(propertyName);
 
                 throw exception;
@@ -105,8 +105,24 @@ namespace NotifyPropertyChangedBase
 
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            ExceptionHelper.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+            ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ValidateNotNull(object obj, string parameterName)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(parameterName);
+            }
+        }
+
+        private void ValidateNotNullOrWhiteSpace(string str, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                throw new ArgumentException("Value cannot be white space or null.", parameterName);
+            }
         }
 
         private class PropertyData
