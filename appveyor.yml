@@ -12,4 +12,4 @@ before_build:
 build:
   verbosity: minimal
 on_success:
-- ps: $env:APPVEYOR_BUILD_FOLDER\AppVeyorArtifacts.ps1
+- ps: '& "$env:APPVEYOR_BUILD_FOLDER\AppVeyorArtifacts.ps1"'
