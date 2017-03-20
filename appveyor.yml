@@ -1,4 +1,4 @@
-version: 0.2.0.{build}_{branch}
+version: 0.2.0.{build}-{branch}
 image: Visual Studio 2017
 configuration: Release
 assembly_info:
@@ -12,4 +12,4 @@ before_build:
 build:
   verbosity: minimal
 on_success:
-- ps: '& ".\AppVeyorArtifacts.ps1"'
+- ps: '& ".\OnBuildSuccess.ps1"'
