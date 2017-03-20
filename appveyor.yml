@@ -8,7 +8,7 @@ init:
     {
         $newVersion = $env:APPVEYOR_BUILD_VERSION -replace "-$env:APPVEYOR_REPO_BRANCH"
         Update-AppveyorBuild -Version $newVersion
-        Write-Host "Removed 'master' branch name from build version."
+        Write-Host "Removed branch name from the build version."
     }
 assembly_info:
   patch: true
