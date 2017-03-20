@@ -12,4 +12,4 @@ before_build:
 build:
   verbosity: minimal
 on_success:
-- ps: '& "AppVeyorArtifacts.ps1"'
+- ps: '& ".\AppVeyorArtifacts.ps1"'
