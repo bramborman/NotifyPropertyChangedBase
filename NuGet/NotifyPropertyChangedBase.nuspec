@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>NotifyPropertyChangedBase</id>
+    <version>0.2.0.0</version>
+    <title>NotifyPropertyChangedBase</title>
+    <authors>Marian Dolinský</authors>
+    <owners>Marian Dolinský</owners>
+    <licenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An easy to use base class that helps you implement the INotifyPropertyChanged interface.</description>
+    <copyright>© 2017 Marian Dolinský</copyright>
+    <tags>C# Helper Helpers Binding Bindings</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework="uap10.0">
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.ObjectModel" version="4.0.12" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Threading" version="4.0.11" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NotifyPropertyChangedBase.Net40\bin\Release\**\*" target="lib\net40" />
+    <file src="..\NotifyPropertyChangedBase.Net45\bin\Release\**\*" target="lib\net45" />
+    <file src="..\NotifyPropertyChangedBase.Uap\bin\Release\**\*" target="lib\uap10.0" />
+  </files>
+</package>

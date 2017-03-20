@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Net45", "NotifyPropertyChangedBase.Net45\NotifyPropertyChangedBase.Net45.csproj", "{AC23EF0B-D5BD-401E-A074-4072DCA935AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{4A82FFAD-8993-4926-B778-6A64269DE46C}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\NotifyPropertyChangedBase.nuspec = NuGet\NotifyPropertyChangedBase.nuspec
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Uap", "NotifyPropertyChangedBase.Uap\NotifyPropertyChangedBase.Uap.csproj", "{A08CEAE6-7FE6-4B0D-9A3B-C0687BEF4D35}"
 EndProject
 Global
@@ -90,5 +95,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A82FFAD-8993-4926-B778-6A64269DE46C} = {121EBC4B-EA90-4A53-8E99-B56DA7C6646F}
 	EndGlobalSection
 EndGlobal

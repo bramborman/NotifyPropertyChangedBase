@@ -112,6 +112,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\NotifyPropertyChangedBase.Uap.rd.xml" />
+    <!-- Nuspec file must be references explicitly for the NuSpec.ReferenceGenerator since it has different name than the current project -->
+    <NuSpecFile Include="$(SolutionDir)NuGet\NotifyPropertyChangedBase.nuspec">
+      <Visible>False</Visible>
+    </NuSpecFile>
   </ItemGroup>
   <Import Project="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
