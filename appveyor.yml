@@ -11,5 +11,5 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
-after_build:
+on_success:
 - ps: $env:APPVEYOR_BUILD_FOLDER\AppVeyorArtifacts.ps1
