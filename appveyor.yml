@@ -20,5 +20,8 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+deploy:
+- provider: Environment
+  name: MyGet
 on_success:
 - ps: '& ".\OnBuildSuccess.ps1"'
