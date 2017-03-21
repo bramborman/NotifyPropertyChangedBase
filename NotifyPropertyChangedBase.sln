@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 		LICENSE.md = LICENSE.md
 		NotifyPropertyChangedBase.nuspec = NotifyPropertyChangedBase.nuspec
+		OnBuildSuccess.ps1 = OnBuildSuccess.ps1
+		OnInitialization.ps1 = OnInitialization.ps1
 		README.md = README.md
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
@@ -21,12 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Net45", "NotifyPropertyChangedBase.Net45\NotifyPropertyChangedBase.Net45.csproj", "{AC23EF0B-D5BD-401E-A074-4072DCA935AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Uap", "NotifyPropertyChangedBase.Uap\NotifyPropertyChangedBase.Uap.csproj", "{A08CEAE6-7FE6-4B0D-9A3B-C0687BEF4D35}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{4C663193-1BC0-4CBF-A643-7ABD135959DD}"
-	ProjectSection(SolutionItems) = preProject
-		Scripts\Initialization.ps1 = Scripts\Initialization.ps1
-		Scripts\OnBuildSuccess.ps1 = Scripts\OnBuildSuccess.ps1
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -97,8 +93,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{4C663193-1BC0-4CBF-A643-7ABD135959DD} = {121EBC4B-EA90-4A53-8E99-B56DA7C6646F}
 	EndGlobalSection
 EndGlobal

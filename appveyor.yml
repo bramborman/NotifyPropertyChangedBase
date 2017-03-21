@@ -2,7 +2,7 @@ version: 0.2.0.{build}-{branch}
 image: Visual Studio 2017
 configuration: Release
 init:
-- ps: '& ".\Scripts\Initialization.ps1"'
+- ps: '& ".\OnInitialization.ps1"'
 assembly_info:
   patch: true
   file: SharedAssemblyInfo.cs
@@ -14,4 +14,4 @@ before_build:
 build:
   verbosity: minimal
 on_success:
-- ps: '& ".\Scripts\OnBuildSuccess.ps1"'
+- ps: '& ".\OnBuildSuccess.ps1"'
