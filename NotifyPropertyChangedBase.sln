@@ -24,8 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.U
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{70B7A3FF-7D44-4168-9C50-CB863BA389A6}"
 	ProjectSection(SolutionItems) = preProject
+		Scripts\AfterBuild.ps1 = Scripts\AfterBuild.ps1
 		Scripts\BeforeBuild.ps1 = Scripts\BeforeBuild.ps1
-		Scripts\OnBuildSuccess.ps1 = Scripts\OnBuildSuccess.ps1
 	EndProjectSection
 EndProject
 Global

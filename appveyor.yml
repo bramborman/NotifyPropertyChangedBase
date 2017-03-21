@@ -11,5 +11,8 @@ before_build:
 - ps: '& "Scripts\BeforeBuild.ps1"'
 build:
   verbosity: minimal
-on_success:
-- ps: '& "Scripts\OnBuildSuccess.ps1"'
+after_build:
+- ps: '& "Scripts\AfterBuild.ps1"'
+deploy:
+- provider: Environment
+  name: MyGet
