@@ -2,14 +2,7 @@ version: 0.2.0.{build}-{branch}
 image: Visual Studio 2017
 configuration: Release
 init:
-- ps: >-
-    if ($env:APPVEYOR_REPO_BRANCH -eq "master")
-
-    {
-        $newVersion = $env:APPVEYOR_BUILD_VERSION -replace "-$env:APPVEYOR_REPO_BRANCH"
-        Update-AppveyorBuild -Version $newVersion
-        Write-Host "Removed branch name from the build version."
-    }
+- ps: '& "Scripts\Initialization.ps1"'
 assembly_info:
   patch: true
   file: SharedAssemblyInfo.cs
@@ -20,8 +13,5 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
-deploy:
-- provider: Environment
-  name: MyGet
 on_success:
-- ps: '& ".\OnBuildSuccess.ps1"'
+- ps: '& "Scripts\OnBuildSuccess.ps1"'
