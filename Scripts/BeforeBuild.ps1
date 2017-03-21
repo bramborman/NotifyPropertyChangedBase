@@ -7,3 +7,5 @@ if ($env:APPVEYOR_REPO_BRANCH -eq "master")
 
 	Update-AppveyorBuild -Version $newVersion
 }
+
+NuGet restore
