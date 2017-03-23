@@ -79,42 +79,42 @@ namespace NotifyPropertyChangedBase
         }
 
 #if NET_40
-        protected void ForceSetValue(object newValue, string propertyName)
+        protected void ForceSetValue(object value, string propertyName)
 #else
-        protected void ForceSetValue(object newValue, [CallerMemberName]string propertyName = null)
+        protected void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
 #endif
         {
-            SetValue(newValue, propertyName, true);
+            SetValue(value, propertyName, true);
         }
 
 #if NET_40
-        protected void SetValue(object newValue, string propertyName)
+        protected void SetValue(object value, string propertyName)
 #else
-        protected void SetValue(object newValue, [CallerMemberName]string propertyName = null)
+        protected void SetValue(object value, [CallerMemberName]string propertyName = null)
 #endif
         {
-            SetValue(newValue, propertyName, false);
+            SetValue(value, propertyName, false);
         }
 
-        private void SetValue(object newValue, string propertyName, bool forceSetValue)
+        private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             // Using try-catch since it's faster than if conditions when there's no problem
             try
             {
                 PropertyData propertyData = backingStore[propertyName];
 
-                if (propertyData.Type != newValue.GetType())
+                if (propertyData.Type != value.GetType())
                 {
-                    throw new ArgumentException($"The type of {nameof(newValue)} is not the same as the type of the '{propertyName}' property.");
+                    throw new ArgumentException($"The type of {nameof(value)} is not the same as the type of the '{propertyName}' property.");
                 }
 
                 // Calling Equals calls the overriden method even when the current type is object
-                if (!propertyData.Value.Equals(newValue) || forceSetValue)
+                if (!propertyData.Value.Equals(value) || forceSetValue)
                 {
                     object oldValue = propertyData.Value;
-                    propertyData.Value = newValue;
+                    propertyData.Value = value;
 
-                    propertyData.PropertyChangedAction?.Invoke(oldValue, newValue);
+                    propertyData.PropertyChangedAction?.Invoke(oldValue, value);
                     OnPropertyChanged(propertyName);
                 }
             }
