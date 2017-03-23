@@ -14,35 +14,35 @@ namespace NotifyPropertyChangedBase
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
+        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue)
         {
             RegisterProperty(name, type, defaultValue, null);
         }
 
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
+        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackEventHandler propertyChangedAction)
         {
-            bool isNullableOfT = type.Name == "Nullable`1";
-
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
 
-            if (defaultValue == null && type.GetIsValueType() && !isNullableOfT)
+            if (defaultValue == null)
             {
-                throw new ArgumentException($"The type '{type}' is not a nullable type.");
+                if (type.GetIsValueType() && type.Name != "Nullable`1")
+                {
+                    throw new ArgumentException($"The type '{type}' is not a nullable type.");
+                }
+            }
+            else
+            {
+                if (defaultValue.GetType() != type && !defaultValue.GetType().GetIsSubclassOf(type))
+                {
+                    throw new ArgumentException($"The value in the '{nameof(defaultValue)}' parameter cannot be assigned to property of the specified type ({type})");
+                }
             }
 
             try
             {
-                // For example:
-                // RegisterProperty("Foo", typeof(double), 1);
-                // In this case the defaultValue type is Int32 and not Double so we change it
-                if (!isNullableOfT)
-                {
-                    defaultValue = Convert.ChangeType(defaultValue, type);
-                }
-                
                 backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedAction));
             }
             catch (Exception exception)
@@ -62,7 +62,6 @@ namespace NotifyPropertyChangedBase
         protected object GetValue([CallerMemberName]string propertyName = null)
 #endif
         {
-            // Using try-catch since it's faster than if conditions when there's no problem
             try
             {
                 return backingStore[propertyName].Value;
@@ -96,7 +95,6 @@ namespace NotifyPropertyChangedBase
 
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
-            // Using try-catch since it's faster than if conditions when there's no problem
             try
             {
                 PropertyData propertyData = backingStore[propertyName];
