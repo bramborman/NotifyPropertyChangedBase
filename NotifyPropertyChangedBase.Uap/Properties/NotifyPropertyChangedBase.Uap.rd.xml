@@ -31,7 +31,7 @@
   <Library Name="NotifyPropertyChangedBase.Uap">
     <Type Name="NotifyPropertyChangedBase.NotifyPropertyChangedBase">
       <Method Name="RegisterProperty">
-        <TypeParameter Name="type" Activate="Required Public" Browse="Required Public" />
+        <TypeParameter Name="type" Browse="Required Public" />
       </Method>
     </Type>
   </Library>

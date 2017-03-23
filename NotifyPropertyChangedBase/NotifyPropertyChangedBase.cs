@@ -25,17 +25,27 @@ namespace NotifyPropertyChangedBase
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedAction propertyChangedAction)
         {
+            bool isNullableOfT = type.Name == "Nullable`1";
+
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
 
+            if (defaultValue == null && type.GetIsValueType() && !isNullableOfT)
+            {
+                throw new ArgumentException($"The type '{type}' is not a nullable type.");
+            }
+
             try
             {
-                if (defaultValue == null && type.GetIsValueType())
+                // For example:
+                // RegisterProperty("Foo", typeof(double), 1);
+                // In this case the defaultValue type is Int32 and not Double so we change it
+                if (!isNullableOfT)
                 {
-                    defaultValue = Activator.CreateInstance(type);
+                    defaultValue = Convert.ChangeType(defaultValue, type);
                 }
                 
-                backingStore.Add(name, new PropertyData(type.Name == "Nullable`1" ? defaultValue : Convert.ChangeType(defaultValue, type), type, propertyChangedAction));
+                backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedAction));
             }
             catch (Exception exception)
             {
