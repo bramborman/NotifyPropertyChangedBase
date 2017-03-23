@@ -7,21 +7,70 @@ using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase
 {
+    /// <summary>
+    /// Abstract class implementing the <see cref="INotifyPropertyChanged"/> interface.
+    /// </summary>
     // Using try-catch since it's faster than if conditions when there's no problem
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
+        /// <summary>
+        /// Implementation of the <see cref="INotifyPropertyChanged.PropertyChanged"/> event. Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Registers a new property for this instance.
+        /// </summary>
+        /// <param name="name">Name of the registered property.</param>
+        /// <param name="type">Type of the registered property.</param>
+        /// <param name="defaultValue">Default value of the registered property.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="defaultValue"/> is <c>null</c> while <paramref name="type"/> is non-nullable value type.
+        ///     </para>
+        ///     <para>
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to property of type in <paramref name="type"/>.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains registered property named as specified in parameter <paramref name="name"/>.
+        ///     </para>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c></exception>
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue)
         {
             RegisterProperty(name, type, defaultValue, null);
         }
 
+        /// <summary>
+        /// Registers a new property for this instance.
+        /// </summary>
+        /// <param name="name">Name of the registered property.</param>
+        /// <param name="type">Type of the registered property.</param>
+        /// <param name="defaultValue">Default value of the registered property.</param>
+        /// <param name="propertyChangedCallback">Callback invoked right after the registered property changes.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="defaultValue"/> is <c>null</c> while <paramref name="type"/> is non-nullable value type.
+        ///     </para>
+        ///     <para>
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to property of type in <paramref name="type"/>.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains registered property named as specified in parameter <paramref name="name"/>.
+        ///     </para>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c></exception>
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
-        protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackEventHandler propertyChangedAction)
+        protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
@@ -43,7 +92,7 @@ namespace NotifyPropertyChangedBase
 
             try
             {
-                backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedAction));
+                backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
             }
             catch (Exception exception)
             {
@@ -56,6 +105,19 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+        /// <summary>
+        /// Returns the current value of a property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>Value of the property.</returns>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///     </para>
+        /// </exception>
 #if NET_40
         protected object GetValue(string propertyName)
 #else
@@ -75,6 +137,22 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+        /// <summary>
+        /// Sets new value to the property even if it is equal and invokes the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="value">New value for the property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         The type of <paramref name="value"/> is not the same as the type of property specified in <paramref name="propertyName"/>.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///     </para>
+        /// </exception>
 #if NET_40
         protected void ForceSetValue(object value, string propertyName)
 #else
@@ -84,6 +162,22 @@ namespace NotifyPropertyChangedBase
             SetValue(value, propertyName, true);
         }
 
+        /// <summary>
+        /// Sets new value to the property if it's not equal and invokes the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="value">New value for the property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         The type of <paramref name="value"/> is not the same as the type of property specified in <paramref name="propertyName"/>.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///     </para>
+        /// </exception>
 #if NET_40
         protected void SetValue(object value, string propertyName)
 #else
@@ -110,7 +204,7 @@ namespace NotifyPropertyChangedBase
                     object oldValue = propertyData.Value;
                     propertyData.Value = value;
 
-                    propertyData.PropertyChangedAction?.Invoke(this, new PropertyChangedCallbackEventArgs(oldValue, value));
+                    propertyData.PropertyChangedAction?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
                     OnPropertyChanged(propertyName);
                 }
             }
@@ -123,6 +217,11 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+        /// <summary>
+        /// Invokes the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="propertyName">Name of the changed property.</param>
+        /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
 #if NET_40
         protected void OnPropertyChanged(string propertyName)
 #else
@@ -145,9 +244,9 @@ namespace NotifyPropertyChangedBase
         {
             internal object Value { get; set; }
             internal Type Type { get; }
-            internal PropertyChangedCallbackEventHandler PropertyChangedAction { get; }
+            internal PropertyChangedCallbackHandler PropertyChangedAction { get; }
 
-            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackEventHandler propertyChangedAction)
+            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedAction)
             {
                 Value = defaultValue;
                 Type  = type;
@@ -156,15 +255,37 @@ namespace NotifyPropertyChangedBase
         }
     }
 
-    public delegate void PropertyChangedCallbackEventHandler(NotifyPropertyChanged sender, PropertyChangedCallbackEventArgs e);
+    /// <summary>
+    /// Represents the callback that is invoked when a registered property value of the <see cref="NotifyPropertyChanged"/> class changes.
+    /// </summary>
+    /// <param name="sender">Instance of the <see cref="NotifyPropertyChanged"/> class that invoked this callback.</param>
+    /// <param name="e">Callback data containing info about the changed property.</param>
+    public delegate void PropertyChangedCallbackHandler(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e);
 
-    public sealed class PropertyChangedCallbackEventArgs
+    /// <summary>
+    /// Callback data containing info about the changed property in the <see cref="PropertyChangedCallbackHandler"/>.
+    /// </summary>
+    public sealed class PropertyChangedCallbackArgs
     {
+        /// <summary>
+        /// Gets or sets a value that marks the callback as handled.
+        /// </summary>
         public bool Handled { get; set; }
+        /// <summary>
+        /// Old value of the changed property.
+        /// </summary>
         public object OldValue { get; }
+        /// <summary>
+        /// New value of the changed property.
+        /// </summary>
         public object NewValue { get; }
 
-        public PropertyChangedCallbackEventArgs(object oldValue, object newValue)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyChangedCallbackArgs"/> class.
+        /// </summary>
+        /// <param name="oldValue">Old value of the changed property.</param>
+        /// <param name="newValue">New value of the changed property.</param>
+        public PropertyChangedCallbackArgs(object oldValue, object newValue)
         {
             Handled  = false;
             OldValue = oldValue;
