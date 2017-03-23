@@ -7,8 +7,6 @@ using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase
 {
-    public delegate void PropertyChangedAction(object oldValue, object newValue);
-
     // Using try-catch since it's faster than if conditions when there's no problem
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
@@ -23,7 +21,7 @@ namespace NotifyPropertyChangedBase
         }
 
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
-        protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedAction propertyChangedAction)
+        protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackEventHandler propertyChangedAction)
         {
             bool isNullableOfT = type.Name == "Nullable`1";
 
@@ -114,7 +112,7 @@ namespace NotifyPropertyChangedBase
                     object oldValue = propertyData.Value;
                     propertyData.Value = value;
 
-                    propertyData.PropertyChangedAction?.Invoke(oldValue, value);
+                    propertyData.PropertyChangedAction?.Invoke(this, new PropertyChangedCallbackEventArgs(oldValue, value));
                     OnPropertyChanged(propertyName);
                 }
             }
@@ -149,14 +147,30 @@ namespace NotifyPropertyChangedBase
         {
             internal object Value { get; set; }
             internal Type Type { get; }
-            internal PropertyChangedAction PropertyChangedAction { get; }
+            internal PropertyChangedCallbackEventHandler PropertyChangedAction { get; }
 
-            internal PropertyData(object defaultValue, Type type, PropertyChangedAction propertyChangedAction)
+            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackEventHandler propertyChangedAction)
             {
                 Value = defaultValue;
                 Type  = type;
                 PropertyChangedAction = propertyChangedAction;
             }
+        }
+    }
+
+    public delegate void PropertyChangedCallbackEventHandler(NotifyPropertyChanged sender, PropertyChangedCallbackEventArgs e);
+
+    public sealed class PropertyChangedCallbackEventArgs
+    {
+        public bool Handled { get; set; }
+        public object OldValue { get; }
+        public object NewValue { get; }
+
+        public PropertyChangedCallbackEventArgs(object oldValue, object newValue)
+        {
+            Handled  = false;
+            OldValue = oldValue;
+            NewValue = newValue;
         }
     }
 }
