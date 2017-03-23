@@ -9,32 +9,39 @@ namespace NotifyPropertyChangedBase
 {
     public delegate void PropertyChangedAction(object oldValue, object newValue);
 
+    // Using try-catch since it's faster than if conditions when there's no problem
     public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
     {
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
         protected void RegisterProperty(string name, Type type, object defaultValue)
         {
             RegisterProperty(name, type, defaultValue, null);
         }
 
+        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the type parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedAction propertyChangedAction)
         {
-            ValidateNotNullOrWhiteSpace(name, nameof(name));
-            ValidateNotNull(type, nameof(type));
+            Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
+            Helpers.ValidateNotNull(type, nameof(type));
 
-            // Using try-catch since it's faster than if conditions when there's no problem
             try
             {
+                if (defaultValue == null && type.GetIsValueType())
+                {
+                    defaultValue = Activator.CreateInstance(type);
+                }
+                
                 backingStore.Add(name, new PropertyData(type.Name == "Nullable`1" ? defaultValue : Convert.ChangeType(defaultValue, type), type, propertyChangedAction));
             }
             catch (Exception exception)
             {
                 if (backingStore.ContainsKey(name))
                 {
-                    throw new ArgumentException($"This class already contains registered property named {name}.");
+                    throw new ArgumentException($"This class already contains registered property named '{name}'.");
                 }
 
                 throw exception;
@@ -54,7 +61,7 @@ namespace NotifyPropertyChangedBase
             }
             catch (Exception exception)
             {
-                ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+                Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
                 ValidatePropertyName(propertyName);
 
                 throw exception;
@@ -88,7 +95,7 @@ namespace NotifyPropertyChangedBase
 
                 if (propertyData.Type != newValue.GetType())
                 {
-                    throw new ArgumentException($"The type of {nameof(newValue)} is not the same as the type of {propertyName} property.");
+                    throw new ArgumentException($"The type of {nameof(newValue)} is not the same as the type of the '{propertyName}' property.");
                 }
 
                 // Calling Equals calls the overriden method even when the current type is object
@@ -103,7 +110,7 @@ namespace NotifyPropertyChangedBase
             }
             catch (Exception exception)
             {
-                ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+                Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
                 ValidatePropertyName(propertyName);
 
                 throw exception;
@@ -116,7 +123,7 @@ namespace NotifyPropertyChangedBase
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
 #endif
         {
-            ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+            Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -124,23 +131,7 @@ namespace NotifyPropertyChangedBase
         {
             if (!backingStore.ContainsKey(propertyName))
             {
-                throw new ArgumentException($"There is no registered property called {propertyName}.");
-            }
-        }
-
-        private void ValidateNotNull(object obj, string parameterName)
-        {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
-        }
-
-        private void ValidateNotNullOrWhiteSpace(string str, string parameterName)
-        {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                throw new ArgumentException("Value cannot be white space or null.", parameterName);
+                throw new ArgumentException($"There is no registered property called '{propertyName}'.");
             }
         }
 

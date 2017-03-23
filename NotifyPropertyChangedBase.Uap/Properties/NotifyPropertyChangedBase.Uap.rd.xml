@@ -23,11 +23,16 @@
 
     For more information on writing Runtime Directives for libraries, please visit
     https://go.microsoft.com/fwlink/?LinkID=391919
+    
+    Good blog post about it:
+    https://blogs.msdn.microsoft.com/dotnet/2014/05/23/net-native-deep-dive-making-your-library-great/
 -->
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Library Name="NotifyPropertyChangedBase.Uap">
-
-  	<!-- add directives for your library here -->
-
+    <Type Name="NotifyPropertyChangedBase.NotifyPropertyChangedBase">
+      <Method Name="RegisterProperty">
+        <TypeParameter Name="type" Activate="Required Public" Browse="Required Public" />
+      </Method>
+    </Type>
   </Library>
 </Directives>

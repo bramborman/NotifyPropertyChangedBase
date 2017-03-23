@@ -22,3 +22,4 @@ after_build:
 # deploy:
 # - provider: Environment
 #   name: MyGet
+# test if it will proceed to deployment when build fails

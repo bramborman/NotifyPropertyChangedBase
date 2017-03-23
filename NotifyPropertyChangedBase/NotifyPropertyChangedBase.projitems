@@ -9,6 +9,7 @@
     <Import_RootNamespace>NotifyPropertyChangedBase</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NotifyPropertyChangedBase.cs" />
   </ItemGroup>
 </Project>
