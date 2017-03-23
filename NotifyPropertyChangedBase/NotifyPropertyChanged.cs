@@ -10,7 +10,7 @@ namespace NotifyPropertyChangedBase
     public delegate void PropertyChangedAction(object oldValue, object newValue);
 
     // Using try-catch since it's faster than if conditions when there's no problem
-    public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
+    public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
