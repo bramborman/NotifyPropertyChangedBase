@@ -62,36 +62,37 @@ namespace NotifyPropertyChangedBase
         }
 
 #if NET_40
-        protected void ForceSetValue<T>(T newValue, string propertyName)
+        protected void ForceSetValue(object newValue, string propertyName)
 #else
-        protected void ForceSetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
+        protected void ForceSetValue(object newValue, [CallerMemberName]string propertyName = null)
 #endif
         {
             SetValue(newValue, propertyName, true);
         }
 
 #if NET_40
-        protected void SetValue<T>(T newValue, string propertyName)
+        protected void SetValue(object newValue, string propertyName)
 #else
-        protected void SetValue<T>(T newValue, [CallerMemberName]string propertyName = null)
+        protected void SetValue(object newValue, [CallerMemberName]string propertyName = null)
 #endif
         {
             SetValue(newValue, propertyName, false);
         }
 
-        private void SetValue<T>(T newValue, string propertyName, bool forceSetValue)
+        private void SetValue(object newValue, string propertyName, bool forceSetValue)
         {
             // Using try-catch since it's faster than if conditions when there's no problem
             try
             {
                 PropertyData propertyData = backingStore[propertyName];
 
-                if (propertyData.Type != typeof(T))
+                if (propertyData.Type != newValue.GetType())
                 {
                     throw new ArgumentException($"The type of {nameof(newValue)} is not the same as the type of {propertyName} property.");
                 }
 
-                if (!EqualityComparer<T>.Default.Equals((T)propertyData.Value, newValue) || forceSetValue)
+                // Calling Equals calls the overriden method even when the current type is object
+                if (!propertyData.Value.Equals(newValue) || forceSetValue)
                 {
                     object oldValue = propertyData.Value;
                     propertyData.Value = newValue;
