@@ -42,12 +42,12 @@ namespace NotifyPropertyChangedBase
 #endif
         }
 
-        internal static bool ContainsGenericParameterConstraint(this Type type, Type constraint)
+        internal static bool ContainsGenericParameter(this Type type, Type constraint)
         {
 #if WINDOWS_UWP
-            return type.GetTypeInfo().GetGenericParameterConstraints().Contains(constraint);
+            return type.GetTypeInfo().GenericTypeArguments.Contains(constraint);
 #else
-            return type.GetGenericParameterConstraints().Contains(constraint);
+            return type.GetGenericArguments().Contains(constraint);
 #endif
         }
     }

@@ -88,7 +88,7 @@ namespace NotifyPropertyChangedBase
             {
                 Type defaultValueType = defaultValue.GetType();
 
-                if (defaultValueType != type && !defaultValueType.GetIsSubclassOf(type) && !(isNullable1 && type.ContainsGenericParameterConstraint(defaultValueType)))
+                if (defaultValueType != type && !defaultValueType.GetIsSubclassOf(type) && !(isNullable1 && type.ContainsGenericParameter(defaultValueType)))
                 {
                     throw new ArgumentException($"The value in the '{nameof(defaultValue)}' parameter cannot be assigned to property of the specified type ({type})");
                 }
