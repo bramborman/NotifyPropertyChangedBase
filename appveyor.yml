@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - dev
+skip_tags: true
 image: Visual Studio 2017
 configuration: Release
 assembly_info:
