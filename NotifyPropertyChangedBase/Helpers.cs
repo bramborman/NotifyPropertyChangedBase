@@ -40,5 +40,10 @@ namespace NotifyPropertyChangedBase
             return type.IsSubclassOf(baseClass);
 #endif
         }
+
+        internal static bool GetIsNullableOfT(this Type type)
+        {
+            return type.Name == "Nullable`1";
+        }
     }
 }
