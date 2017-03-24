@@ -22,8 +22,6 @@ after_build:
 deploy:
 - provider: Environment
   name: MyGet
-  on:
-    branch: master, dev
 - provider: Environment
   name: NuGet
   on:
