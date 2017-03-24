@@ -78,24 +78,17 @@ namespace NotifyPropertyChangedBase
         {
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
-
-            bool isNullable1 = type.Name == "Nullable`1";
-
+            
             if (defaultValue == null)
             {
-                if (type.GetIsValueType() && !isNullable1)
+                if (type.GetIsValueType() && !type.GetIsNullableOfT())
                 {
                     throw new ArgumentException($"The type '{type}' is not a nullable type.");
                 }
             }
             else
             {
-                Type defaultValueType = defaultValue.GetType();
-
-                if (defaultValueType != type && !defaultValueType.GetIsSubclassOf(type) && !(isNullable1 && type.GetGenericArguments().Contains(defaultValueType)))
-                {
-                    throw new ArgumentException($"The value in the '{nameof(defaultValue)}' parameter cannot be assigned to property of the specified type ({type})");
-                }
+                ValidateValueForType(defaultValue, type, nameof(defaultValue));
             }
 
             try
@@ -198,16 +191,13 @@ namespace NotifyPropertyChangedBase
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             PropertyData propertyData = backingStore[propertyName];
-
-            if (propertyData.Type != value.GetType())
-            {
-                throw new ArgumentException($"The type of {nameof(value)} is not the same as the type of the '{propertyName}' property.");
-            }
+            ValidateValueForType(value, propertyData.Type, nameof(value));
 
             try
             {
                 // Calling Equals calls the overriden method even when the current type is object
-                if (!propertyData.Value.Equals(value) || forceSetValue)
+                // Second check - calling .Equals on null will throw an exception ;)
+                if (forceSetValue || (propertyData.Value == null && value != null) || !propertyData.Value.Equals(value))
                 {
                     object oldValue     = propertyData.Value;
                     propertyData.Value  = value;
@@ -245,6 +235,16 @@ namespace NotifyPropertyChangedBase
             if (!backingStore.ContainsKey(propertyName))
             {
                 throw new ArgumentException($"There is no registered property called '{propertyName}'.");
+            }
+        }
+
+        private void ValidateValueForType(object value, Type type, string valueParameterName)
+        {
+            Type valueType = value.GetType();
+
+            if (valueType != type && !valueType.GetIsSubclassOf(type) && !(type.GetIsNullableOfT() && type.GetGenericArguments().Contains(valueType)))
+            {
+                throw new ArgumentException($"Value in the '{valueParameterName}' parameter is of type {valueType} which cannot be assigned to property of the type ({type})");
             }
         }
 
