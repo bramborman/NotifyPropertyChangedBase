@@ -1,4 +1,3 @@
-Write-Host "Current directory: $PSScriptRoot"
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)

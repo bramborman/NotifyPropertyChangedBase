@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		AfterBuild.ps1 = AfterBuild.ps1
 		appveyor.yml = appveyor.yml
 		LICENSE.md = LICENSE.md
 		NotifyPropertyChangedBase.nuspec = NotifyPropertyChangedBase.nuspec
@@ -21,11 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Net45", "NotifyPropertyChangedBase.Net45\NotifyPropertyChangedBase.Net45.csproj", "{AC23EF0B-D5BD-401E-A074-4072DCA935AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Uap", "NotifyPropertyChangedBase.Uap\NotifyPropertyChangedBase.Uap.csproj", "{A08CEAE6-7FE6-4B0D-9A3B-C0687BEF4D35}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{70B7A3FF-7D44-4168-9C50-CB863BA389A6}"
-	ProjectSection(SolutionItems) = preProject
-		Scripts\AfterBuild.ps1 = Scripts\AfterBuild.ps1
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -96,8 +92,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{70B7A3FF-7D44-4168-9C50-CB863BA389A6} = {121EBC4B-EA90-4A53-8E99-B56DA7C6646F}
 	EndGlobalSection
 EndGlobal
