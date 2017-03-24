@@ -21,7 +21,7 @@ namespace NotifyPropertyChangedBase
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Registers a new property for this instance.
+        /// Registers a new property for the actual instance of <see cref="NotifyPropertyChanged"/>.
         /// </summary>
         /// <param name="name">Name of the registered property.</param>
         /// <param name="type">Type of the registered property.</param>
@@ -48,7 +48,7 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Registers a new property for this instance.
+        /// Registers a new property for the actual instance of <see cref="NotifyPropertyChanged"/>.
         /// </summary>
         /// <param name="name">Name of the registered property.</param>
         /// <param name="type">Type of the registered property.</param>
@@ -106,7 +106,7 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Returns the current value of a property.
+        /// Returns the current value of a registered property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>Value of the property.</returns>
@@ -138,7 +138,7 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets new value to the property even if it is equal and invokes the <see cref="PropertyChanged"/> event.
+        /// Sets new value to a registered property even if it is equal and invokes the <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="value">New value for the property.</param>
         /// <param name="propertyName">Name of the property.</param>
@@ -163,7 +163,7 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets new value to the property if it's not equal and invokes the <see cref="PropertyChanged"/> event.
+        /// Sets new value to a registered property if it's not equal and invokes the <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="value">New value for the property.</param>
         /// <param name="propertyName">Name of the property.</param>
@@ -189,22 +189,22 @@ namespace NotifyPropertyChangedBase
 
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
+            PropertyData propertyData = backingStore[propertyName];
+
+            if (propertyData.Type != value.GetType())
+            {
+                throw new ArgumentException($"The type of {nameof(value)} is not the same as the type of the '{propertyName}' property.");
+            }
+
             try
             {
-                PropertyData propertyData = backingStore[propertyName];
-
-                if (propertyData.Type != value.GetType())
-                {
-                    throw new ArgumentException($"The type of {nameof(value)} is not the same as the type of the '{propertyName}' property.");
-                }
-
                 // Calling Equals calls the overriden method even when the current type is object
                 if (!propertyData.Value.Equals(value) || forceSetValue)
                 {
-                    object oldValue = propertyData.Value;
-                    propertyData.Value = value;
+                    object oldValue     = propertyData.Value;
+                    propertyData.Value  = value;
 
-                    propertyData.PropertyChangedAction?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
                     OnPropertyChanged(propertyName);
                 }
             }
@@ -244,19 +244,19 @@ namespace NotifyPropertyChangedBase
         {
             internal object Value { get; set; }
             internal Type Type { get; }
-            internal PropertyChangedCallbackHandler PropertyChangedAction { get; }
+            internal PropertyChangedCallbackHandler PropertyChangedCallback { get; }
 
-            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedAction)
+            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
                 Value = defaultValue;
                 Type  = type;
-                PropertyChangedAction = propertyChangedAction;
+                PropertyChangedCallback = propertyChangedCallback;
             }
         }
     }
 
     /// <summary>
-    /// Represents the callback that is invoked when a registered property value of the <see cref="NotifyPropertyChanged"/> class changes.
+    /// Represents the callback that is invoked when a registered property value of the <see cref="NotifyPropertyChanged"/> class changes before the <see cref="NotifyPropertyChanged.PropertyChanged"/> event.
     /// </summary>
     /// <param name="sender">Instance of the <see cref="NotifyPropertyChanged"/> class that invoked this callback.</param>
     /// <param name="e">Callback data containing info about the changed property.</param>
@@ -272,19 +272,19 @@ namespace NotifyPropertyChangedBase
         /// </summary>
         public bool Handled { get; set; }
         /// <summary>
-        /// Old value of the changed property.
+        /// Gets the previous value of the changed property.
         /// </summary>
         public object OldValue { get; }
         /// <summary>
-        /// New value of the changed property.
+        /// Gets the current value of the changed property.
         /// </summary>
         public object NewValue { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyChangedCallbackArgs"/> class.
         /// </summary>
-        /// <param name="oldValue">Old value of the changed property.</param>
-        /// <param name="newValue">New value of the changed property.</param>
+        /// <param name="oldValue">Previous value of the changed property.</param>
+        /// <param name="newValue">Current value of the changed property.</param>
         public PropertyChangedCallbackArgs(object oldValue, object newValue)
         {
             Handled  = false;
