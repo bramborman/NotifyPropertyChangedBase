@@ -75,16 +75,20 @@ namespace NotifyPropertyChangedBase
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
 
+            bool isNullable1 = type.Name == "Nullable`1";
+
             if (defaultValue == null)
             {
-                if (type.GetIsValueType() && type.Name != "Nullable`1")
+                if (type.GetIsValueType() && !isNullable1)
                 {
                     throw new ArgumentException($"The type '{type}' is not a nullable type.");
                 }
             }
             else
             {
-                if (defaultValue.GetType() != type && !defaultValue.GetType().GetIsSubclassOf(type))
+                Type defaultValueType = defaultValue.GetType();
+
+                if (defaultValueType != type && !defaultValueType.GetIsSubclassOf(type) && !(isNullable1 && type.ContainsGenericParameterConstraint(defaultValueType)))
                 {
                     throw new ArgumentException($"The value in the '{nameof(defaultValue)}' parameter cannot be assigned to property of the specified type ({type})");
                 }
