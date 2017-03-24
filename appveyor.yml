@@ -18,7 +18,7 @@ before_build:
 build:
   verbosity: minimal
 after_build:
-- ps: '& "Scripts\AfterBuild.ps1"'
+- ps: '& ".\AfterBuild.ps1"'
 # deploy:
 # - provider: Environment
 #   name: MyGet
