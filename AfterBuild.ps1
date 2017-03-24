@@ -22,7 +22,7 @@ foreach ($projectFolder in $projectFolders)
 		continue;
 	}
 
-	$zipFileName    = "$projectFolder$nugetVersion.zip"
+	$zipFileName    = "$projectFolder.$nugetVersion.zip"
 	7z a $zipFileName "$releaseFolder\*"
 	
 	Push-AppveyorArtifact $zipFileName

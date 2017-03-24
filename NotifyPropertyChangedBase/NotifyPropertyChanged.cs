@@ -20,9 +20,24 @@ namespace NotifyPropertyChangedBase
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
         /// <summary>
+        /// Gets or sets the value indicating whether the <see cref="PropertyChanged"/> event should be invoked
+        /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
+        /// when property changes. The default value is <c>true</c>.
+        /// </summary>
+        protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
+
+        /// <summary>
         /// Implementation of the <see cref="INotifyPropertyChanged.PropertyChanged"/> event. Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyPropertyChanged"/> class.
+        /// </summary>
+        protected NotifyPropertyChanged()
+        {
+            IsPropertyChangedEventInvokingEnabled = true;
+        }
 
         /// <summary>
         /// Registers a new property for the actual instance of <see cref="NotifyPropertyChanged"/>.
@@ -203,7 +218,11 @@ namespace NotifyPropertyChangedBase
                     propertyData.Value  = value;
 
                     propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
-                    OnPropertyChanged(propertyName);
+
+                    if (IsPropertyChangedEventInvokingEnabled)
+                    {
+                        OnPropertyChanged(propertyName);
+                    }
                 }
             }
             catch (Exception exception)
