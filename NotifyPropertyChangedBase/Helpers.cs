@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 #if WINDOWS_UWP
 using System.Reflection;
 #endif
@@ -39,15 +38,6 @@ namespace NotifyPropertyChangedBase
             return type.GetTypeInfo().IsSubclassOf(baseClass);
 #else
             return type.IsSubclassOf(baseClass);
-#endif
-        }
-
-        internal static bool ContainsGenericParameter(this Type type, Type constraint)
-        {
-#if WINDOWS_UWP
-            return type.GetTypeInfo().GenericTypeArguments.Contains(constraint);
-#else
-            return type.GetGenericArguments().Contains(constraint);
 #endif
         }
     }
