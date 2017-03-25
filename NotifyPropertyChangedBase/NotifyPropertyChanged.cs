@@ -20,9 +20,15 @@ namespace NotifyPropertyChangedBase
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
         /// <summary>
+        /// Gets or sets the value indicating whether the <see cref="PropertyChangedCallbackHandler"/> specific for each property should be invoked
+        /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
+        /// when a property changes. The default value is <c>true</c>.
+        /// </summary>
+        protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
+        /// <summary>
         /// Gets or sets the value indicating whether the <see cref="PropertyChanged"/> event should be invoked
         /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
-        /// when property changes. The default value is <c>true</c>.
+        /// when a property changes. The default value is <c>true</c>.
         /// </summary>
         protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
 
@@ -36,7 +42,8 @@ namespace NotifyPropertyChangedBase
         /// </summary>
         protected NotifyPropertyChanged()
         {
-            IsPropertyChangedEventInvokingEnabled = true;
+            IsPropertyChangedCallbackInvokingEnabled    = true;
+            IsPropertyChangedEventInvokingEnabled       = true;
         }
 
         /// <summary>
@@ -154,7 +161,9 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets new value to a registered property even if it is equal and invokes the <see cref="PropertyChanged"/> event.
+        /// Sets new value to a registered property even if it is equal and invokes the <see cref="PropertyChangedCallbackHandler"/> for the property if specified before
+        /// and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c> and also invokes the <see cref="PropertyChanged"/> event
+        /// if value of <see cref="IsPropertyChangedEventInvokingEnabled"/> is <c>true</c>.
         /// </summary>
         /// <param name="value">New value for the property.</param>
         /// <param name="propertyName">Name of the property.</param>
@@ -179,7 +188,9 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets new value to a registered property if it's not equal and invokes the <see cref="PropertyChanged"/> event.
+        /// Sets a new value to a registered property if it's not equal and invokes the <see cref="PropertyChangedCallbackHandler"/> for the property if specified before
+        /// and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c> and also invokes the <see cref="PropertyChanged"/> event
+        /// if value of <see cref="IsPropertyChangedEventInvokingEnabled"/> is <c>true</c>.
         /// </summary>
         /// <param name="value">New value for the property.</param>
         /// <param name="propertyName">Name of the property.</param>
@@ -217,7 +228,10 @@ namespace NotifyPropertyChangedBase
                     object oldValue     = propertyData.Value;
                     propertyData.Value  = value;
 
-                    propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    if (IsPropertyChangedCallbackInvokingEnabled)
+                    {
+                        propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    }
 
                     if (IsPropertyChangedEventInvokingEnabled)
                     {
