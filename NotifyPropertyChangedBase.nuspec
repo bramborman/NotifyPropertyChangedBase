@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface.</description>
     <copyright>© 2017 Marian Dolinský</copyright>
-    <tags>C# Helper Helpers Binding Bindings</tags>
+    <tags>C# Helper Helpers Binding Bindings MVVM</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />
       <group targetFramework=".NETFramework4.0" />

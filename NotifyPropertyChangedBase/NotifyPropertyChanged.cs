@@ -14,7 +14,6 @@ namespace NotifyPropertyChangedBase
     /// <summary>
     /// Abstract class implementing the <see cref="INotifyPropertyChanged"/> interface.
     /// </summary>
-    // Using try-catch since it's faster than if conditions when there's no problem
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
@@ -57,16 +56,13 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Parameter <paramref name="defaultValue"/> is <c>null</c> while <paramref name="type"/> is non-nullable value type.
-        ///     </para>
-        ///     <para>
-        ///         Value of <paramref name="defaultValue"/> cannot be assigned to property of type in <paramref name="type"/>.
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to a property of type in <paramref name="type"/>.
         ///     </para>
         ///     <para>
         ///         Instance already contains registered property named as specified in parameter <paramref name="name"/>.
         ///     </para>
         /// </exception>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue)
         {
@@ -85,47 +81,26 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Parameter <paramref name="defaultValue"/> is <c>null</c> while <paramref name="type"/> is non-nullable value type.
-        ///     </para>
-        ///     <para>
-        ///         Value of <paramref name="defaultValue"/> cannot be assigned to property of type in <paramref name="type"/>.
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to a property of type in <paramref name="type"/>.
         ///     </para>
         ///     <para>
         ///         Instance already contains registered property named as specified in parameter <paramref name="name"/>.
         ///     </para>
         /// </exception>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
             Helpers.ValidateNotNull(type, nameof(type));
-            
-            if (defaultValue == null)
+            ValidateValueForType(defaultValue, type);
+
+            if (backingStore.ContainsKey(name))
             {
-                if (type.GetIsValueType() && !type.GetIsNullableOfT())
-                {
-                    throw new ArgumentException($"The type '{type}' is not a nullable type.");
-                }
-            }
-            else
-            {
-                ValidateValueForType(defaultValue, type, nameof(defaultValue));
+                throw new ArgumentException($"This class already contains registered property named '{name}'.");
             }
 
-            try
-            {
-                backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
-            }
-            catch (Exception exception)
-            {
-                if (backingStore.ContainsKey(name))
-                {
-                    throw new ArgumentException($"This class already contains registered property named '{name}'.");
-                }
-
-                throw exception;
-            }
+            backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
         }
 
         /// <summary>
@@ -138,7 +113,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
         ///     </para>
         /// </exception>
 #if NET_40
@@ -147,17 +122,7 @@ namespace NotifyPropertyChangedBase
         protected object GetValue([CallerMemberName]string propertyName = null)
 #endif
         {
-            try
-            {
-                return backingStore[propertyName].Value;
-            }
-            catch (Exception exception)
-            {
-                Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
-                ValidatePropertyName(propertyName);
-
-                throw exception;
-            }
+            return GetPropertyData(propertyName, nameof(propertyName)).Value;
         }
 
         /// <summary>
@@ -169,13 +134,13 @@ namespace NotifyPropertyChangedBase
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentException">
         ///     <para>
-        ///         The type of <paramref name="value"/> is not the same as the type of property specified in <paramref name="propertyName"/>.
+        ///         Value of the <paramref name="value"/> parameter cannot be assigned to the type of property with name specified in the <paramref name="propertyName"/> parameter.
         ///     </para>
         ///     <para>
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
         ///     </para>
         /// </exception>
 #if NET_40
@@ -196,13 +161,13 @@ namespace NotifyPropertyChangedBase
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentException">
         ///     <para>
-        ///         The type of <paramref name="value"/> is not the same as the type of property specified in <paramref name="propertyName"/>.
+        ///         Value of the <paramref name="value"/> parameter cannot be assigned to the type of property with name specified in the <paramref name="propertyName"/> parameter.
         ///     </para>
         ///     <para>
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Instance does not contain registered property with name specified in <paramref name="propertyName"/>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
         ///     </para>
         /// </exception>
 #if NET_40
@@ -213,38 +178,28 @@ namespace NotifyPropertyChangedBase
         {
             SetValue(value, propertyName, false);
         }
-
+        
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
-            PropertyData propertyData = backingStore[propertyName];
-            ValidateValueForType(value, propertyData.Type, nameof(value));
-
-            try
+            PropertyData propertyData = GetPropertyData(propertyName, nameof(propertyName));
+            ValidateValueForType(value, propertyData.Type);
+            
+            // Calling Equals calls the overriden method even when the current type is object
+            // Second check - calling .Equals on null will throw an exception ;)
+            if (forceSetValue || (propertyData.Value == null && value != null) || !propertyData.Value.Equals(value))
             {
-                // Calling Equals calls the overriden method even when the current type is object
-                // Second check - calling .Equals on null will throw an exception ;)
-                if (forceSetValue || (propertyData.Value == null && value != null) || !propertyData.Value.Equals(value))
+                object oldValue     = propertyData.Value;
+                propertyData.Value  = value;
+
+                if (IsPropertyChangedCallbackInvokingEnabled)
                 {
-                    object oldValue     = propertyData.Value;
-                    propertyData.Value  = value;
-
-                    if (IsPropertyChangedCallbackInvokingEnabled)
-                    {
-                        propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
-                    }
-
-                    if (IsPropertyChangedEventInvokingEnabled)
-                    {
-                        OnPropertyChanged(propertyName);
-                    }
+                    propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
                 }
-            }
-            catch (Exception exception)
-            {
-                Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
-                ValidatePropertyName(propertyName);
 
-                throw exception;
+                if (IsPropertyChangedEventInvokingEnabled)
+                {
+                    OnPropertyChanged(propertyName);
+                }
             }
         }
 
@@ -262,23 +217,37 @@ namespace NotifyPropertyChangedBase
             Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private void ValidatePropertyName(string propertyName)
+        
+        private void ValidateValueForType(object value, Type type)
         {
-            if (!backingStore.ContainsKey(propertyName))
+            if (value == null)
             {
-                throw new ArgumentException($"There is no registered property called '{propertyName}'.");
+                if (type.GetIsValueType() && !type.GetIsNullableOfT())
+                {
+                    throw new ArgumentException($"The type '{type}' is not a nullable type.");
+                }
+            }
+            else
+            {
+                Type valueType = value.GetType();
+
+                if (valueType != type && !valueType.GetIsSubclassOf(type) && !(type.GetIsNullableOfT() && type.GetGenericArguments().Contains(valueType)))
+                {
+                    throw new ArgumentException($"Value of type {valueType} cannot be assigned to a property of type ({type})");
+                }
             }
         }
 
-        private void ValidateValueForType(object value, Type type, string valueParameterName)
+        private PropertyData GetPropertyData(string propertyName, string propertyNameParameterName)
         {
-            Type valueType = value.GetType();
+            Helpers.ValidateNotNullOrWhiteSpace(propertyName, propertyNameParameterName);
 
-            if (valueType != type && !valueType.GetIsSubclassOf(type) && !(type.GetIsNullableOfT() && type.GetGenericArguments().Contains(valueType)))
+            if (!backingStore.ContainsKey(propertyName))
             {
-                throw new ArgumentException($"Value in the '{valueParameterName}' parameter is of type {valueType} which cannot be assigned to property of the type ({type})");
+                throw new ArgumentException($"There is no registered property called '{propertyName}'.", propertyNameParameterName);
             }
+
+            return backingStore[propertyName];
         }
 
         private class PropertyData
@@ -289,8 +258,8 @@ namespace NotifyPropertyChangedBase
 
             internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
-                Value = defaultValue;
-                Type  = type;
+                Value                   = defaultValue;
+                Type                    = type;
                 PropertyChangedCallback = propertyChangedCallback;
             }
         }
