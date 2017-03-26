@@ -104,6 +104,28 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
+        /// Sets new <see cref="PropertyChangedCallbackHandler"/> to a registered property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyChangedCallback"><see cref="PropertyChangedCallbackHandler"/> to be added.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="propertyChangedCallback"/> is <c>null</c>.
+        ///     </para>
+        /// </exception>
+        protected void SetPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
+        {
+            Helpers.ValidateNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback = propertyChangedCallback;
+        }
+        
+        /// <summary>
         /// Returns the current value of a registered property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
@@ -254,7 +276,7 @@ namespace NotifyPropertyChangedBase
         {
             internal object Value { get; set; }
             internal Type Type { get; }
-            internal PropertyChangedCallbackHandler PropertyChangedCallback { get; }
+            internal PropertyChangedCallbackHandler PropertyChangedCallback { get; set; }
 
             internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
