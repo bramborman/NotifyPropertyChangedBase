@@ -27,3 +27,7 @@ deploy:
   name: NuGet
   on:
     branch: master
+- provider: Environment
+  name: GitHub Releases
+  on:
+    branch: master
