@@ -6,6 +6,12 @@ branches:
   - master
   - dev
 skip_tags: true
+skip_commits:
+  files:
+    - .gitattributes
+    - .gitignore
+    - LICENSE.md
+    - README.md
 image: Visual Studio 2017
 configuration: Release
 assembly_info:
