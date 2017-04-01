@@ -104,6 +104,50 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
+        /// Registers the <paramref name="propertyChangedCallback"/> as a <see cref="PropertyChangedCallbackHandler"/> to a registered property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyChangedCallback"><see cref="PropertyChangedCallbackHandler"/> to be registered.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="propertyChangedCallback"/> is <c>null</c>.
+        ///     </para>
+        /// </exception>
+        protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
+        {
+            Helpers.ValidateNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback += propertyChangedCallback;
+        }
+
+        /// <summary>
+        /// Unregisters the <paramref name="propertyChangedCallback"/> from a registered property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyChangedCallback"><see cref="PropertyChangedCallbackHandler"/> to be unregistered.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Actual instance does not contain registered property with name specified in the <paramref name="propertyName"/> parameter.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="propertyChangedCallback"/> is <c>null</c>.
+        ///     </para>
+        /// </exception>
+        protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
+        {
+            Helpers.ValidateNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback -= propertyChangedCallback;
+        }
+
+        /// <summary>
         /// Returns the current value of a registered property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
@@ -193,7 +237,7 @@ namespace NotifyPropertyChangedBase
 
                 if (IsPropertyChangedCallbackInvokingEnabled)
                 {
-                    propertyData.PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    propertyData.InvokePropertyChangedCallback(this, new PropertyChangedCallbackArgs(oldValue, value));
                 }
 
                 if (IsPropertyChangedEventInvokingEnabled)
@@ -254,13 +298,19 @@ namespace NotifyPropertyChangedBase
         {
             internal object Value { get; set; }
             internal Type Type { get; }
-            internal PropertyChangedCallbackHandler PropertyChangedCallback { get; }
+
+            internal event PropertyChangedCallbackHandler PropertyChangedCallback;
 
             internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
                 Value                   = defaultValue;
                 Type                    = type;
-                PropertyChangedCallback = propertyChangedCallback;
+                PropertyChangedCallback += propertyChangedCallback;
+            }
+
+            internal void InvokePropertyChangedCallback(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e)
+            {
+                PropertyChangedCallback?.Invoke(sender, e);
             }
         }
     }

@@ -1,14 +1,15 @@
-$nugetVersion = $env:APPVEYOR_BUILD_VERSION
+$buildVersion = $env:APPVEYOR_BUILD_VERSION
 
-if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
 {
-	$newVersion	= $nugetVersion.Split("-") | Select-Object -first 1
-	$message    = "NuGet version changed from '$nugetVersion' to '$newVersion'"
+	$newVersion	= $buildVersion.Split("-") | Select-Object -first 1
+	$message    = "Build version changed from '$buildVersion' to '$newVersion'"
+
+	$buildVersion = $newVersion
+	Update-AppveyorBuild -Version $buildVersion
 
 	Add-AppveyorMessage $message
 	Write-Host $message
-
-	$nugetVersion = $newVersion
 }
 
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
@@ -22,11 +23,11 @@ foreach ($projectFolder in $projectFolders)
 		continue;
 	}
 
-	$zipFileName    = "$projectFolder.$nugetVersion.zip"
+	$zipFileName = "$projectFolder.$buildVersion.zip"
 	7z a $zipFileName "$releaseFolder\*"
 	
 	Push-AppveyorArtifact $zipFileName
 }
 
-NuGet pack -Version $nugetVersion
+NuGet pack -Version $buildVersion
 Push-AppveyorArtifact *.nupkg
