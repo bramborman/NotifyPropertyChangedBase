@@ -1,12 +1,14 @@
 $buildVersion = $env:APPVEYOR_BUILD_VERSION
 
-if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
+if (($env:APPVEYOR_REPO_BRANCH -eq "dev") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
 {
 	$newVersion	= $buildVersion.Split("-") | Select-Object -first 1
+	$newVersion = "$newVersion-test"
 	$message    = "Build version changed from '$buildVersion' to '$newVersion'"
 
 	$buildVersion = $newVersion
 	Update-AppveyorBuild -Version $buildVersion
+	Set-AppveyorBuildVariable "APPVEYOR_BUILD_VERSION" $buildVersion
 
 	Add-AppveyorMessage $message
 	Write-Host $message
@@ -29,5 +31,5 @@ foreach ($projectFolder in $projectFolders)
 	Push-AppveyorArtifact $zipFileName
 }
 
-NuGet pack -Version $buildVersion
-Push-AppveyorArtifact *.nupkg
+#NuGet pack -Version $buildVersion
+#Push-AppveyorArtifact *.nupkg

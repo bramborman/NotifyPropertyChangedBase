@@ -1,4 +1,4 @@
-version: 1.2.0-{branch}{build}
+version: 1.2.1-{branch}{build}
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -17,9 +17,9 @@ configuration: Release
 assembly_info:
   patch: true
   file: SharedAssemblyInfo.cs
-  assembly_version: 1.2.0.{build}
-  assembly_file_version: 1.2.0.{build}
-  assembly_informational_version: 1.2.0.{build}
+  assembly_version: 1.2.1.{build}
+  assembly_file_version: 1.2.1.{build}
+  assembly_informational_version: 1.2.1.{build}
 before_build:
 - cmd: nuget restore
 build:
@@ -35,5 +35,3 @@ deploy:
     branch: master
 - provider: Environment
   name: GitHub Releases
-  on:
-    branch: master
