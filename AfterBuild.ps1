@@ -1,6 +1,6 @@
 $buildVersion = $env:APPVEYOR_BUILD_VERSION
 
-if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
 {
 	$newVersion	= $buildVersion.Split("-") | Select-Object -first 1
 	$message    = "Build version changed from '$buildVersion' to '$newVersion'"
