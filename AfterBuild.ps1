@@ -1,5 +1,6 @@
-$buildVersion = $env:APPVEYOR_BUILD_VERSION
+﻿$buildVersion = $env:APPVEYOR_BUILD_VERSION
 
+# Check whether this is commit in branch 'master' and not just PR to the branch
 if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
 {
 	$newVersion	= $buildVersion.Split("-") | Select-Object -first 1
@@ -7,6 +8,7 @@ if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TI
 
 	$buildVersion = $newVersion
 	Update-AppveyorBuild -Version $buildVersion
+	# Set the environment variable explicitly so it will be preserved to deployments (specifically GitHub Releases)
 	Set-AppveyorBuildVariable "APPVEYOR_BUILD_VERSION" $buildVersion
 
 	Add-AppveyorMessage $message
@@ -30,5 +32,12 @@ foreach ($projectFolder in $projectFolders)
 	Push-AppveyorArtifact $zipFileName
 }
 
-NuGet pack -Version $buildVersion
+nuget pack -Version $buildVersion
+
+# Throw the exception if NuGet creating fails to make the AppVeyor build fail too
+if($LastExitCode -ne 0)
+{
+	$host.SetShouldExit($LastExitCode)
+}
+
 Push-AppveyorArtifact *.nupkg

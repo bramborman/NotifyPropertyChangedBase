@@ -10,7 +10,8 @@
     <licenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface.</description>
+    <description>NotifyPropertyChangedBase provides you an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface which can help you in many cases, whether are you developing WPF, Console, UWP or any other app.</description>
+    <summary>Provides an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface.</summary>
     <copyright>© 2017 Marian Dolinský</copyright>
     <tags>C# Helper Helpers Binding Bindings MVVM</tags>
     <dependencies>
