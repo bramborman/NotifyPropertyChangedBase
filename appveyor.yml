@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - dev
+  - unit-tests-preparation
 skip_tags: true
 skip_commits:
   files:
