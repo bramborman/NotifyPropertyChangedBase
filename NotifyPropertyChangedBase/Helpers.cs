@@ -31,19 +31,5 @@ namespace NotifyPropertyChangedBase
             return type.IsValueType;
 #endif
         }
-
-        internal static bool GetIsSubclassOf(this Type type, Type baseClass)
-        {
-#if WINDOWS_UWP
-            return type.GetTypeInfo().IsSubclassOf(baseClass);
-#else
-            return type.IsSubclassOf(baseClass);
-#endif
-        }
-
-        internal static bool GetIsNullableOfT(this Type type)
-        {
-            return type.Name == "Nullable`1";
-        }
     }
 }

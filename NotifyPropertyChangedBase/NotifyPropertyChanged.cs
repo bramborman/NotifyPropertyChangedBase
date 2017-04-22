@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 #if WINDOWS_UWP
 using System.Reflection;
 #endif
@@ -266,18 +265,16 @@ namespace NotifyPropertyChangedBase
         {
             if (value == null)
             {
-                if (type.GetIsValueType() && !type.GetIsNullableOfT())
+                if (type.GetIsValueType() && Nullable.GetUnderlyingType(type) == null)
                 {
                     throw new ArgumentException($"The type '{type}' is not a nullable type.");
                 }
             }
             else
             {
-                Type valueType = value.GetType();
-
-                if (valueType != type && !valueType.GetIsSubclassOf(type) && !(type.GetIsNullableOfT() && type.GetGenericArguments().Contains(valueType)))
+                if (!type.IsAssignableFrom(value.GetType()))
                 {
-                    throw new ArgumentException($"Value of type {valueType} cannot be assigned to a property of type ({type})");
+                    throw new ArgumentException($"The specified value cannot be assigned to a property of type ({type})");
                 }
             }
         }

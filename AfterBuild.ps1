@@ -1,16 +1,5 @@
-$buildVersion = $env:APPVEYOR_BUILD_VERSION
-
-if (($env:APPVEYOR_REPO_BRANCH -eq "master") -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and ($env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null))
-{
-	$newVersion	= $buildVersion.Split("-") | Select-Object -first 1
-	$message    = "Build version changed from '$buildVersion' to '$newVersion'"
-
-	$buildVersion = $newVersion
-	Update-AppveyorBuild -Version $buildVersion
-
-	Add-AppveyorMessage $message
-	Write-Host $message
-}
+﻿Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
+.\Set-PureBuildVersion.ps1
 
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
@@ -23,11 +12,14 @@ foreach ($projectFolder in $projectFolders)
 		continue;
 	}
 
-	$zipFileName = "$projectFolder.$buildVersion.zip"
+	$zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
 	7z a $zipFileName "$releaseFolder\*"
 	
 	Push-AppveyorArtifact $zipFileName
 }
 
-NuGet pack -Version $buildVersion
-Push-AppveyorArtifact *.nupkg
+Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/NuGet-Pack.ps1"
+.\NuGet-Pack.ps1
+
+Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Deployment-Skipping.ps1"
+.\Deployment-Skipping.ps1
