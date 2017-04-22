@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A08CEAE6-7FE6-4B0D-9A3B-C0687BEF4D35}</ProjectGuid>
+    <ProjectGuid>{25F76EE1-678A-4247-9697-5E5DAD3BB76E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <AssemblyName>NotifyPropertyChangedBase.Uap</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -110,20 +110,20 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\x64\Release\NotifyPropertyChangedBase.Uap.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="project.json" />
-  </ItemGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\NotifyPropertyChangedBase.Uap.rd.xml" />
-    <!-- Nuspec file must be references explicitly for the NuSpec.ReferenceGenerator since it has different name than the current project -->
-    <NuSpecFile Include="$(SolutionDir)\NotifyPropertyChangedBase.nuspec">
-      <Visible>False</Visible>
-    </NuSpecFile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>5.3.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
