@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if WINDOWS_UWP
-using System.Reflection;
-#endif
 #if !NET_40
 using System.Runtime.CompilerServices;
 #endif
@@ -90,8 +87,8 @@ namespace NotifyPropertyChangedBase
         // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateNotNullOrWhiteSpace(name, nameof(name));
-            Helpers.ValidateNotNull(type, nameof(type));
+            Helpers.ValidateStringNotNullOrWhiteSpace(name, nameof(name));
+            Helpers.ValidateObjectNotNull(type, nameof(type));
             ValidateValueForType(defaultValue, type);
 
             if (backingStore.ContainsKey(name))
@@ -120,7 +117,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
             GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback += propertyChangedCallback;
         }
 
@@ -142,7 +139,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
             GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback -= propertyChangedCallback;
         }
 
@@ -257,7 +254,7 @@ namespace NotifyPropertyChangedBase
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
 #endif
         {
-            Helpers.ValidateNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+            Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         
@@ -272,7 +269,7 @@ namespace NotifyPropertyChangedBase
             }
             else
             {
-                if (!type.IsAssignableFrom(value.GetType()))
+                if (!type.GetIsAssignableFrom(value.GetType()))
                 {
                     throw new ArgumentException($"The specified value cannot be assigned to a property of type ({type})");
                 }
@@ -281,7 +278,7 @@ namespace NotifyPropertyChangedBase
 
         private PropertyData GetPropertyData(string propertyName, string propertyNameParameterName)
         {
-            Helpers.ValidateNotNullOrWhiteSpace(propertyName, propertyNameParameterName);
+            Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, propertyNameParameterName);
 
             if (!backingStore.ContainsKey(propertyName))
             {

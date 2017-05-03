@@ -31,7 +31,16 @@
   <Library Name="NotifyPropertyChangedBase.Uap">
     <Type Name="NotifyPropertyChangedBase.NotifyPropertyChangedBase">
       <Method Name="RegisterProperty">
-        <TypeParameter Name="type" Browse="Required Public" />
+        <TypeParameter Name="type" Browse="Required Public"/>
+      </Method>
+    </Type>
+    <Type Name="NotifyPropertyChangedBase.Helpers">
+      <Method Name="GetIsValueType">
+        <TypeParameter Name="type" Browse="Required Public"/>
+      </Method>
+      <Method Name="GetIsAssignableFrom">
+        <TypeParameter Name="type" Browse="Required Public"/>
+        <TypeParameter Name="secondType" Browse="Required Public"/>
       </Method>
     </Type>
   </Library>

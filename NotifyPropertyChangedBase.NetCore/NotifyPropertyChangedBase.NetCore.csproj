@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
+    <Version>1.0.0</Version>
+    <Description>An easy to use base class that helps you implement the INotifyPropertyChanged interface.</Description>
+    <Copyright>© 2017 Marian Dolinský</Copyright>
+    <Product>NotifyPropertyChangedBase</Product>
+    <Company>Marian Dolinský</Company>
+    <Authors>Marian Dolinský</Authors>
+    <PackageId>NotifyPropertyChangedBase</PackageId>
+  </PropertyGroup>
+
+  <Import Project="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems" Label="Shared" />
+
+</Project>
