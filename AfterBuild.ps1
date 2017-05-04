@@ -5,6 +5,12 @@ $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
 {
+	# Skip the Shared project
+	if ($projectFolder -eq "NotifyPropertyChangedBase")
+	{
+		continue;
+	}
+
 	$releaseFolder = Join-Path $projectFolder.FullName "\bin\Release"
 
 	if (Test-Path "$releaseFolder\netcoreapp1.0")
