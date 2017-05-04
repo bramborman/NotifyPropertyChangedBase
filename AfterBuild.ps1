@@ -7,10 +7,19 @@ foreach ($projectFolder in $projectFolders)
 {
 	$releaseFolder = Join-Path $projectFolder.FullName "\bin\Release"
 
+	if (Test-Path "$releaseFolder\netcoreapp1.0")
+	{
+		$releaseFolder = Join-Path $releaseFolder "\netcoreapp1.0"
+	}
+	elseif (Test-Path "$releaseFolder\netstandard1.0")
+	{
+		$releaseFolder = Join-Path $releaseFolder "\netstandard1.0"
+	}
+
 	if (!(Test-Path $releaseFolder))
 	{
-		continue;
-	}
+		throw "Invalid project release folder. `$releaseFolder: '$releaseFolder'"
+	}		
 
 	$zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
 	7z a $zipFileName "$releaseFolder\*"
