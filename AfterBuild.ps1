@@ -6,7 +6,7 @@ $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 foreach ($projectFolder in $projectFolders)
 {
 	# Skip the Shared project
-	if ($projectFolder -eq "NotifyPropertyChangedBase")
+	if ($projectFolder.Name -eq "NotifyPropertyChangedBase")
 	{
 		continue;
 	}
