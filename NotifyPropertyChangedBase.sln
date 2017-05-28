@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NotifyPropertyChangedBase", "NotifyPropertyChangedBase\NotifyPropertyChangedBase.shproj", "{036F1706-A135-46EA-A881-C2B334E9936D}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		AfterBuild.ps1 = AfterBuild.ps1
 		appveyor.yml = appveyor.yml
+		BeforeBuild.ps1 = BeforeBuild.ps1
 		LICENSE.md = LICENSE.md
 		NotifyPropertyChangedBase.nuspec = NotifyPropertyChangedBase.nuspec
 		README.md = README.md
