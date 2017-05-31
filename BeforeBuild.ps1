@@ -10,7 +10,12 @@ if($LastExitCode -ne 0)
 }
 
 # Patch .NET Core and .NET Standard
-Install-Module -Name powershell-yaml -Confirm
+Install-Module -Name powershell-yaml -Force
+
+if($LastExitCode -ne 0)
+{
+	$host.SetShouldExit($LastExitCode)
+}
 
 $yaml           = Get-Content .\appveyor.yml -Raw
 $appveyorConfig = ConvertFrom-Yaml $yaml
