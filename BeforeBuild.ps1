@@ -10,7 +10,7 @@ if($LastExitCode -ne 0)
 }
 
 # Patch .NET Core and .NET Standard
-Install-Module -Name powershell-yaml
+Install-Module -Name powershell-yaml -Confirm
 
 $yaml           = Get-Content .\appveyor.yml -Raw
 $appveyorConfig = ConvertFrom-Yaml $yaml
@@ -19,8 +19,16 @@ $csprojs        = "NotifyPropertyChangedBase.NetCore", "NotifyPropertyChangedBas
 
 foreach ($csproj in $csprojs)
 {
-    $xml                    = [xml](Get-Content ".\$csproj\$csproj.csproj")
-    $propertyGroup          = $xml.Project.PropertyGroup
-    $propertyGroup.Version  = $buildVersion
+    $xmlPath                        = "$PSScriptRoot\$csproj\$csproj.csproj"
+    $xml                            = [xml](Get-Content $xmlPath)
+    $propertyGroup                  = $xml.Project.PropertyGroup
+    $propertyGroup.Version          = $buildVersion
+    $propertyGroup.AssemblyVersion  = $buildVersion
+    $propertyGroup.FileVersion      = $buildVersion
     $xml.Save($xmlPath)
+}
+
+if($LastExitCode -ne 0)
+{
+	$host.SetShouldExit($LastExitCode)
 }
