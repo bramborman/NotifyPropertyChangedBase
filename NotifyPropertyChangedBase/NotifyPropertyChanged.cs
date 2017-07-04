@@ -37,8 +37,8 @@ namespace NotifyPropertyChangedBase
         /// </summary>
         protected NotifyPropertyChanged()
         {
-            IsPropertyChangedCallbackInvokingEnabled    = true;
-            IsPropertyChangedEventInvokingEnabled       = true;
+            IsPropertyChangedCallbackInvokingEnabled = true;
+            IsPropertyChangedEventInvokingEnabled = true;
         }
 
         /// <summary>
@@ -279,13 +279,15 @@ namespace NotifyPropertyChangedBase
         private PropertyData GetPropertyData(string propertyName, string propertyNameParameterName)
         {
             Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, propertyNameParameterName);
-
-            if (!backingStore.ContainsKey(propertyName))
+            
+            try
+            {
+                return backingStore[propertyName];
+            }
+            catch (KeyNotFoundException)
             {
                 throw new ArgumentException($"There is no registered property called '{propertyName}'.", propertyNameParameterName);
             }
-
-            return backingStore[propertyName];
         }
 
         private class PropertyData
