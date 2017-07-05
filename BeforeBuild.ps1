@@ -27,8 +27,7 @@ $projectFolders = Get-ChildItem -Include "*.NetCore","*.NetStandard" -Directory 
 
 foreach ($projectFolder in $projectFolders)
 {
-	# $xmlPath = Join-Path $projectFolder.FullName "$($projectFolder.Name).csproj"
-	$xmlPath = Join-Path $projectFolder.FullName $($projectFolder.Name).csproj
+	$xmlPath = Join-Path $projectFolder.FullName "$($projectFolder.Name).csproj"
 
 	if ((!(Test-Path $xmlPath)) -or (!($xmlPath.EndsWith(".csproj"))))
 	{
