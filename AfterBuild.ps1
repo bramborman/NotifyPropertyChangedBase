@@ -28,7 +28,7 @@ foreach ($projectFolder in $projectFolders)
 	if (!(Test-Path $releaseFolder))
 	{
 		throw "Invalid project release folder. `$releaseFolder: '$releaseFolder'"
-	}		
+	}
 
 	$zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
 	7z a $zipFileName "$releaseFolder\*"
