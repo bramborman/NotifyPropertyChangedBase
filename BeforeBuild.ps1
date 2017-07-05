@@ -20,16 +20,18 @@ if($LastExitCode -ne 0)
 $yaml           = Get-Content .\appveyor.yml -Raw
 $appveyorConfig = ConvertFrom-Yaml $yaml
 $buildVersion   = $appveyorConfig.assembly_info.assembly_version.Replace("{build}", $env:APPVEYOR_BUILD_NUMBER)
-$csprojs        = "NotifyPropertyChangedBase.NetCore", "NotifyPropertyChangedBase.NetStandard"
+$projectFolders = Get-ChildItem -Include "*.NetCore","*.NetStandard" -Directory -Recurse
 
-foreach ($csproj in $csprojs)
+foreach ($projectFolder in $projectFolders)
 {
-    $xmlPath                        = "$PSScriptRoot\$csproj\$csproj.csproj"
+	$xmlPath                        = "$projectFolder.FullName\$projectFolder.Name.csproj"
     $xml                            = [xml](Get-Content $xmlPath)
     $propertyGroup                  = $xml.Project.PropertyGroup
+
     $propertyGroup.Version          = $buildVersion
     $propertyGroup.AssemblyVersion  = $buildVersion
     $propertyGroup.FileVersion      = $buildVersion
+
     $xml.Save($xmlPath)
 }
 
