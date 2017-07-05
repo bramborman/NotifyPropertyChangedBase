@@ -29,9 +29,8 @@ foreach ($projectFolder in $projectFolders)
 {
 	# $xmlPath = Join-Path $projectFolder.FullName "$($projectFolder.Name).csproj"
 	$xmlPath = Join-Path $projectFolder.FullName $($projectFolder.Name).csproj
-	Write-Host $xmlPath -ForegroundColor Green
-	Write-Host (Test-Path $xmlPath) -ForegroundColor Green
-	if (!(Test-Path $xmlPath))
+
+	if ((!(Test-Path $xmlPath)) -or (!($xmlPath.EndsWith(".csproj"))))
 	{
 		throw "Invalid csproj file path. `$xmlPath: '$xmlPath'"
 	}
