@@ -29,14 +29,15 @@ foreach ($projectFolder in $projectFolders)
 {
 	# $xmlPath = Join-Path $projectFolder.FullName "$($projectFolder.Name).csproj"
 	$xmlPath = Join-Path $projectFolder.FullName $($projectFolder.Name).csproj
-	
+	Write-Host $xmlPath -ForegroundColor Green
+	Write-Host (Test-Path $xmlPath) -ForegroundColor Green
 	if (!(Test-Path $xmlPath))
 	{
 		throw "Invalid csproj file path. `$xmlPath: '$xmlPath'"
 	}
 
-    $xml                            = [xml](Get-Content $xmlPath)
-    $propertyGroup                  = $xml.Project.PropertyGroup
+    $xml = [xml](Get-Content $xmlPath)
+    $propertyGroup = $xml.Project.PropertyGroup
 
     $propertyGroup.Version          = $buildVersion
     $propertyGroup.AssemblyVersion  = $buildVersion
