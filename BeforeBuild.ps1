@@ -1,3 +1,6 @@
+Write-Host "`nBeforeBuild script executed"
+Write-Host   "==========================="
+
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-BuildVersion.ps1"
 .\Set-BuildVersion.ps1
 
@@ -24,7 +27,7 @@ $projectFolders = Get-ChildItem -Include "*.NetCore","*.NetStandard" -Directory 
 
 foreach ($projectFolder in $projectFolders)
 {
-	$xmlPath                        = "$projectFolder.FullName\$projectFolder.Name.csproj"
+	$xmlPath                        = Join-Path $projectFolder.FullName $($projectFolder.Name).csproj
     $xml                            = [xml](Get-Content $xmlPath)
     $propertyGroup                  = $xml.Project.PropertyGroup
 

@@ -299,8 +299,9 @@ namespace NotifyPropertyChangedBase
 
             internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
-                Value                   = defaultValue;
-                Type                    = type;
+                Value = defaultValue;
+                Type = type;
+
                 PropertyChangedCallback += propertyChangedCallback;
             }
 
@@ -343,7 +344,7 @@ namespace NotifyPropertyChangedBase
         /// <param name="newValue">Current value of the changed property.</param>
         public PropertyChangedCallbackArgs(object oldValue, object newValue)
         {
-            Handled  = false;
+            Handled = false;
             OldValue = oldValue;
             NewValue = newValue;
         }

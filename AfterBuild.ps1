@@ -1,12 +1,15 @@
-﻿Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
+﻿Write-Host "`nAfterBuild script executed"
+Write-Host   "=========================="
+
+Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
 .\Set-PureBuildVersion.ps1
 
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
 {
-	# Skip the Shared project
-	if ($projectFolder.Name -eq "NotifyPropertyChangedBase")
+	# Skip the Shared projects
+	if (($projectFolder.Name -eq "NotifyPropertyChangedBase") -or ($projectFolder.Name -eq "NotifyPropertyChangedBase.Tests"))
 	{
 		continue;
 	}
