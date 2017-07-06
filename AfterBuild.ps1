@@ -42,4 +42,4 @@ Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildSc
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Deployment-Skipping.ps1"
 .\Deployment-Skipping.ps1
 
-dotnet vstest NotifyPropertyChangedBase.Tests.NetCore.dll /logger:Appveyor
+dotnet vstest NotifyPropertyChangedBase.Tests.NetCore.dll /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
