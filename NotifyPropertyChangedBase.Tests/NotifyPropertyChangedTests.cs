@@ -37,8 +37,6 @@ namespace NotifyPropertyChangedBase.Tests
             w.RegisterProperty("TestBase2", typeof(TestBase), new Test());
             w.RegisterProperty("Test", typeof(Test), null);
             w.RegisterProperty("Test2", typeof(Test), new Test());
-
-            Assert.Fail();
         }
 
         private interface ITest
