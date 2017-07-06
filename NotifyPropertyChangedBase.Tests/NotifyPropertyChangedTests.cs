@@ -31,9 +31,14 @@ namespace NotifyPropertyChangedBase.Tests
 
             Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(PROP_1, typeof(int), 0));
 
-            w.RegisterProperty("ITest", typeof(ITest), new Test());
-            w.RegisterProperty("TestBase", typeof(TestBase), new Test());
-            w.RegisterProperty("Test", typeof(Test), new Test());
+            w.RegisterProperty("ITest", typeof(ITest), null);
+            w.RegisterProperty("ITest2", typeof(ITest), new Test());
+            w.RegisterProperty("TestBase", typeof(TestBase), null);
+            w.RegisterProperty("TestBase2", typeof(TestBase), new Test());
+            w.RegisterProperty("Test", typeof(Test), null);
+            w.RegisterProperty("Test2", typeof(Test), new Test());
+
+            Assert.Fail();
         }
 
         private interface ITest

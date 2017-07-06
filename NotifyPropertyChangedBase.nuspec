@@ -31,8 +31,8 @@
   <files>
     <file src="NotifyPropertyChangedBase.Net40\bin\Release\**\*" target="lib\net40"/>
     <file src="NotifyPropertyChangedBase.Net45\bin\Release\**\*" target="lib\net45"/>
-    <file src="NotifyPropertyChangedBase.NetCore\bin\Release\**\*" target="lib\netcoreapp1.0"/>
-    <file src="NotifyPropertyChangedBase.NetStandard\bin\Release\**\*" target="lib\netstandard1.0"/>
+    <file src="NotifyPropertyChangedBase.NetCore\bin\Release\netcoreapp1.0\**\*" target="lib\netcoreapp1.0"/>
+    <file src="NotifyPropertyChangedBase.NetStandard\bin\Release\netstandard1.0\**\*" target="lib\netstandard1.0"/>
     <file src="NotifyPropertyChangedBase.Uap\bin\Release\**\*" target="lib\uap10.0"/>
   </files>
 </package>
