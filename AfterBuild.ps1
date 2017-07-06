@@ -41,3 +41,5 @@ Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildSc
 
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Deployment-Skipping.ps1"
 .\Deployment-Skipping.ps1
+
+& "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\MSTest" /testcontainer:NotifyPropertyChangedBase.Tests.NetCore/NotifyPropertyChangedBase.Tests.NetCore.dll /nologo
