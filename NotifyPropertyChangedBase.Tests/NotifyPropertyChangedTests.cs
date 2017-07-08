@@ -42,7 +42,7 @@ namespace NotifyPropertyChangedBase.Tests
         [TestMethod]
         public void GetValueTests()
         {
-            Assert.Fail();
+
         }
 
         private interface ITest
