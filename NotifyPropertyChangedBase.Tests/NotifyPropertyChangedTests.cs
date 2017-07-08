@@ -39,6 +39,12 @@ namespace NotifyPropertyChangedBase.Tests
             w.RegisterProperty("Test2", typeof(Test), new Test());
         }
 
+        [TestMethod]
+        public void GetValueTests()
+        {
+            Assert.Fail();
+        }
+
         private interface ITest
         {
             int Property { get; set; }
