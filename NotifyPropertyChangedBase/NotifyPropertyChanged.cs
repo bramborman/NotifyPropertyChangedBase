@@ -59,7 +59,6 @@ namespace NotifyPropertyChangedBase
         ///     </para>
         /// </exception>
         /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue)
         {
             RegisterProperty(name, type, defaultValue, null);
@@ -84,7 +83,6 @@ namespace NotifyPropertyChangedBase
         ///     </para>
         /// </exception>
         /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateStringNotNullOrWhiteSpace(name, nameof(name));

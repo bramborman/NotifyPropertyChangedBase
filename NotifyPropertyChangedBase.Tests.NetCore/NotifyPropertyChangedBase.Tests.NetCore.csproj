@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NotifyPropertyChangedBase.NetCore\NotifyPropertyChangedBase.NetCore.csproj" />
+    <ProjectReference Include="..\NotifyPropertyChangedBase.NetStandard\NotifyPropertyChangedBase.NetStandard.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,6 +14,14 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.0\NotifyPropertyChangedBase.NetStandard.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.0\NotifyPropertyChangedBase.NetStandard.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.projitems" Label="Shared" />
 
 </Project>
