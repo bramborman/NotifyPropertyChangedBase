@@ -33,9 +33,11 @@ foreach ($projectFolder in $projectFolders)
 	{
 		throw "Invalid csproj file path. `$xmlPath: '$xmlPath'"
 	}
-
+	
     $xml = [xml](Get-Content $xmlPath)
-    $propertyGroup = $xml.Project.PropertyGroup
+
+    $propertyGroup = $xml | Select-Xml -XPath "/Project/PropertyGroup[Version='1.0.0']"
+    $propertyGroup = $propertyGroup.Node
 
     $propertyGroup.Version          = $buildVersion
     $propertyGroup.AssemblyVersion  = $buildVersion
