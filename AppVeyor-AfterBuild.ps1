@@ -53,3 +53,5 @@ $output = "OpenCoverResults.xml"
 choco install opencover.portable codecov
 OpenCover.Console.exe -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
 codecov -f $output
+
+Write-Host (Get-Content $output)

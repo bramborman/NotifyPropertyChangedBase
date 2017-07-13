@@ -9,7 +9,7 @@
     <Import_RootNamespace>NotifyPropertyChangedBase.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)NotifyPropertyChangedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrapper.cs" />
   </ItemGroup>
 </Project>
