@@ -22,11 +22,11 @@ assembly_info:
   assembly_file_version: 1.2.2.{build}
   assembly_informational_version: 1.2.2.{build}
 before_build:
-- ps: '& .\BeforeBuild.ps1'
+- ps: '& .\AppVeyor-BeforeBuild.ps1'
 build:
   verbosity: minimal
 after_build:
-- ps: '& .\AfterBuild.ps1'
+- ps: '& .\AppVeyor-AfterBuild.ps1'
 deploy:
 - provider: Environment
   name: MyGet
