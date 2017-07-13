@@ -4,7 +4,7 @@ using System;
 namespace NotifyPropertyChangedBase.Tests
 {
     [TestClass]
-    public sealed class NotifyPropertyChangedTests
+    public sealed class Tests
     {
         [TestMethod]
         public void RegisterPropertyTests()

@@ -1,5 +1,5 @@
-Write-Host "`nBeforeBuild script executed"
-Write-Host   "==========================="
+Write-Host "`nAppVeyor-BeforeBuild script executed"
+Write-Host   "===================================="
 
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-BuildVersion.ps1"
 .\Set-BuildVersion.ps1
