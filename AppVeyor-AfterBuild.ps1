@@ -66,3 +66,12 @@ if ($failed -ne 0)
 {
     throw "$failed of unit tests failed"
 }
+
+choco install opencover.portable
+$target = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"
+$targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Release\NotifyPropertyChangedBase.Tests.Net45.dll"
+$filter = "+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"
+$output = "OpenCoverResults.xml"
+
+OpenCover.Console.exe -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
+codecov -f $output

@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - dev
+  - codecov-preparations
 skip_tags: true
 skip_commits:
   files:
