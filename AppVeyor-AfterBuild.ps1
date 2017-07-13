@@ -67,7 +67,7 @@ if ($failed -ne 0)
     throw "$failed of unit tests failed"
 }
 
-$target = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"
+$target = "`"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe`""
 $targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Release\NotifyPropertyChangedBase.Tests.Net45.dll"
 $filter = "`"+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*`""
 $output = "OpenCoverResults.xml"
