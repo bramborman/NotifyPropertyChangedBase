@@ -43,7 +43,7 @@ Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildSc
 .\Deployment-Skipping.ps1
 
 dotnet vstest NotifyPropertyChangedBase.Tests.NetCore\bin\Release\netcoreapp1.0\NotifyPropertyChangedBase.Tests.NetCore.dll /logger:trx
-(New-Object "System.Net.WebClient").UploadFile("https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID", (Resolve-Path "NotifyPropertyChangedBase.Tests.NetCore\bin\Release\netcoreapp1.0\TestResults\*.trx"))
+(New-Object "System.Net.WebClient").UploadFile("https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID", (Resolve-Path "TestResults\*.trx"))
 
 $target = """C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"""
 $targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Release\NotifyPropertyChangedBase.Tests.Net45.dll"""
