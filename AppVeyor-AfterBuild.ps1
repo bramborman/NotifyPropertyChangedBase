@@ -1,5 +1,5 @@
-﻿Write-Host "`nAfterBuild script executed"
-Write-Host   "=========================="
+﻿Write-Host "`nAppVeyor-AfterBuild script executed"
+Write-Host   "==================================="
 
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
 .\Set-PureBuildVersion.ps1
@@ -67,11 +67,13 @@ if ($failed -ne 0)
     throw "$failed of unit tests failed"
 }
 
-choco install opencover.portable
 $target = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"
 $targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Release\NotifyPropertyChangedBase.Tests.Net45.dll"
 $filter = "+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"
 $output = "OpenCoverResults.xml"
 
+choco install opencover.portable
 OpenCover.Console.exe -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
+
+choco install codecov
 codecov -f $output
