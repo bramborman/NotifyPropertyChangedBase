@@ -10,6 +10,7 @@ NotifyPropertyChangedBase provides you an easy to use base class `NotifyProperty
 ### Pre-release
 [![MyGet](https://img.shields.io/myget/bramborman/vpre/NotifyPropertyChangedBase.svg)][MyGet]
 [![Build status](https://ci.appveyor.com/api/projects/status/jc9gcr4gldjr8nq6/branch/dev?svg=true)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/dev)
+[![codecov](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev/graph/badge.svg)](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev)
 
 If you want to get updates more frequently and you don't mind about the possibility of experiencing some bugs with this library sometimes, you can download the pre-release version of NotifyPropertyChangedBase from MyGet.org right [**here**][MyGet].
 
