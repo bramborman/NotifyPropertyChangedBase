@@ -218,18 +218,19 @@ namespace NotifyPropertyChangedBase
         {
             SetValue(value, propertyName, false);
         }
-        
+
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             PropertyData propertyData = GetPropertyData(propertyName, nameof(propertyName));
             ValidateValueForType(value, propertyData.Type);
             
-            // Calling Equals calls the overriden method even when the current type is object
-            // Second check - calling .Equals on null will throw an exception ;)
-            if (forceSetValue || (propertyData.Value == null && value != null) || !propertyData.Value.Equals(value))
+            // Calling Equals calls the overriden method even when the value is boxed
+            bool? valuesEqual = propertyData.Value?.Equals(value);
+
+            if (forceSetValue || (valuesEqual == null && !ReferenceEquals(value, null)) || valuesEqual == false)
             {
-                object oldValue     = propertyData.Value;
-                propertyData.Value  = value;
+                object oldValue = propertyData.Value;
+                propertyData.Value = value;
 
                 if (IsPropertyChangedCallbackInvokingEnabled)
                 {
