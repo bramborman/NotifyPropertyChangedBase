@@ -164,8 +164,9 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets new value to a registered property even if it is equal and invokes the <see cref="PropertyChangedCallbackHandler"/> for the property if specified before
-        /// and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c> and also invokes the <see cref="PropertyChanged"/> event
+        /// Sets new value to a registered property even if it is equal to its current value and invokes the <see cref="PropertyChangedCallbackHandler"/>
+        /// for the property if specified before and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c>
+        /// and also invokes the <see cref="PropertyChanged"/> event
         /// if value of <see cref="IsPropertyChangedEventInvokingEnabled"/> is <c>true</c>.
         /// </summary>
         /// <param name="value">New value for the property.</param>
@@ -191,8 +192,9 @@ namespace NotifyPropertyChangedBase
         }
 
         /// <summary>
-        /// Sets a new value to a registered property if it's not equal and invokes the <see cref="PropertyChangedCallbackHandler"/> for the property if specified before
-        /// and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c> and also invokes the <see cref="PropertyChanged"/> event
+        /// Sets a new value to a registered property if it's not equal to its current value and invokes the <see cref="PropertyChangedCallbackHandler"/>
+        /// for the property if specified before and if the value of <see cref="IsPropertyChangedCallbackInvokingEnabled"/> is <c>true</c>
+        /// and also invokes the <see cref="PropertyChanged"/> event
         /// if value of <see cref="IsPropertyChangedEventInvokingEnabled"/> is <c>true</c>.
         /// </summary>
         /// <param name="value">New value for the property.</param>
