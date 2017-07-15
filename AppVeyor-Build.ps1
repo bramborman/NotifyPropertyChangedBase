@@ -1,14 +1,11 @@
-﻿Write-Host "`nAppVeyor-Build script executed"
-Write-Host   "=============================="
-
-Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-BuildVersion.ps1"
+﻿Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-BuildVersion.ps1"
 .\Set-BuildVersion.ps1
 
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
 .\Set-PureBuildVersion.ps1
 
-# Versions patching
-
+Write-Host "`nVersions patching"
+Write-Host   "================="
 Install-Module -Name powershell-yaml -Force
 
 if($LastExitCode -ne 0)
@@ -45,13 +42,16 @@ foreach ($projectFile in $projectFiles)
     }
 }
 
-# Build
+Write-Host "`nBuild"
+Write-Host   "====="
+dotnet restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
 dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
 
 Push-AppveyorArtifact *.nupkg
 
-# Artifacts
+Write-Host "`nArtifacts"
+Write-Host   "========="
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
@@ -69,15 +69,16 @@ foreach ($projectFolder in $projectFolders)
 	Push-AppveyorArtifact $zipFileName
 }
 
-# Deployment skipping
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Deployment-Skipping.ps1"
 .\Deployment-Skipping.ps1
 
-# NETCore tests
+Write-Host "`n.NET Core tests"
+Write-Host   "==============="
 dotnet vstest NotifyPropertyChangedBase.Tests\bin\Release\netcoreapp1.0\NotifyPropertyChangedBase.Tests.NetCore.dll /logger:trx
 (New-Object "System.Net.WebClient").UploadFile("https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID", (Resolve-Path "TestResults\*.trx"))
 
-# Codecov
+Write-Host "`nCodecov"
+Write-Host   "======="
 $target = """C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"""
 $targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Release\NotifyPropertyChangedBase.Tests.Net45.dll"""
 $filter = """+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"""
