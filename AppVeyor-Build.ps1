@@ -15,7 +15,7 @@ if($LastExitCode -ne 0)
 
 $yaml           = Get-Content .\appveyor.yml -Raw
 $appveyorConfig = ConvertFrom-Yaml $yaml
-$buildVersion   = $appveyorConfig.version.Replace("{branch}", $null).Replace("{build}", $env:APPVEYOR_BUILD_NUMBER)
+$buildVersion   = $appveyorConfig.version.Replace('-', '.').Replace("{branch}", $null).Replace("{build}", $env:APPVEYOR_BUILD_NUMBER)
 $projectFiles   = Get-ChildItem -Include "*.csproj" -Recurse
 
 foreach ($projectFile in $projectFiles)
@@ -46,12 +46,15 @@ Write-Host "`nBuild"
 Write-Host   "====="
 dotnet restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
-dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
 
-Push-AppveyorArtifact *.nupkg
+Write-Host "`nTests Build"
+Write-Host   "==========="
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
+
+Push-AppveyorArtifact *.nupkg
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
