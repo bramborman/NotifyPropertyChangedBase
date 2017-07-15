@@ -48,18 +48,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NotifyPropertyChangedBase.Net45\NotifyPropertyChangedBase.Net45.csproj">
-      <Project>{ac23ef0b-d5bd-401e-a074-4072dca935ac}</Project>
-      <Name>NotifyPropertyChangedBase.Net45</Name>
+    <ProjectReference Include="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj">
+      <Project>{6781f993-6d8c-4107-994f-e942bb13fcfb}</Project>
+      <Name>NotifyPropertyChangedBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.projitems" Label="Shared" />
