@@ -12,38 +12,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 		LICENSE.md = LICENSE.md
 		README.md = README.md
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Tests.Net45", "NotifyPropertyChangedBase.Tests.Net45\NotifyPropertyChangedBase.Tests.Net45.csproj", "{7422B848-AB65-4A37-BDB6-FEF98952A0D4}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NotifyPropertyChangedBase.Tests", "NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.shproj", "{A5BFF919-D838-4B1B-ACD8-9F234304DB94}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase.Tests.NetCore", "NotifyPropertyChangedBase.Tests.NetCore\NotifyPropertyChangedBase.Tests.NetCore.csproj", "{A2BE674A-D893-41B3-AC92-531DAF84A5E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase", "NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj", "{6781F993-6D8C-4107-994F-E942BB13FCFB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase.Tests", "NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj", "{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.projitems*{7422b848-ab65-4a37-bdb6-fef98952a0d4}*SharedItemsImports = 4
-		NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.projitems*{a5bff919-d838-4b1b-acd8-9f234304db94}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7422B848-AB65-4A37-BDB6-FEF98952A0D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7422B848-AB65-4A37-BDB6-FEF98952A0D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7422B848-AB65-4A37-BDB6-FEF98952A0D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7422B848-AB65-4A37-BDB6-FEF98952A0D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2BE674A-D893-41B3-AC92-531DAF84A5E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2BE674A-D893-41B3-AC92-531DAF84A5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2BE674A-D893-41B3-AC92-531DAF84A5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2BE674A-D893-41B3-AC92-531DAF84A5E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6781F993-6D8C-4107-994F-E942BB13FCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6781F993-6D8C-4107-994F-E942BB13FCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6781F993-6D8C-4107-994F-E942BB13FCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6781F993-6D8C-4107-994F-E942BB13FCFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

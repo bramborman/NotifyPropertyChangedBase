@@ -24,6 +24,9 @@
   <ItemGroup>
     <None Remove="**\*.orig" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
     <AssemblyName>NotifyPropertyChangedBase.Net45</AssemblyName>
     <AssemblyTitle>NotifyPropertyChangedBase.Net45</AssemblyTitle>
