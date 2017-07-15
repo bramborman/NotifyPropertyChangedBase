@@ -31,7 +31,11 @@ foreach ($projectFile in $projectFiles)
     $propertyGroup.Version          = $buildVersion
     $propertyGroup.FileVersion      = $buildVersion
 	$propertyGroup.AssemblyVersion  = $buildVersion
-	$propertyGroup.PackageVersion	= $env:APPVEYOR_BUILD_VERSION
+
+	if (!($projectFile.Name.Contains("Tests")))
+	{
+		$propertyGroup.PackageVersion = $env:APPVEYOR_BUILD_VERSION
+	}
 
     $xml.Save($projectFile.FullName)
 
@@ -41,7 +45,10 @@ foreach ($projectFile in $projectFiles)
     }
 }
 
+# Build
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
+
 Push-AppveyorArtifact *.nupkg
 
 # Artifacts
