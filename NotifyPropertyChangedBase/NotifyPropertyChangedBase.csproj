@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;net40;netstandard1.0;</TargetFrameworks>
+    <TargetFrameworks>net45;net40;netstandard1.0;portable-net451+netcore451;</TargetFrameworks>
     <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
@@ -42,5 +42,15 @@
     <AssemblyName>NotifyPropertyChangedBase.NetStandard</AssemblyName>
     <AssemblyTitle>NotifyPropertyChangedBase.NetStandard</AssemblyTitle>
     <DefineConstants>NETSTANDARD1_0</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net451+netcore451'">
+    <AssemblyName>NotifyPropertyChangedBase.Portable</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Portable</AssemblyTitle>
+    <DefineConstants>NET_PORTABLE_44</DefineConstants>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile44</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile44</NugetTargetMoniker>
+    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
   </PropertyGroup>
 </Project>
