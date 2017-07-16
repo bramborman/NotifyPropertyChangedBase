@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45;netcoreapp1.0;</TargetFrameworks>
+    <RootNamespace>NotifyPropertyChangedBase.Tests</RootNamespace>
+    <Title>NotifyPropertyChangedBase.Tests</Title>
+    <Product>NotifyPropertyChangedBase.Tests</Product>
+    <PackageId>NotifyPropertyChangedBase.Tests</PackageId>
+    <Company>Marian Dolinský</Company>
+    <Authors>Marian Dolinský</Authors>
+    <Copyright>© 2017 Marian Dolinský</Copyright>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="**\*.orig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyName>NotifyPropertyChangedBase.Tests.Net45</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Tests.Net45</AssemblyTitle>
+    <DefineConstants>NET_45;HAVE_COM_ATTRIBUTES</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp1.0'">
+    <AssemblyName>NotifyPropertyChangedBase.Tests.NetCore</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Tests.NetCore</AssemblyTitle>
+    <DefineConstants>NETCOREAPP1_0</DefineConstants>
+  </PropertyGroup>
+</Project>

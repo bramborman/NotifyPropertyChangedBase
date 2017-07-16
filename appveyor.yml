@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - dev
+  - a-single-csproj
 skip_tags: true
 skip_commits:
   files:
@@ -13,19 +14,8 @@ skip_commits:
     - LICENSE.md
     - README.md
 image: Visual Studio 2017
-configuration: Release
-assembly_info:
-  patch: true
-  file: SharedAssemblyInfo.cs
-  assembly_version: 1.3.0.{build}
-  assembly_file_version: 1.3.0.{build}
-  assembly_informational_version: 1.3.0.{build}
-before_build:
-- ps: '& .\AppVeyor-BeforeBuild.ps1'
-build:
-  verbosity: minimal
-after_build:
-- ps: '& .\AppVeyor-AfterBuild.ps1'
+build_script:
+- ps: '& .\AppVeyor-Build.ps1'
 deploy:
 - provider: Environment
   name: MyGet
