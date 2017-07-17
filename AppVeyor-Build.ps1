@@ -44,12 +44,8 @@ foreach ($projectFile in $projectFiles)
 
 Write-Host "`nBuild"
 Write-Host   "====="
-dotnet restore
-dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
-
-Write-Host "`nTests Build"
-Write-Host   "==========="
-dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
+nuget restore
+MSBuild /p:Configuration=Release /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
