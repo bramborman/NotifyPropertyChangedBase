@@ -45,7 +45,7 @@ foreach ($projectFile in $projectFiles)
 Write-Host "`nBuild"
 Write-Host   "====="
 nuget restore
-MSBuild /p:Configuration=Release /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+MSBuild /p:Configuration=Release /t:pack /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
