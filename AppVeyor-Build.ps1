@@ -42,16 +42,19 @@ foreach ($projectFile in $projectFiles)
     }
 }
 
-Write-Host "`nBuild"
-Write-Host   "====="
-nuget restore
-MSBuild "NotifyPropertyChangedBase/NotifyPropertyChangedBase.csproj" /p:Configuration=Release /t:pack /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-MSBuild "NotifyPropertyChangedBase.Tests/NotifyPropertyChangedBase.Tests.csproj" /p:Configuration=Release /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+Write-Host "`nLibrary Build"
+Write-Host   "============="
+dotnet restore
+dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
+
+Write-Host "`nTests Build"
+Write-Host   "==========="
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
 
-Push-AppveyorArtifact "NotifyPropertyChangedBase/bin/Release/*.nupkg"
+Push-AppveyorArtifact *.nupkg
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)

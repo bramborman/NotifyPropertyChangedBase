@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;net40;netstandard1.0;portable-net45+win8+wpa81+wp8;</TargetFrameworks>
+    <TargetFrameworks>net45;net40;netstandard1.0;</TargetFrameworks>
     <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
     <PackageId>NotifyPropertyChangedBase</PackageId>
     <Description>NotifyPropertyChangedBase provides you an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface which can help you in many cases, whether are you developing WPF, Console, UWP or any other app.</Description>
-    <Summary>Base class that helps you implement the INotifyPropertyChanged interface.</Summary>
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
     <Copyright>© 2017 Marian Dolinský</Copyright>
@@ -42,15 +41,5 @@
     <AssemblyName>NotifyPropertyChangedBase.NetStandard</AssemblyName>
     <AssemblyTitle>NotifyPropertyChangedBase.NetStandard</AssemblyTitle>
     <DefineConstants>NETSTANDARD1_0</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net45+win8+wpa81+wp8'">
-    <AssemblyName>NotifyPropertyChangedBase.Portable</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase.Portable</AssemblyTitle>
-    <DefineConstants>NET_PORTABLE_259</DefineConstants>
-    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
-    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile259</NugetTargetMoniker>
-    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
   </PropertyGroup>
 </Project>
