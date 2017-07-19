@@ -42,14 +42,14 @@ foreach ($projectFile in $projectFiles)
     }
 }
 
-Write-Host "`nLibrary Build"
-Write-Host   "============="
+Write-Host "`nBuild"
+Write-Host   "====="
 dotnet restore
-dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
+dotnet build -c Release -l "C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
-Write-Host "`nTests Build"
-Write-Host   "==========="
-dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
+Write-Host "`nNuGet pack"
+Write-Host   "=========="
+dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj --no-build -c Release -o $(Get-Location)
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
@@ -87,6 +87,6 @@ $targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests.Net45\bin\Releas
 $filter = """+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"""
 $output = "OpenCoverResults.xml"
 
-choco install opencover.portable codecov
+choco install opencover.portable codecov --no-progress
 OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
 codecov -f $output
