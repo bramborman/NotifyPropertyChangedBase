@@ -42,14 +42,14 @@ foreach ($projectFile in $projectFiles)
     }
 }
 
-Write-Host "`nBuild"
-Write-Host   "====="
+Write-Host "`nLibrary Build"
+Write-Host   "============="
 dotnet restore
-dotnet build -c Release -l "C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location) -l "C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
-Write-Host "`nNuGet pack"
-Write-Host   "=========="
-dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj --no-build -c Release -o $(Get-Location)
+Write-Host "`nTests Build"
+Write-Host   "==========="
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -l "C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
