@@ -46,6 +46,11 @@ Write-Host "`nLibrary Build"
 Write-Host   "============="
 dotnet restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
+dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release --no-incremental /p:DebugType=PdbOnly
+
+Write-Host "`nTests Build"
+Write-Host   "==========="
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
@@ -81,10 +86,9 @@ Write-Host   "======="
 choco install opencover.portable codecov --no-progress
 
 $target = "dotnet.exe"
-$targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 /p:DebugType=PdbOnly"
+$targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 --no-build"
 $filter = """+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"""
 $output = "OpenCoverResults.xml"
 
-dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -f net45 --no-incremental /p:DebugType=PdbOnly
 OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
 codecov -f $output
