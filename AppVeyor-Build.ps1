@@ -82,11 +82,12 @@ dotnet vstest NotifyPropertyChangedBase.Tests\bin\Release\netcoreapp1.0\NotifyPr
 
 Write-Host "`nCodecov"
 Write-Host   "======="
-$target = """C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe"""
-$targetArgs = "/testcontainer:""NotifyPropertyChangedBase.Tests\bin\Release\net45\NotifyPropertyChangedBase.Tests.Net45.dll"""
+choco install opencover.portable codecov --no-progress
+
+$target = "dotnet.exe"
+$targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 /p:DebugType=PdbOnly"
 $filter = """+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"""
 $output = "OpenCoverResults.xml"
 
-choco install opencover.portable codecov --no-progress
 OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
 codecov -f $output
