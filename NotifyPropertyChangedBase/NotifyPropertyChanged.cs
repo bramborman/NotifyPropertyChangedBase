@@ -277,9 +277,9 @@ namespace NotifyPropertyChangedBase
         /// <param name="propertyName">Name of the changed property.</param>
         /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
 #if NET_40
-        protected void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged(string propertyName)
 #else
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
 #endif
         {
             Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, nameof(propertyName));
