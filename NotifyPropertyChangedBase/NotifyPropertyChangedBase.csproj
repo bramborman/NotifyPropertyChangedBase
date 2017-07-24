@@ -5,7 +5,7 @@
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
     <PackageId>NotifyPropertyChangedBase</PackageId>
-    <Description>NotifyPropertyChangedBase provides you an easy to use base class NotifyPropertyChanged that helps you implement the INotifyPropertyChanged interface which can help you in many cases, whether are you developing WPF, Console, UWP or any other app.</Description>
+    <Description>Provides DependencyObject-like implementation of INotifyPropertyChanged.</Description>
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
     <Copyright>© 2017 Marian Dolinský</Copyright>
