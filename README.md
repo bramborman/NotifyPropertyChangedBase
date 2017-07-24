@@ -55,12 +55,12 @@ To be able to use any property, you have to register it using the `RegisterPrope
         }
     }
 
-#### Working with properties
+### Working with properties
 In the first example we've been using the simpliest way of working with properties - `GetValue` and `SetValue` methods that works without/with one parameter and you don't have to specify the name of the property you're working with. That's because these methods, similarly to the `ForceSetValue` method that we'll be talking about later uses [`CallerMemberNameAttribute`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callermembernameattribute) that does it for you. But you can also specify the name of the property you want to work with manually, for instance, `GetValue("Bar")` will return the actual value of the property `Bar`.
 
 `GetValue` and `SetValue` methods does simply what their name implies - get or set the value of a property with the given name but there's another similar method - `ForceSetValue`. The difference between `SetValue` and `ForceSetValue` is that the latter always sets the new value to a property however `SetValue` checks whether the old value and the new one are the same using the `Equals` (you may want to [override it](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) to achieve the desired result on this check) and assigns the new value and tries to invoke the `PropertyChanged` event and `PropertyChangedCallback` only if the two values are not equal.
 
-#### Structure of the `NotifyPropertyChanged` class
+### Structure of the `NotifyPropertyChanged` class
 All the members of this class are `protected` - only derived classes can use them.
     
     protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
