@@ -5,7 +5,7 @@
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
     <PackageId>NotifyPropertyChangedBase</PackageId>
-    <Description>Provides DependencyObject-like implementation of INotifyPropertyChanged.</Description>
+    <Description>Provides a simple yet powerful implementation of INotifyPropertyChanged.</Description>
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
     <Copyright>© 2017 Marian Dolinský</Copyright>
