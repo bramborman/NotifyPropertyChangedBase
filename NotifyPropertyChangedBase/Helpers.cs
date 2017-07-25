@@ -1,5 +1,4 @@
-﻿#region License
-// MIT License
+﻿// MIT License
 //
 // Copyright (c) 2017 Marian Dolinský
 //
@@ -23,10 +22,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-#endregion
 
 using System;
-#if!NET_40
+#if !NET_40
 using System.Reflection;
 #endif
 
