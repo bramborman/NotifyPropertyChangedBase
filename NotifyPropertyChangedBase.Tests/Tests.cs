@@ -39,21 +39,7 @@ namespace NotifyPropertyChangedBase.Tests
         //D = double
 
         private readonly string[] invalidPropertyNames = new string[] { null, "", "   ", "\n\t\v\r" };
-        private readonly object[] invalidInt32Values = new object[]
-        {
-            null,
-            true,
-            'x',
-            (byte)0,
-            (sbyte)0,
-            0U,
-            0L,
-            0UL,
-            0F,
-            0M,
-            0D,
-            new Test()
-        };
+        private readonly object[] invalidInt32Values = new object[] { null, true, 'x', (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
         
         [TestMethod]
         public void RegisterPropertyTests()
@@ -87,7 +73,7 @@ namespace NotifyPropertyChangedBase.Tests
         }
 
         [TestMethod]
-        public void GetSetValueTests()
+        public void GetSetForceSetValueTests()
         {
             Wrapper w = new Wrapper();
 
@@ -113,6 +99,7 @@ namespace NotifyPropertyChangedBase.Tests
 
                 // Invalid value
                 TestInvalidInt32Values(invalidInt32Value => w.SetValue(invalidInt32Value, PROP_1));
+                TestInvalidInt32Values(invalidInt32Value => w.ForceSetValue(invalidInt32Value, PROP_1));
             }
 
             {
