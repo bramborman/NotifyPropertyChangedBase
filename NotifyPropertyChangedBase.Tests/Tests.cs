@@ -25,6 +25,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace NotifyPropertyChangedBase.Tests
 {
@@ -38,8 +39,8 @@ namespace NotifyPropertyChangedBase.Tests
         //M = decimal
         //D = double
 
-        private readonly string[] invalidPropertyNames = new string[] { null, "", "   ", "\n\t\v\r" };
-        private readonly object[] invalidInt32Values = new object[] { null, true, 'x', (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private readonly string[] invalidPropertyNames = new string[] { null, "", "\n\t   \v\r" };
+        private readonly object[] invalidInt32Values = new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
         
         [TestMethod]
         public void RegisterPropertyTests()
@@ -47,13 +48,13 @@ namespace NotifyPropertyChangedBase.Tests
             Wrapper w = new Wrapper();
 
             // Invalid property name
-            TestInvalidPropertyNames(invalidPropertyName => w.RegisterProperty(invalidPropertyName, typeof(int), 0));
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.RegisterProperty(invalidPropertyName, typeof(int), 0));
 
             // Invalid type argument
             Assert.ThrowsException<ArgumentNullException>(() => w.RegisterProperty("P", null, 0));
 
             // Invalid default value
-            TestInvalidInt32Values(invalidInt32Value => w.RegisterProperty("P", typeof(int), invalidInt32Value));
+            AllThrows<object, ArgumentException>(invalidInt32Values, invalidInt32Value => w.RegisterProperty("P", typeof(int), invalidInt32Value));
             Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty("P", typeof(uint), -1));
 
             // Valid arguments
@@ -64,6 +65,8 @@ namespace NotifyPropertyChangedBase.Tests
             Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(PROP_1, typeof(int), 0));
 
             // Valid default values
+            w.RegisterProperty("Nullable1", typeof(bool?), null);
+            w.RegisterProperty("Nullable2", typeof(bool?), true);
             w.RegisterProperty("ITest", typeof(ITest), null);
             w.RegisterProperty("ITest2", typeof(ITest), new Test());
             w.RegisterProperty("TestBase", typeof(TestBase), null);
@@ -78,7 +81,7 @@ namespace NotifyPropertyChangedBase.Tests
             Wrapper w = new Wrapper();
 
             // Invalid property name
-            TestInvalidPropertyNames(invalidPropertyName => w.GetValue(invalidPropertyName));
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.GetValue(invalidPropertyName));
 
             {
                 const string PROP_1 = "1";
@@ -98,8 +101,8 @@ namespace NotifyPropertyChangedBase.Tests
                 Assert.AreEqual(prop1Value, w.GetValue(PROP_1));
 
                 // Invalid value
-                TestInvalidInt32Values(invalidInt32Value => w.SetValue(invalidInt32Value, PROP_1));
-                TestInvalidInt32Values(invalidInt32Value => w.ForceSetValue(invalidInt32Value, PROP_1));
+                AllThrows<object, ArgumentException>(invalidInt32Values, invalidInt32Value => w.SetValue(invalidInt32Value, PROP_1));
+                AllThrows<object, ArgumentException>(invalidInt32Values, invalidInt32Value => w.ForceSetValue(invalidInt32Value, PROP_1));
             }
 
             {
@@ -121,19 +124,11 @@ namespace NotifyPropertyChangedBase.Tests
             }
         }
 
-        private void TestInvalidPropertyNames(Action<string> action)
+        private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action) where TException : Exception
         {
-            foreach (string invalidPropertyName in invalidPropertyNames)
+            foreach (TObject item in collection)
             {
-                Assert.ThrowsException<ArgumentException>(() => action(invalidPropertyName));
-            }
-        }
-
-        private void TestInvalidInt32Values(Action<object> action)
-        {
-            foreach (object invalidInt32Value in invalidInt32Values)
-            {
-                Assert.ThrowsException<ArgumentException>(() => action(invalidInt32Value));
+                Assert.ThrowsException<TException>(() => action(item));
             }
         }
 
