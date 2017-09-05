@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net45;netcoreapp1.0;</TargetFrameworks>
+    <RootNamespace>NotifyPropertyChangedBase.Tests.Host</RootNamespace>
+    <Title>NotifyPropertyChangedBase.Tests.Host</Title>
+    <Product>NotifyPropertyChangedBase.Tests.Host</Product>
+    <PackageId>NotifyPropertyChangedBase.Tests.Host</PackageId>
+    <Company>Marian Dolinský</Company>
+    <Authors>Marian Dolinský</Authors>
+    <Copyright>© 2017 Marian Dolinský</Copyright>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="**\*.orig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyName>NotifyPropertyChangedBase.Tests.Host.Net45</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Tests.Host.Net45</AssemblyTitle>
+    <DefineConstants>NET_45;HAVE_COM_ATTRIBUTES</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp1.0'">
+    <AssemblyName>NotifyPropertyChangedBase.Tests.Host.NetCore</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Tests.Host.NetCore</AssemblyTitle>
+    <DefineConstants>NETCOREAPP1_0</DefineConstants>
+  </PropertyGroup>
+</Project>

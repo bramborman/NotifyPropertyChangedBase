@@ -137,6 +137,43 @@ namespace NotifyPropertyChangedBase.Tests
             }
         }
 
+        [TestMethod]
+        public void PropertyChangedEventTest()
+        {
+            const string PROP = "Int32";
+
+            bool propertyChangedCalled = false;
+            int value = 0;
+            Wrapper w = new Wrapper();
+
+            w.PropertyChanged += (sender, e) =>
+            {
+                Assert.AreEqual(PROP, e.PropertyName);
+                Assert.AreEqual(w, sender);
+
+                propertyChangedCalled = true;
+            };
+
+            w.RegisterProperty(PROP, typeof(int), value);
+
+            w.SetValue(value, PROP);
+            Assert.IsFalse(propertyChangedCalled);
+
+            w.ForceSetValue(value, PROP);
+            Assert.IsTrue(propertyChangedCalled);
+            propertyChangedCalled = false;
+
+            value++;
+            w.SetValue(value, PROP);
+            Assert.IsTrue(propertyChangedCalled);
+            propertyChangedCalled = false;
+
+            value++;
+            w.ForceSetValue(value, PROP);
+            Assert.IsTrue(propertyChangedCalled);
+            propertyChangedCalled = false;
+        }
+
         private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action) where TException : Exception
         {
             foreach (TObject item in collection)

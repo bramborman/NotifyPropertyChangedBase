@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{121EBC4B-EA90-4A53-8E99-B56DA7C6646F}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase.Tests", "NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj", "{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Tests.Host", "NotifyPropertyChangedBase.Tests.Host\NotifyPropertyChangedBase.Tests.Host.csproj", "{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +34,15 @@ Global
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ACADCF34-1D47-4B34-B71B-BBABF68640D8}
 	EndGlobalSection
 EndGlobal
