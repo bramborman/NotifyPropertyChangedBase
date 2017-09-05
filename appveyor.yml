@@ -13,11 +13,6 @@ skip_commits:
     - LICENSE.md
     - README.md
 image: Visual Studio 2017
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
 build_script:
 - ps: '& .\AppVeyor-Build.ps1'
 deploy:
