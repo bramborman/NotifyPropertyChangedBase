@@ -52,6 +52,7 @@ dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Relea
 Write-Host "`nTests Build"
 Write-Host   "==========="
 dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release
+dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.Host.csproj -c Release
 
 Write-Host "`nArtifacts"
 Write-Host   "========="
