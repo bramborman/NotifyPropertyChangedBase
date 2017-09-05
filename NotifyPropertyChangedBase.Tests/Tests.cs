@@ -44,7 +44,15 @@ namespace NotifyPropertyChangedBase.Tests
         private readonly object[] invalidTestValues = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
 
         [TestMethod]
-        public void RegisterPropertyTests()
+        public void ConstructorTest()
+        {
+            Wrapper w = new Wrapper();
+            Assert.IsTrue(w.IsPropertyChangedCallbackInvokingEnabled);
+            Assert.IsTrue(w.IsPropertyChangedEventInvokingEnabled);
+        }
+
+        [TestMethod]
+        public void RegisterPropertyTest()
         {
             Wrapper w = new Wrapper();
 
@@ -80,7 +88,7 @@ namespace NotifyPropertyChangedBase.Tests
         }
 
         [TestMethod]
-        public void GetSetForceSetValueTests()
+        public void GetSetForceSetValueTest()
         {
             Wrapper w = new Wrapper();
 
