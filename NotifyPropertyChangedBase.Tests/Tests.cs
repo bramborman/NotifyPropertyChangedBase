@@ -33,17 +33,42 @@ namespace NotifyPropertyChangedBase.Tests
     [TestClass]
     public sealed class Tests
     {
+        private sealed class TypeData
+        {
+            public Type Type { get; }
+            public Tuple<object, object> DefaultValues { get; }
+            public Func<object, object> GetNewValue { get; }
+            public object[] InvalidValues { get; }
+
+            public TypeData(Type type, Tuple<object, object> defaultValues, Func<object, object> getNewValue, object[] invalidValues)
+            {
+                Type = type;
+                DefaultValues = defaultValues;
+                GetNewValue = getNewValue;
+                InvalidValues = invalidValues;
+            }
+        }
+
         // U = uint
         // L = long
         // UL = ulong
         // F = float
         // M = decimal
         // D = double
-        private readonly string[] invalidPropertyNames = new string[] { null, "", "\n\t   \v\r" };
-        private readonly object[] invalidInt32Values = new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
-        private readonly object[] invalidNullableInt32Values = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
-        private readonly object[] invalidTestValues = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
-
+        private static readonly string[] invalidPropertyNames = new string[] { null, "", "\n\t   \v\r" };
+        private static readonly object[] invalidInt32Values = new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private static readonly object[] invalidNullableInt32Values = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private static readonly object[] invalidTestValues = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
+        private static readonly List<TypeData> typeDataCollection = new List<TypeData>()
+        {
+            new TypeData(typeof(int), new Tuple<object, object>(0, 0), value => (int)value + 1, new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() }),
+            new TypeData(typeof(int?), new Tuple<object, object>(null, 0), value => value == null ? 0 : ((int?)value).Value + 1,  new object[] { true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() }),
+            new TypeData(typeof(uint), new Tuple<object, object>(0U, 0U), value => (uint)value + 1, new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0, 0L, 0UL, 0F, 0M, 0D, new Test() }),
+            new TypeData(typeof(ITest), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues),
+            new TypeData(typeof(TestBase), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues),
+            new TypeData(typeof(Test), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues)
+        };
+        
         [TestMethod]
         public void ConstructorTest()
         {
@@ -61,31 +86,23 @@ namespace NotifyPropertyChangedBase.Tests
             AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.RegisterProperty(invalidPropertyName, typeof(int), 0));
 
             // Invalid type argument
-            Assert.ThrowsException<ArgumentNullException>(() => w.RegisterProperty("P", null, 0));
+            Assert.ThrowsException<ArgumentNullException>(() => w.RegisterProperty("InvalidTypeArgument", null, 0));
 
-            // Invalid default value
-            AllThrows<object, ArgumentException>(invalidInt32Values, invalidInt32Value => w.RegisterProperty("P", typeof(int), invalidInt32Value));
-            AllThrows<object, ArgumentException>(invalidNullableInt32Values, invalidNullableInt32Value => w.RegisterProperty("P", typeof(int?), invalidNullableInt32Value));
-            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty("P", typeof(uint), -1));
-            AllThrows<object, ArgumentException>(invalidTestValues, invalidTestValue => w.RegisterProperty("P", typeof(ITest), invalidTestValue));
-            AllThrows<object, ArgumentException>(invalidTestValues, invalidTestValue => w.RegisterProperty("P", typeof(TestBase), invalidTestValue));
-            AllThrows<object, ArgumentException>(invalidTestValues, invalidTestValue => w.RegisterProperty("P", typeof(Test), invalidTestValue));
+            foreach (TypeData typeData in typeDataCollection)
+            {
+                // Valid arguments
+                w.RegisterProperty(typeData.Type.Name + '1', typeData.Type, typeData.DefaultValues.Item1);
+                w.RegisterProperty(typeData.Type.Name + '2', typeData.Type, typeData.DefaultValues.Item2);
 
-            const string PROP_INT32 = "Int32";
-
-            // Valid default values
-            w.RegisterProperty(PROP_INT32, typeof(int), 0);
-            w.RegisterProperty("Nullable1", typeof(int?), null);
-            w.RegisterProperty("Nullable2", typeof(int?), 0);
-            w.RegisterProperty("ITest", typeof(ITest), null);
-            w.RegisterProperty("ITest2", typeof(ITest), new Test());
-            w.RegisterProperty("TestBase", typeof(TestBase), null);
-            w.RegisterProperty("TestBase2", typeof(TestBase), new Test());
-            w.RegisterProperty("Test", typeof(Test), null);
-            w.RegisterProperty("Test2", typeof(Test), new Test());
+                // Invalid default values
+                AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue =>
+                {
+                    w.RegisterProperty(typeData.Type.Name + "_InvalidDefaultValue", typeData.Type, invalidValue);
+                });
+            }
 
             // Registering another property with the same name
-            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(PROP_INT32, typeof(int), 0));
+            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(typeDataCollection[0].Type.Name + '1', typeof(int), 0));
         }
 
         [TestMethod]
