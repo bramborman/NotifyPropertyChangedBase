@@ -156,22 +156,35 @@ namespace NotifyPropertyChangedBase.Tests
 
             w.RegisterProperty(PROP, typeof(int), value);
 
-            w.SetValue(value, PROP);
-            Assert.IsFalse(propertyChangedCalled);
-
-            w.ForceSetValue(value, PROP);
-            Assert.IsTrue(propertyChangedCalled);
-            propertyChangedCalled = false;
-
+            Test(false, false);
+            Test(true, true);
             value++;
-            w.SetValue(value, PROP);
-            Assert.IsTrue(propertyChangedCalled);
-            propertyChangedCalled = false;
-
+            Test(false, true);
             value++;
-            w.ForceSetValue(value, PROP);
-            Assert.IsTrue(propertyChangedCalled);
-            propertyChangedCalled = false;
+            Test(true, true);
+
+            w.IsPropertyChangedEventInvokingEnabled = false;
+            Test(false, false);
+            Test(true, false);
+            value++;
+            Test(false, false);
+            value++;
+            Test(true, false);
+
+            void Test(bool force, bool shouldCallPropertyChanged)
+            {
+                if (force)
+                {
+                    w.ForceSetValue(value, PROP);
+                }
+                else
+                {
+                    w.SetValue(value, PROP);
+                }
+
+                Assert.AreEqual(shouldCallPropertyChanged, propertyChangedCalled);
+                propertyChangedCalled = false;
+            }
         }
 
         private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action) where TException : Exception
