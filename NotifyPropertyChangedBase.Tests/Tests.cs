@@ -26,6 +26,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace NotifyPropertyChangedBase.Tests
 {
@@ -111,79 +112,65 @@ namespace NotifyPropertyChangedBase.Tests
 
             void Test<TValue>(string propertyName, Type propertyType, Func<TValue, TValue> getNewValue, IEnumerable<object> invalidValues)
             {
-                TValue value = getNewValue(default(TValue));
-                w.RegisterProperty(propertyName, propertyType, value);
-                Assert.AreEqual(value, w.GetValue(propertyName));
+                bool propertyChangedEventInvoked = false;
 
-                value = getNewValue(value);
-                Assert.AreNotEqual(value, w.GetValue(propertyName));
+                PropertyChangedEventHandler propertyChangedEventHandler = (sender, e) =>
+                {
+                    Assert.AreEqual(propertyName, e.PropertyName);
+                    Assert.AreEqual(w, sender);
 
-                w.SetValue(value, propertyName);
-                Assert.AreEqual(value, w.GetValue(propertyName));
+                    propertyChangedEventInvoked = true;
+                };
 
-                w.SetValue(default(TValue), propertyName);
-                Assert.AreEqual(default(TValue), w.GetValue(propertyName));
-
-                value = getNewValue(value);
-                w.ForceSetValue(value, propertyName);
-                Assert.AreEqual(value, w.GetValue(propertyName));
+                w.PropertyChanged += propertyChangedEventHandler;
                 
-                w.ForceSetValue(default(TValue), propertyName);
-                Assert.AreEqual(default(TValue), w.GetValue(propertyName));
+                RunTest(true);
+                propertyName += "_NoPropertyChangedEvent";
+                RunTest(false);
+                w.IsPropertyChangedEventInvokingEnabled = true;
+
+                w.PropertyChanged -= propertyChangedEventHandler;
 
                 // Invalid value
                 AllThrows<object, ArgumentException>(invalidValues, invalidValue => w.SetValue(invalidValue, propertyName));
                 AllThrows<object, ArgumentException>(invalidValues, invalidValue => w.ForceSetValue(invalidValue, propertyName));
-            }
-        }
-
-        [TestMethod]
-        public void PropertyChangedEventTest()
-        {
-            const string PROP = "Int32";
-
-            bool propertyChangedCalled = false;
-            int value = 0;
-            Wrapper w = new Wrapper();
-
-            w.PropertyChanged += (sender, e) =>
-            {
-                Assert.AreEqual(PROP, e.PropertyName);
-                Assert.AreEqual(w, sender);
-
-                propertyChangedCalled = true;
-            };
-
-            w.RegisterProperty(PROP, typeof(int), value);
-
-            Test(false, false);
-            Test(true, true);
-            value++;
-            Test(false, true);
-            value++;
-            Test(true, true);
-
-            w.IsPropertyChangedEventInvokingEnabled = false;
-            Test(false, false);
-            Test(true, false);
-            value++;
-            Test(false, false);
-            value++;
-            Test(true, false);
-
-            void Test(bool force, bool shouldCallPropertyChanged)
-            {
-                if (force)
+                
+                void RunTest(bool isPropertyChangedEventInvokingEnabled)
                 {
-                    w.ForceSetValue(value, PROP);
-                }
-                else
-                {
-                    w.SetValue(value, PROP);
-                }
+                    w.IsPropertyChangedEventInvokingEnabled = isPropertyChangedEventInvokingEnabled;
 
-                Assert.AreEqual(shouldCallPropertyChanged, propertyChangedCalled);
-                propertyChangedCalled = false;
+                    TValue value = getNewValue(default(TValue));
+                    w.RegisterProperty(propertyName, propertyType, value);
+                    Assert.AreEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(false);
+
+                    value = getNewValue(value);
+                    Assert.AreNotEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(false);
+
+                    w.SetValue(value, propertyName);
+                    Assert.AreEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+
+                    w.SetValue(default(TValue), propertyName);
+                    Assert.AreEqual(default(TValue), w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+
+                    value = getNewValue(value);
+                    w.ForceSetValue(value, propertyName);
+                    Assert.AreEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+
+                    w.ForceSetValue(default(TValue), propertyName);
+                    Assert.AreEqual(default(TValue), w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+
+                    void CheckPropertyChangedInvoked(bool expectedValue)
+                    {
+                        Assert.AreEqual(expectedValue, propertyChangedEventInvoked);
+                        propertyChangedEventInvoked = false;
+                    }
+                }
             }
         }
 
