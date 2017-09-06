@@ -91,8 +91,13 @@ namespace NotifyPropertyChangedBase.Tests
             foreach (TypeData typeData in typeDataCollection)
             {
                 // Valid arguments
-                w.RegisterProperty(typeData.Type.Name + '1', typeData.Type, typeData.DefaultValues.Item1);
-                w.RegisterProperty(typeData.Type.Name + '2', typeData.Type, typeData.DefaultValues.Item2);
+                string propertyName1 = typeData.Type.Name + '1';
+                w.RegisterProperty(propertyName1, typeData.Type, typeData.DefaultValues.Item1);
+                Assert.AreEqual(typeData.DefaultValues.Item1, w.GetValue(propertyName1));
+
+                string propertyName2 = typeData.Type.Name + '2';
+                w.RegisterProperty(propertyName2, typeData.Type, typeData.DefaultValues.Item2);
+                Assert.AreEqual(typeData.DefaultValues.Item2, w.GetValue(propertyName2));
 
                 // Invalid default values
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue =>
@@ -101,7 +106,7 @@ namespace NotifyPropertyChangedBase.Tests
                 });
             }
 
-            // Registering another property with the same name
+            // Registering another property with a name of already registered property
             Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(typeDataCollection[0].Type.Name + '1', typeof(int), 0));
         }
 
@@ -112,13 +117,13 @@ namespace NotifyPropertyChangedBase.Tests
 
             // Invalid property name
             AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.GetValue(invalidPropertyName));
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.SetValue(invalidPropertyName));
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.ForceSetValue(invalidPropertyName));
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.SetValue(null, invalidPropertyName));
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.ForceSetValue(null, invalidPropertyName));
 
             // Not registered property
             Assert.ThrowsException<ArgumentException>(() => w.GetValue("1"));
-            Assert.ThrowsException<ArgumentException>(() => w.SetValue("1"));
-            Assert.ThrowsException<ArgumentException>(() => w.ForceSetValue("1"));
+            Assert.ThrowsException<ArgumentException>(() => w.SetValue(null, "1"));
+            Assert.ThrowsException<ArgumentException>(() => w.ForceSetValue(null, "1"));
 
             // Actual Get/Set/ForceSetValue tests
             Test<int>("Int32", typeof(int), value => value + 1, invalidInt32Values);
