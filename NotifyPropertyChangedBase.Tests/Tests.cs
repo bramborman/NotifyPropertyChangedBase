@@ -46,12 +46,12 @@ namespace NotifyPropertyChangedBase.Tests
         private static readonly object[] invalidTestValues = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
         private static readonly List<TypeData> typeDataCollection = new List<TypeData>()
         {
-            new TypeData(typeof(int), new Tuple<object, object>(0, 0), value => (int)value + 1, invalidInt32Values),
-            new TypeData(typeof(int?), new Tuple<object, object>(null, 0), value => value == null ? 0 : ((int?)value).Value + 1,  invalidNullableInt32Values),
-            new TypeData(typeof(uint), new Tuple<object, object>(0U, 0U), value => (uint)value + 1, invalidUInt32Values),
-            new TypeData(typeof(ITest), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues),
-            new TypeData(typeof(TestBase), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues),
-            new TypeData(typeof(Test), new Tuple<object, object>(null, new Test()), value => new Test(), invalidTestValues)
+            new TypeData(typeof(int), new object[] { 0 }, value => (int)value + 1, invalidInt32Values),
+            new TypeData(typeof(int?), new object[] { null, 0 }, value => value == null ? 0 : ((int?)value).Value + 1,  invalidNullableInt32Values),
+            new TypeData(typeof(uint), new object[] { 0U }, value => (uint)value + 1, invalidUInt32Values),
+            new TypeData(typeof(ITest), new object[] { null, new Test() }, value => new Test(), invalidTestValues),
+            new TypeData(typeof(TestBase), new object[] { null, new Test() }, value => new Test(), invalidTestValues),
+            new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), invalidTestValues)
         };
         
         [TestMethod]
@@ -76,13 +76,14 @@ namespace NotifyPropertyChangedBase.Tests
             foreach (TypeData typeData in typeDataCollection)
             {
                 // Valid arguments
-                string propertyName1 = typeData.Type.Name + '1';
-                w.RegisterProperty(propertyName1, typeData.Type, typeData.DefaultValues.Item1);
-                Assert.AreEqual(typeData.DefaultValues.Item1, w.GetValue(propertyName1));
+                for (int i = 0; i < typeData.DefaultValues.Length; i++)
+                {
+                    string propertyName = typeData.Type.Name + i;
+                    object defaultValue = typeData.DefaultValues[i];
 
-                string propertyName2 = typeData.Type.Name + '2';
-                w.RegisterProperty(propertyName2, typeData.Type, typeData.DefaultValues.Item2);
-                Assert.AreEqual(typeData.DefaultValues.Item2, w.GetValue(propertyName2));
+                    w.RegisterProperty(propertyName, typeData.Type, defaultValue);
+                    Assert.AreEqual(defaultValue, w.GetValue(propertyName));
+                }
 
                 // Invalid default values
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue =>
@@ -92,7 +93,7 @@ namespace NotifyPropertyChangedBase.Tests
             }
 
             // Registering another property with a name of already registered property
-            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(typeDataCollection[0].Type.Name + '1', typeof(int), 0));
+            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(typeDataCollection[0].Type.Name + '0', typeof(int), 0));
         }
 
         [TestMethod]
@@ -123,76 +124,74 @@ namespace NotifyPropertyChangedBase.Tests
 
             foreach (TypeData typeData in typeDataCollection)
             {
-                propertyName = typeData.Type.Name;
-                Test(true);
-                propertyName = typeData.Type.Name + "_NoPropertyChangedEvent";
-                Test(false);
+                for (int i = 0; i < typeData.DefaultValues.Length; i++)
+                {
+                    object defaultValue = typeData.DefaultValues[i];
 
+                    propertyName = typeData.Type.Name + i;
+                    Test(true, defaultValue);
+                    propertyName += "_NoPropertyChangedEvent";
+                    Test(false, defaultValue);
+                }
+                
                 // Invalid value
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.SetValue(invalidValue, propertyName));
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.ForceSetValue(invalidValue, propertyName));
                 
-                void Test(bool isPropertyChangedEventInvokingEnabled)
+                void Test(bool isPropertyChangedEventInvokingEnabled, object defaultValue)
                 {
                     w.IsPropertyChangedEventInvokingEnabled = isPropertyChangedEventInvokingEnabled;
-                    RunTest(typeData.DefaultValues.Item1, '1');
-                    RunTest(typeData.DefaultValues.Item2, '2');
 
-                    void RunTest(object defaultValue, char propertyNameSuffix)
+                    object value = defaultValue;
+                    w.RegisterProperty(propertyName, typeData.Type, value);
+
+                    // Default value
+                    Assert.AreEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(false);
+
+                    // No change in value
+                    SetAndTest(false, false);
+                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+
+                    // Changing value but not assigning it to property
+                    value = typeData.GetNewValue(value);
+                    Assert.AreNotEqual(value, w.GetValue(propertyName));
+                    CheckPropertyChangedInvoked(false);
+
+                    // Assigning changed value
+                    SetAndTest(false, isPropertyChangedEventInvokingEnabled);
+
+                    // Assigning default value e.g. null etc.
+                    value = defaultValue;
+                    SetAndTest(false, isPropertyChangedEventInvokingEnabled);
+
+                    // Forcing changed value
+                    value = typeData.GetNewValue(value);
+                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+
+                    // Forcing default value
+                    value = defaultValue;
+                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+
+                    void SetAndTest(bool force, bool shouldInvokePropertyChangedEvent)
                     {
-                        propertyName += propertyNameSuffix;
+                        if (force)
+                        {
+                            w.ForceSetValue(value, propertyName);
+                        }
+                        else
+                        {
+                            w.SetValue(value, propertyName);
+                        }
 
-                        object value = defaultValue;
-                        w.RegisterProperty(propertyName, typeData.Type, value);
-
-                        // Default value
                         Assert.AreEqual(value, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(false);
+                        CheckPropertyChangedInvoked(shouldInvokePropertyChangedEvent);
+                    }
 
-                        // No change in value
-                        SetAndTest(false, false);
-                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
-
-                        // Changing value but not assigning it to property
-                        value = typeData.GetNewValue(value);
-                        Assert.AreNotEqual(value, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(false);
-
-                        // Assigning changed value
-                        SetAndTest(false, isPropertyChangedEventInvokingEnabled);
-
-                        // Assigning default value e.g. null etc.
-                        value = defaultValue;
-                        SetAndTest(false, isPropertyChangedEventInvokingEnabled);
-
-                        // Forcing changed value
-                        value = typeData.GetNewValue(value);
-                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
-
-                        // Forcing default value
-                        value = defaultValue;
-                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
-
-                        void SetAndTest(bool force, bool shouldInvokePropertyChangedEvent)
-                        {
-                            if (force)
-                            {
-                                w.ForceSetValue(value, propertyName);
-                            }
-                            else
-                            {
-                                w.SetValue(value, propertyName);
-                            }
-
-                            Assert.AreEqual(value, w.GetValue(propertyName));
-                            CheckPropertyChangedInvoked(shouldInvokePropertyChangedEvent);
-                        }
-
-                        void CheckPropertyChangedInvoked(bool expectedValue)
-                        {
-                            Assert.AreEqual(expectedValue, propertyChangedEventInvoked);
-                            propertyChangedEventInvoked = false;
-                        }
+                    void CheckPropertyChangedInvoked(bool expectedValue)
+                    {
+                        Assert.AreEqual(expectedValue, propertyChangedEventInvoked);
+                        propertyChangedEventInvoked = false;
                     }
                 }
             }
@@ -224,11 +223,11 @@ namespace NotifyPropertyChangedBase.Tests
         private sealed class TypeData
         {
             public Type Type { get; }
-            public Tuple<object, object> DefaultValues { get; }
+            public object[] DefaultValues { get; }
             public Func<object, object> GetNewValue { get; }
             public object[] InvalidValues { get; }
 
-            public TypeData(Type type, Tuple<object, object> defaultValues, Func<object, object> getNewValue, object[] invalidValues)
+            public TypeData(Type type, object[] defaultValues, Func<object, object> getNewValue, object[] invalidValues)
             {
                 Type = type;
                 DefaultValues = defaultValues;
