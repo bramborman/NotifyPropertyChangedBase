@@ -5,7 +5,7 @@
 [![Issues](https://img.shields.io/github/issues/bramborman/NotifyPropertyChangedBase.svg)](https://github.com/bramborman/NotifyPropertyChangedBase/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md)
 
-NotifyPropertyChangedBase provides a simple yet powerful base class `NotifyPropertyChanged` that implements the `INotifyPropertyChanged` interface. Whether you're writing UWP, Xamarin, WPF or any other app, it may help you work with data.
+NotifyPropertyChangedBase provides a simple to use yet powerful base class `NotifyPropertyChanged` that implements the `INotifyPropertyChanged` interface. Whether you're writing UWP, Xamarin, WPF or any other app, it will help you work with data.
 
 ### Pre-release
 [![MyGet](https://img.shields.io/myget/bramborman/vpre/NotifyPropertyChangedBase.svg)][MyGet]
