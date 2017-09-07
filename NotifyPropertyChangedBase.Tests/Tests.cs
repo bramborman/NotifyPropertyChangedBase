@@ -129,51 +129,51 @@ namespace NotifyPropertyChangedBase.Tests
                     object defaultValue = typeData.DefaultValues[i];
 
                     propertyName = typeData.Type.Name + i;
-                    Test(true, defaultValue);
-                    propertyName += "_NoPropertyChangedEvent";
-                    Test(false, defaultValue);
+                    Test(false, true, defaultValue);
+                    propertyName += "_Forced";
+                    Test(true, true, defaultValue);
+
+                    propertyName = typeData.Type.Name + i + "_NoPropertyChangedEvent";
+                    Test(false, false, defaultValue);
+                    propertyName += "_Forced";
+                    Test(true, false, defaultValue);
                 }
                 
                 // Invalid value
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.SetValue(invalidValue, propertyName));
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.ForceSetValue(invalidValue, propertyName));
                 
-                void Test(bool isPropertyChangedEventInvokingEnabled, object defaultValue)
+                void Test(bool force, bool isPropertyChangedEventInvokingEnabled, object defaultValue)
                 {
                     w.IsPropertyChangedEventInvokingEnabled = isPropertyChangedEventInvokingEnabled;
 
                     object value = defaultValue;
-                    w.RegisterProperty(propertyName, typeData.Type, value);
 
                     // Default value
+                    w.RegisterProperty(propertyName, typeData.Type, value);
                     Assert.AreEqual(value, w.GetValue(propertyName));
                     CheckPropertyChangedInvoked(false);
 
-                    // No change in value
-                    SetAndTest(false, false);
-                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+                    CheckNoChangeSet();
 
                     // Changing value but not assigning it to property
                     value = typeData.GetNewValue(value);
+                    // Probably not needed but I like this ( ͡° ͜ʖ ͡°)
                     Assert.AreNotEqual(value, w.GetValue(propertyName));
                     CheckPropertyChangedInvoked(false);
 
                     // Assigning changed value
-                    SetAndTest(false, isPropertyChangedEventInvokingEnabled);
+                    SetAndTest(isPropertyChangedEventInvokingEnabled);
+
+                    CheckNoChangeSet();
 
                     // Assigning default value e.g. null etc.
                     value = defaultValue;
-                    SetAndTest(false, isPropertyChangedEventInvokingEnabled);
+                    SetAndTest(isPropertyChangedEventInvokingEnabled);
 
-                    // Forcing changed value
-                    value = typeData.GetNewValue(value);
-                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+                    CheckNoChangeSet();
 
-                    // Forcing default value
-                    value = defaultValue;
-                    SetAndTest(true, isPropertyChangedEventInvokingEnabled);
-
-                    void SetAndTest(bool force, bool shouldInvokePropertyChangedEvent)
+                    void SetAndTest(bool shouldInvokePropertyChangedEvent)
                     {
                         if (force)
                         {
@@ -186,6 +186,12 @@ namespace NotifyPropertyChangedBase.Tests
 
                         Assert.AreEqual(value, w.GetValue(propertyName));
                         CheckPropertyChangedInvoked(shouldInvokePropertyChangedEvent);
+                    }
+
+                    void CheckNoChangeSet()
+                    {
+                        // No change in value
+                        SetAndTest(force && isPropertyChangedEventInvokingEnabled);
                     }
 
                     void CheckPropertyChangedInvoked(bool expectedValue)
