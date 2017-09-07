@@ -54,8 +54,6 @@ namespace NotifyPropertyChangedBase.Tests
             new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), invalidTestValues)
         };
 
-        //
-
         [TestMethod]
         public void ConstructorTest()
         {
