@@ -61,22 +61,22 @@ namespace NotifyPropertyChangedBase.Tests
             base.UnregisterPropertyChangedCallback(propertyName, propertyChangedCallback);
         }
 
-        internal new object GetValue([CallerMemberName]string propertyName = null)
+        internal new object GetValue(string propertyName)
         {
             return base.GetValue(propertyName);
         }
 
-        internal new void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
+        internal new void ForceSetValue(object value, string propertyName)
         {
             base.ForceSetValue(value, propertyName);
         }
 
-        internal new void SetValue(object value, [CallerMemberName]string propertyName = null)
+        internal new void SetValue(object value, string propertyName)
         {
             base.SetValue(value, propertyName);
         }
 
-        internal new void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        internal new void OnPropertyChanged(string propertyName)
         {
             base.OnPropertyChanged(propertyName);
         }

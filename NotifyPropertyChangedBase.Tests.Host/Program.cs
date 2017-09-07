@@ -35,12 +35,16 @@ namespace NotifyPropertyChangedBase.Tests.Host
                     Console.WriteLine($"Fail: {methodInfo.Name} ({stopwatch.ElapsedMilliseconds}ms)");
 
                     StringBuilder stringBuilder = new StringBuilder("\t");
+                    string stackTrace = exception.InnerException.StackTrace;
 
                     while (exception != null)
                     {
                         stringBuilder.AppendLine(exception.Message);
+
                         exception = exception.InnerException;
                     }
+
+                    stringBuilder.AppendLine(stackTrace);
 
                     stringBuilder.Replace(Environment.NewLine, Environment.NewLine + '\t');
                     Console.WriteLine(stringBuilder.ToString());
