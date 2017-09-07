@@ -96,7 +96,7 @@ namespace NotifyPropertyChangedBase.Tests
         }
 
         [TestMethod]
-        public void GetSetForceSetValueTest()
+        public void WorkingWithPropertiesTest()
         {
             Wrapper w = new Wrapper();
 
@@ -144,29 +144,49 @@ namespace NotifyPropertyChangedBase.Tests
 
                         object value = defaultValue;
                         w.RegisterProperty(propertyName, typeData.Type, value);
+
+                        // Default value
                         Assert.AreEqual(value, w.GetValue(propertyName));
                         CheckPropertyChangedInvoked(false);
 
+                        // No change in value
+                        SetAndTest(false, false);
+                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+
+                        // Changing value but not assigning it to property
                         value = typeData.GetNewValue(value);
                         Assert.AreNotEqual(value, w.GetValue(propertyName));
                         CheckPropertyChangedInvoked(false);
 
-                        w.SetValue(value, propertyName);
-                        Assert.AreEqual(value, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+                        // Assigning changed value
+                        SetAndTest(false, isPropertyChangedEventInvokingEnabled);
 
-                        w.SetValue(defaultValue, propertyName);
-                        Assert.AreEqual(defaultValue, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+                        // Assigning default value e.g. null etc.
+                        value = defaultValue;
+                        SetAndTest(false, isPropertyChangedEventInvokingEnabled);
 
+                        // Forcing changed value
                         value = typeData.GetNewValue(value);
-                        w.ForceSetValue(value, propertyName);
-                        Assert.AreEqual(value, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
 
-                        w.ForceSetValue(defaultValue, propertyName);
-                        Assert.AreEqual(defaultValue, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(isPropertyChangedEventInvokingEnabled);
+                        // Forcing default value
+                        value = defaultValue;
+                        SetAndTest(true, isPropertyChangedEventInvokingEnabled);
+
+                        void SetAndTest(bool force, bool shouldInvokePropertyChangedEvent)
+                        {
+                            if (force)
+                            {
+                                w.ForceSetValue(value, propertyName);
+                            }
+                            else
+                            {
+                                w.SetValue(value, propertyName);
+                            }
+
+                            Assert.AreEqual(value, w.GetValue(propertyName));
+                            CheckPropertyChangedInvoked(shouldInvokePropertyChangedEvent);
+                        }
 
                         void CheckPropertyChangedInvoked(bool expectedValue)
                         {

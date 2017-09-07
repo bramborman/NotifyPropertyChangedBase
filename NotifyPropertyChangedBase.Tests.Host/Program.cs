@@ -35,7 +35,10 @@ namespace NotifyPropertyChangedBase.Tests.Host
                     Console.WriteLine($"Fail: {methodInfo.Name} ({stopwatch.ElapsedMilliseconds}ms)");
 
                     StringBuilder stringBuilder = new StringBuilder("\t");
-                    string stackTrace = exception.InnerException.StackTrace;
+
+                    // First exception is telling just that invoking method failed
+                    exception = exception.InnerException;
+                    string stackTrace = exception.StackTrace;
 
                     while (exception != null)
                     {
