@@ -53,8 +53,6 @@ namespace NotifyPropertyChangedBase.Tests
             new TypeData(typeof(TestBase), new object[] { null, new Test() }, value => new Test(), invalidTestValues),
             new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), invalidTestValues)
         };
-        
-        // Lol I broke AppVeyor
 
         [TestMethod]
         public void ConstructorTest()
