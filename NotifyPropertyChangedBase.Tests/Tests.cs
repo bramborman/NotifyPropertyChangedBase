@@ -57,8 +57,8 @@ namespace NotifyPropertyChangedBase.Tests
         public void ConstructorTest()
         {
             Wrapper w = new Wrapper();
-            Assert.IsTrue(w.IsPropertyChangedCallbackInvokingEnabled);
             Assert.IsTrue(w.IsPropertyChangedEventInvokingEnabled);
+            Assert.IsTrue(w.IsPropertyChangedCallbackInvokingEnabled);
         }
 
         [TestMethod]
@@ -111,14 +111,26 @@ namespace NotifyPropertyChangedBase.Tests
             Assert.ThrowsException<ArgumentException>(() => w.ForceSetValue(null, "NotRegisteredProperty"));
             
             bool propertyChangedEventInvoked = false;
+            bool propertyChangedCallbackInvoked = false;
             string propertyName = null;
+            object oldValue = null;
+            object value = null;
 
             w.PropertyChanged += (sender, e) =>
             {
-                Assert.AreEqual(propertyName, e.PropertyName);
                 Assert.AreEqual(w, sender);
+                Assert.AreEqual(propertyName, e.PropertyName);
 
                 propertyChangedEventInvoked = true;
+            };
+            PropertyChangedCallbackHandler propertyChangedCallback = (sender, e) =>
+            {
+                Assert.AreEqual(w, sender);
+                Assert.IsFalse(e.Handled);
+                Assert.AreEqual(oldValue, e.OldValue);
+                Assert.AreEqual(value, e.NewValue);
+
+                propertyChangedCallbackInvoked = true;
             };
 
             foreach (TypeData typeData in typeDataCollection)
@@ -142,36 +154,44 @@ namespace NotifyPropertyChangedBase.Tests
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.SetValue(invalidValue, propertyName));
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue => w.ForceSetValue(invalidValue, propertyName));
                 
-                void Test(bool force, bool isPropertyChangedEventInvokingEnabled, object defaultValue)
+                void Test(bool force, bool eventsEnabled, object defaultValue)
                 {
-                    w.IsPropertyChangedEventInvokingEnabled = isPropertyChangedEventInvokingEnabled;
+                    w.IsPropertyChangedEventInvokingEnabled = eventsEnabled;
+                    w.IsPropertyChangedCallbackInvokingEnabled = eventsEnabled;
 
-                    object value = defaultValue;
+                    oldValue = null;
+                    value = defaultValue;
 
                     // Default value
-                    w.RegisterProperty(propertyName, typeData.Type, value);
+                    w.RegisterProperty(propertyName, typeData.Type, value, propertyChangedCallback);
                     Assert.AreEqual(value, w.GetValue(propertyName));
-                    CheckPropertyChangedInvoked(false);
+                    CheckEventsInvoked(false);
 
                     CheckNoChangeSet();
 
                     // Changing value but not assigning it to property
-                    value = typeData.GetNewValue(value);
+                    SetValue(typeData.GetNewValue(value));
                     // Probably not needed but I like this ( ͡° ͜ʖ ͡°)
                     Assert.AreNotEqual(value, w.GetValue(propertyName));
-                    CheckPropertyChangedInvoked(false);
+                    CheckEventsInvoked(false);
 
                     // Assigning changed value
-                    SetAndTest(isPropertyChangedEventInvokingEnabled);
+                    SetAndTest(eventsEnabled);
 
                     CheckNoChangeSet();
 
                     // Assigning default value e.g. null etc.
-                    value = defaultValue;
-                    SetAndTest(isPropertyChangedEventInvokingEnabled);
+                    SetValue(defaultValue);
+                    SetAndTest(eventsEnabled);
 
                     CheckNoChangeSet();
 
+                    void SetValue(object newValue)
+                    {
+                        oldValue = value;
+                        value = newValue;
+                    }
+                    
                     void SetAndTest(bool shouldInvokePropertyChangedEvent)
                     {
                         if (force)
@@ -184,19 +204,29 @@ namespace NotifyPropertyChangedBase.Tests
                         }
 
                         Assert.AreEqual(value, w.GetValue(propertyName));
-                        CheckPropertyChangedInvoked(shouldInvokePropertyChangedEvent);
+                        CheckEventsInvoked(shouldInvokePropertyChangedEvent);
                     }
 
                     void CheckNoChangeSet()
                     {
-                        // No change in value
-                        SetAndTest(force && isPropertyChangedEventInvokingEnabled);
+                        if (force)
+                        {
+                            // Has to be set to the same
+                            // When force == true, it will call callback
+                            oldValue = value;
+                        }
+
+                        // No change in value - invoking events only when forced
+                        SetAndTest(force && eventsEnabled);
                     }
 
-                    void CheckPropertyChangedInvoked(bool expectedValue)
+                    void CheckEventsInvoked(bool expectedValue)
                     {
                         Assert.AreEqual(expectedValue, propertyChangedEventInvoked);
                         propertyChangedEventInvoked = false;
+
+                        Assert.AreEqual(expectedValue, propertyChangedCallbackInvoked);
+                        propertyChangedCallbackInvoked = false;
                     }
                 }
             }
