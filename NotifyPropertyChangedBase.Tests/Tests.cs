@@ -112,6 +112,7 @@ namespace NotifyPropertyChangedBase.Tests
             
             bool propertyChangedEventInvoked = false;
             bool propertyChangedCallbackInvoked = false;
+            bool propertyChangedCallbackRegistered = true;
             string propertyName = null;
             object oldValue = null;
             object value = null;
@@ -158,6 +159,7 @@ namespace NotifyPropertyChangedBase.Tests
                 {
                     w.IsPropertyChangedEventInvokingEnabled = eventsEnabled;
                     w.IsPropertyChangedCallbackInvokingEnabled = eventsEnabled;
+                    propertyChangedCallbackRegistered = true;
 
                     oldValue = null;
                     value = defaultValue;
@@ -169,6 +171,9 @@ namespace NotifyPropertyChangedBase.Tests
 
                     CheckNoChangeSet();
 
+                    propertyChangedCallbackRegistered = false;
+                    w.UnregisterPropertyChangedCallback(propertyName, propertyChangedCallback);
+
                     // Changing value but not assigning it to property
                     SetValue(typeData.GetNewValue(value));
                     // Probably not needed but I like this ( ͡° ͜ʖ ͡°)
@@ -179,6 +184,9 @@ namespace NotifyPropertyChangedBase.Tests
                     SetAndTest(eventsEnabled);
 
                     CheckNoChangeSet();
+
+                    w.RegisterPropertyChangedCallback(propertyName, propertyChangedCallback);
+                    propertyChangedCallbackRegistered = true;
 
                     // Assigning default value e.g. null etc.
                     SetValue(defaultValue);
@@ -192,7 +200,7 @@ namespace NotifyPropertyChangedBase.Tests
                         value = newValue;
                     }
                     
-                    void SetAndTest(bool shouldInvokePropertyChangedEvent)
+                    void SetAndTest(bool shouldInvokeEvents)
                     {
                         if (force)
                         {
@@ -204,7 +212,7 @@ namespace NotifyPropertyChangedBase.Tests
                         }
 
                         Assert.AreEqual(value, w.GetValue(propertyName));
-                        CheckEventsInvoked(shouldInvokePropertyChangedEvent);
+                        CheckEventsInvoked(shouldInvokeEvents);
                     }
 
                     void CheckNoChangeSet()
@@ -220,12 +228,12 @@ namespace NotifyPropertyChangedBase.Tests
                         SetAndTest(force && eventsEnabled);
                     }
 
-                    void CheckEventsInvoked(bool expectedValue)
+                    void CheckEventsInvoked(bool shouldInvokeEvents)
                     {
-                        Assert.AreEqual(expectedValue, propertyChangedEventInvoked);
+                        Assert.AreEqual(shouldInvokeEvents, propertyChangedEventInvoked);
                         propertyChangedEventInvoked = false;
 
-                        Assert.AreEqual(expectedValue, propertyChangedCallbackInvoked);
+                        Assert.AreEqual(shouldInvokeEvents && propertyChangedCallbackRegistered, propertyChangedCallbackInvoked);
                         propertyChangedCallbackInvoked = false;
                     }
                 }
