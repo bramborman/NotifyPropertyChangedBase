@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase.Tests", "NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj", "{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Tests.Host", "NotifyPropertyChangedBase.Tests.Host\NotifyPropertyChangedBase.Tests.Host.csproj", "{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +32,6 @@ Global
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAFF5E97-BE13-4BA2-9C91-B7FFEE761392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
