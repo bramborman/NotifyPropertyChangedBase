@@ -40,17 +40,17 @@ namespace NotifyPropertyChangedBase
         private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
 
         /// <summary>
-        /// Gets or sets the value indicating whether the <see cref="PropertyChangedCallbackHandler"/> specific for each property should be invoked
-        /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
-        /// when a property changes. The default value is <c>true</c>.
-        /// </summary>
-        protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
-        /// <summary>
         /// Gets or sets the value indicating whether the <see cref="PropertyChanged"/> event should be invoked
         /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
         /// when a property changes. The default value is <c>true</c>.
         /// </summary>
         protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
+        /// <summary>
+        /// Gets or sets the value indicating whether the <see cref="PropertyChangedCallbackHandler"/> specific for each property should be invoked
+        /// from the <see cref="SetValue(object, string)"/> and <see cref="ForceSetValue(object, string)"/> methods
+        /// when a property changes. The default value is <c>true</c>.
+        /// </summary>
+        protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
 
         /// <summary>
         /// Implementation of the <see cref="INotifyPropertyChanged.PropertyChanged"/> event. Occurs when a property value changes.

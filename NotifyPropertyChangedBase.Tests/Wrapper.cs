@@ -29,15 +29,15 @@ namespace NotifyPropertyChangedBase.Tests
 {
     internal sealed class Wrapper : NotifyPropertyChanged
     {
-        internal new bool IsPropertyChangedCallbackInvokingEnabled
-        {
-            get { return base.IsPropertyChangedCallbackInvokingEnabled; }
-            set { base.IsPropertyChangedCallbackInvokingEnabled = value; }
-        }
         internal new bool IsPropertyChangedEventInvokingEnabled
         {
             get { return base.IsPropertyChangedEventInvokingEnabled; }
             set { base.IsPropertyChangedEventInvokingEnabled = value; }
+        }
+        internal new bool IsPropertyChangedCallbackInvokingEnabled
+        {
+            get { return base.IsPropertyChangedCallbackInvokingEnabled; }
+            set { base.IsPropertyChangedCallbackInvokingEnabled = value; }
         }
 
         internal new void RegisterProperty(string name, Type type, object defaultValue)
