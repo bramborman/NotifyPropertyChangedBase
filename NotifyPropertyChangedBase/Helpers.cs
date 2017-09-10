@@ -47,8 +47,7 @@ namespace NotifyPropertyChangedBase
                 throw new ArgumentException("Value cannot be white space or null.", parameterName);
             }
         }
-
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'type' parameter
+        
         internal static bool GetIsValueType(this Type type)
         {
 #if !NET_40
@@ -57,8 +56,7 @@ namespace NotifyPropertyChangedBase
             return type.IsValueType;
 #endif
         }
-
-        // Make changes in the NotifyPropertyChangedBase.Uap.rd file if you change something with the 'secondType' parameter
+        
         internal static bool GetIsAssignableFrom(this Type type, Type secondType)
         {
 #if !NET_40
