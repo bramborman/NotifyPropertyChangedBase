@@ -44,8 +44,14 @@ Besides the `PropertyChanged` event that is invoked when any of the properties c
 
 There are two ways to register them - using overloaded `RegisterProperty` method which accepts a delegate of type `PropertyChangedCallback` as the last argument or using `RegisterPropertyChangedCallback`. The latter is designed to add another callback any time after registering the property. You can also unregister a callback, registered using whichever of those two methods, using the `UnregisterPropertyChangedCallback` method.
 
+The handlers of these callbacks get two values as arguments - `sender` which holds the reference to the class that invoked that certain callback and `e` of type `PropertyChangedCallbackArgs` which has these properties:
+
+   - `Handled` - indicates whether this certain callback has been handled. Default value is `false`.
+   - `OldValue` - holds the previous value of the related property.
+   - `NewValue` - holds the current value of the related property.
+
 #### Having a control over everything
-Using the `IsPropertyChangedEventInvokingEnabled` and `IsPropertyChangedCallbackInvokingEnabled` properties you can enable/disable invocation of the `PropertyChanged` event or registered callbacks. Their default value is `true` but setting them to `false` will disable the respected events so even the `ForceSetValue` method will not be invoking them.
+Using the `IsPropertyChangedEventInvokingEnabled` and `IsPropertyChangedCallbackInvokingEnabled` properties you can enable/disable invocation of the `PropertyChanged` event or registered callbacks. Their default value is `true` but setting them to `false` will disable the respected events so even the `ForceSetValue` method will **not** be invoking them.
 
 > Setting `IsPropertyChangedCallbackInvokingEnabled` to `false` will **not** unregister already registered callbacks.
 
@@ -92,7 +98,7 @@ Here's a simple class using some advantages of NotifyPropertyChangedBase. It has
 
 >I'm using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/nameof) keyword but you can of course use just a string i.e. `"Bar"` etc. when working with properties.
 
-This is just a simple example. Of course you can call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
+This is just a simple example. Of course you can call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, **not** only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
 
 #### Structure of the `NotifyPropertyChanged` class
 All the members of this class (except of the `PropertyChanged` event) are `protected` so only derived classes can use them.
