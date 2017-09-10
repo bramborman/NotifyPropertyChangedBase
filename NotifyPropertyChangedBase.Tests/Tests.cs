@@ -109,9 +109,9 @@ namespace NotifyPropertyChangedBase.Tests
             Assert.ThrowsException<ArgumentException>(() => w.GetValue("NotRegisteredProperty"));
             Assert.ThrowsException<ArgumentException>(() => w.SetValue(null, "NotRegisteredProperty"));
             Assert.ThrowsException<ArgumentException>(() => w.ForceSetValue(null, "NotRegisteredProperty"));
-            
-            bool propertyChangedEventInvoked = false;
-            bool propertyChangedCallbackInvoked = false;
+
+            int propertyChangedEventInvokeCount = 0;
+            int propertyChangedCallbackInvokeCount = 0;
             bool propertyChangedCallbackRegistered = true;
             string propertyName = null;
             object oldValue = null;
@@ -122,7 +122,7 @@ namespace NotifyPropertyChangedBase.Tests
                 Assert.AreEqual(w, sender);
                 Assert.AreEqual(propertyName, e.PropertyName);
 
-                propertyChangedEventInvoked = true;
+                propertyChangedEventInvokeCount++;
             };
             PropertyChangedCallbackHandler propertyChangedCallback = (sender, e) =>
             {
@@ -131,7 +131,7 @@ namespace NotifyPropertyChangedBase.Tests
                 Assert.AreEqual(oldValue, e.OldValue);
                 Assert.AreEqual(value, e.NewValue);
 
-                propertyChangedCallbackInvoked = true;
+                propertyChangedCallbackInvokeCount++;
             };
 
             foreach (TypeData typeData in typeDataCollection)
@@ -230,11 +230,17 @@ namespace NotifyPropertyChangedBase.Tests
 
                     void CheckEventsInvoked(bool shouldInvokeEvents)
                     {
-                        Assert.AreEqual(shouldInvokeEvents, propertyChangedEventInvoked);
-                        propertyChangedEventInvoked = false;
+                        if (shouldInvokeEvents)
+                        {
+                            Assert.AreEqual(1, propertyChangedEventInvokeCount);
+                            propertyChangedEventInvokeCount = 0;
 
-                        Assert.AreEqual(shouldInvokeEvents && propertyChangedCallbackRegistered, propertyChangedCallbackInvoked);
-                        propertyChangedCallbackInvoked = false;
+                            if (propertyChangedCallbackRegistered)
+                            {
+                                Assert.AreEqual(1, propertyChangedCallbackInvokeCount);
+                                propertyChangedCallbackInvokeCount = 0;
+                            }
+                        }
                     }
                 }
             }
