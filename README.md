@@ -33,7 +33,7 @@ As said before, to be able to benefit from the advantages of NotifyPropertyChang
 
 > Please note that unlike `DependencyProperty.Register` the `RegisterProperty` method here does **not** return anything and you don't have to store anything. You're accessing the property only using it's name.
 
-To get and set values of registered properties you'll use `GetValue` and `SetValue` or `ForceSetValue` methods (we'll talk about their difference later).
+To get and set values of registered properties you'll use `GetValue` and `SetValue` or `ForceSetValue`. The difference between `SetValue` and `ForceSetValue` is that the latter **always** sets the new value to a property and invokes the `PropertyChanged` event and registered callbacks, **no matter whether the value is different from the current one**. However `SetValue` checks whether the old value and the new one are differet using the `Equals` method (you may want to [override it](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) to achieve the desired result on this check). `SetValue` only assigns the new value and invokes the `PropertyChanged` event and registered callbacks only if the two values are **not** equal.
 
 All these methods have an argument `propertyName` specifying which property are you working with but you can fully omit these as the compiler will pass the name of property/method from which these methods are called from because the argument has the [`CallerMemberNameAttribute`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callermembernameattribute) (does **not** apply to .NET 4.0 where the attribute is **not** available). `SetValue` and `ForceSetValue` have one another argument passed before the `propertyName` containing the value to be set to given property.
 
@@ -78,8 +78,6 @@ Here's a simple class using some advantages of NotifyPropertyChangedBase. It has
 >I'm using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/nameof) keyword but you can of course use just a string i.e. `"Bar"` etc. when working with properties.
 
 This is just a simple example. Of course you can call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
-
-`GetValue` and `SetValue` methods do simply what their names imply - gets or sets the value of a property with the given name but there's another similar method - `ForceSetValue`. The difference between `SetValue` and `ForceSetValue` is that the latter **always** sets the new value to a property and invokes the `PropertyChanged` event and registered callbacks, **no matter whether the value is different from the current one**. However `SetValue` checks whether the old value and the new one are differet using the `Equals` method (you may want to [override it](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) to achieve the desired result on this check). `SetValue` only assigns the new value and invokes the `PropertyChanged` event and registered callbacks only if the two values are **not** equal.
 
 ### Structure of the `NotifyPropertyChanged` class
 All the members of this class are `protected` - only derived classes can use them.
