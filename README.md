@@ -21,11 +21,11 @@ If you want to get updates more frequently or test bugfixes and new features bef
 [MyGet]: https://www.myget.org/feed/bramborman/package/nuget/NotifyPropertyChangedBase
 
 ## How to use it?
-NotifyPropertyChangedBase library helps you use `INotifyPropertyChanged` interface without needing to write your own logic. The one and only thing you need to use is an abstract class `NotifyPropertyChanged`. So instead of worrying about backing stores - variables that hold data of properties - about compairing each property you will register your property and our class will do the rest.
+NotifyPropertyChangedBase library helps you use `INotifyPropertyChanged` interface without needing to write your own logic. The one and only thing you need to do is to make your models inherit from the abstract class `NotifyPropertyChanged`. So instead of worrying about backing stores - variables that hold data of properties - about compairing data or calling the `PropertyChanged` event you will register your property and this class will do the rest.
 
-It's usage is similar to usage of `DependencyObject`, that you may be familiar with from UWP or WPF, however it does **not** inherit from it nor it can be used only on UI thread - **you can access it from any thread you want**.
+It's usage is very similar to the usage of `DependencyObject`, that you may be familiar with from UWP or WPF, however it does **not** inherit from it nor it can be used only on UI thread - **you can access it from any thread you want**.
 
-As I said before, to be able to use any property (and benefit from the advantages of NotifyPropertyChangedBase), you have to register it using the `RegisterProperty` method. It has three required parameters and one overload accepting fourth parameter:
+As said before, to be able to benefit from the advantages of NotifyPropertyChangedBase, you have to register your property using the `RegisterProperty` method. It has three required parameters and one overload accepting fourth parameter:
    - name of the property (using it you'll be accessing its value and doing all the work with the property)
    - type of the property
    - default value of the property
@@ -33,11 +33,12 @@ As I said before, to be able to use any property (and benefit from the advantage
 
 > Please note that unlike `DependencyProperty.Register` the `RegisterProperty` method here does **not** return anything and you don't have to store anything. You're accessing the property only using it's name.
 
-Here's a simple class using some advantages of NotifyPropertyChangedBase. It has two properties, `Bar` and `Greeting`. Both are backed by `NotifyPropertyChanged` class so anytime their value is changed, the `PropertyChanged` event is automatically invoked. Then you can get their value by calling `GetValue` and set it using `SetValue` and `ForceSetValue` methods (we'll talk about their difference later).
+To get and set values of registered properties you'll use `GetValue` and `SetValue` or `ForceSetValue` methods (we'll talk about their difference later).
 
-All these methods have an argument `propertyName` specifying which property are you working with. But you can fully omit these as the compiler will pass the name of property/method from which these methods are called from because the argument has the [`CallerMemberNameAttribute`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callermembernameattribute) (does **not** apply to .NET 4.0 where the attribute is **not** available).
+All these methods have an argument `propertyName` specifying which property are you working with but you can fully omit these as the compiler will pass the name of property/method from which these methods are called from because the argument has the [`CallerMemberNameAttribute`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callermembernameattribute) (does **not** apply to .NET 4.0 where the attribute is **not** available). `SetValue` and `ForceSetValue` have one another argument passed before the `propertyName` containing the value to be set to given property.
 
->I'm using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/nameof) keyword but you can of course use just a string i.e. `"Bar"` etc. when working with properties.
+#### Example
+Here's a simple class using some advantages of NotifyPropertyChangedBase. It has two properties, `Bar` and `Greeting`. Both are backed by `NotifyPropertyChanged` class so anytime their value is changed, the `PropertyChanged` event is automatically invoked.
 
 ```csharp
     using NotifyPropertyChangedBase;
@@ -48,6 +49,10 @@ All these methods have an argument `propertyName` specifying which property are 
         {
             get { return (int)GetValue(); }
             set { SetValue(value); }
+
+            // These will do the same:
+            // get { return (int)GetValue(nameof(Bar)); }
+            // get { return (int)GetValue("Bar"); }
         }
         public string Greeting
         {
@@ -58,6 +63,8 @@ All these methods have an argument `propertyName` specifying which property are 
         public Foo()
         {
             RegisterProperty(nameof(Bar), typeof(int), 0);
+            // This will do the same:
+            // RegisterProperty("Bar", typeof(int), 0);
             RegisterProperty(nameof(Greeting), typeof(string), null, GreetingPropertyChanged);
         }
 
@@ -68,13 +75,16 @@ All these methods have an argument `propertyName` specifying which property are 
     }
 ```
 
-This is just a simple example. Of course you could call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
+>I'm using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/nameof) keyword but you can of course use just a string i.e. `"Bar"` etc. when working with properties.
 
-`GetValue` and `SetValue` methods does simply what their name implies - get or set the value of a property with the given name but there's another similar method - `ForceSetValue`. The difference between `SetValue` and `ForceSetValue` is that the latter always sets the new value to a property however `SetValue` checks whether the old value and the new one are the same using the `Equals` method (you may want to [override it](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) to achieve the desired result on this check). `SetValue` only assigns the new value and invokes the `PropertyChanged` event and `PropertyChangedCallback` only if the two values are **not** equal.
+This is just a simple example. Of course you can call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
+
+`GetValue` and `SetValue` methods do simply what their names imply - gets or sets the value of a property with the given name but there's another similar method - `ForceSetValue`. The difference between `SetValue` and `ForceSetValue` is that the latter **always** sets the new value to a property and invokes the `PropertyChanged` event and registered callbacks, **no matter whether the value is different from the current one**. However `SetValue` checks whether the old value and the new one are differet using the `Equals` method (you may want to [override it](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) to achieve the desired result on this check). `SetValue` only assigns the new value and invokes the `PropertyChanged` event and registered callbacks only if the two values are **not** equal.
 
 ### Structure of the `NotifyPropertyChanged` class
 All the members of this class are `protected` - only derived classes can use them.
     
+```csharp
     protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
     protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
     protected void RegisterProperty(string name, Type type, object defaultValue
@@ -85,4 +95,5 @@ All the members of this class are `protected` - only derived classes can use the
     protected void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
     protected void SetValue(object value, [CallerMemberName]string propertyName = null)
     protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
+```
 
