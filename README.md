@@ -37,6 +37,16 @@ To get and set values of registered properties you'll use `GetValue` and `SetVal
 
 All these methods have an argument `propertyName` specifying which property are you working with but you can fully omit these as the compiler will pass the name of property/method from which these methods are called from because the argument has the [`CallerMemberNameAttribute`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callermembernameattribute) (does **not** apply to .NET 4.0 where the attribute is **not** available). `SetValue` and `ForceSetValue` have one another argument passed before the `propertyName` containing the value to be set to given property.
 
+There's also the `OnPropertyChanged` method, also having a `propertyName` argument with the same attribute, which you can use to invoke the `PropertyChanged` event manually.
+
+#### PropertyChangedCallback
+Besides the `PropertyChanged` event that is invoked when any of the properties changes, NotifyPropertyChangedBase provides also the `PropertyChangedCallback` that is registered for each property independently. Registered callback is invoked **always** before the `PropertyChanged` event.
+
+There are two ways to register them - using overloaded `RegisterProperty` method which accepts a delegate of type `PropertyChangedCallback` as the last argument or using `RegisterPropertyChangedCallback`. The latter is designed to add another callback anytime after registering the property. You can also unregister a callback, registered using whichever of those two methods, using the `UnregisterPropertyChangedCallback` method.
+
+#### Having a control over everything
+Using the `IsPropertyChangedEventInvokingEnabled` and `IsPropertyChangedCallbackInvokingEnabled` property you can enable/disable invocation of the `PropertyChanged` event and registered callbacks. Their default value is `true` but setting them to `false` will disable the respected events so even the `ForceSetValue` method will not be invoking them.
+
 #### Example
 Here's a simple class using some advantages of NotifyPropertyChangedBase. It has two properties, `Bar` and `Greeting`. Both are backed by `NotifyPropertyChanged` class so anytime their value is changed, the `PropertyChanged` event is automatically invoked.
 
@@ -62,9 +72,12 @@ Here's a simple class using some advantages of NotifyPropertyChangedBase. It has
     
         public Foo()
         {
+            // Property without a callback
             RegisterProperty(nameof(Bar), typeof(int), 0);
             // This will do the same:
             // RegisterProperty("Bar", typeof(int), 0);
+
+            // Property with a callback
             RegisterProperty(nameof(Greeting), typeof(string), null, GreetingPropertyChanged);
         }
 
@@ -79,19 +92,6 @@ Here's a simple class using some advantages of NotifyPropertyChangedBase. It has
 
 This is just a simple example. Of course you can call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
 
-### Structure of the `NotifyPropertyChanged` class
+#### Structure of the `NotifyPropertyChanged` class
 All the members of this class are `protected` - only derived classes can use them.
-    
-```csharp
-    protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
-    protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
-    protected void RegisterProperty(string name, Type type, object defaultValue
-    protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
-    protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
-    protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
-    protected object GetValue([CallerMemberName]string propertyName = null)
-    protected void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
-    protected void SetValue(object value, [CallerMemberName]string propertyName = null)
-    protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
-```
 
