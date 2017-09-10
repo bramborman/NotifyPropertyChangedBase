@@ -39,6 +39,7 @@ All these methods have an argument `propertyName` specifying which property are 
 
 >I'm using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/nameof) keyword but you can of course use just a string i.e. `"Bar"` etc. when working with properties.
 
+```csharp
     using NotifyPropertyChangedBase;
 
     class Foo : NotifyPropertyChanged
@@ -65,6 +66,7 @@ All these methods have an argument `propertyName` specifying which property are 
             Console.WriteLine($"Value of Greeting changed from '{e.OldValue}' to '{e.NewValue}'");
         }
     }
+```
 
 This is just a simple example. Of course you could call `GetValue`, `SetValue` and `ForceSetValue` anywhere in the code, not only in the body of related properties but using `Bar = 5;` over `SetValue(5, nameof(Bar));` and so on seems much simpler to me.
 
