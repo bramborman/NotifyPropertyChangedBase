@@ -44,7 +44,7 @@ Besides the `PropertyChanged` event that is invoked when any of the properties c
 
 There are two ways to register them - using overloaded `RegisterProperty` method which accepts a delegate of type `PropertyChangedCallback` as the last argument or using `RegisterPropertyChangedCallback`. The latter is designed to add another callback any time after registering the property. You can also unregister a callback, registered using whichever of those two methods, using the `UnregisterPropertyChangedCallback` method.
 
-The handlers of these callbacks get two values as arguments - `sender` which holds the reference to the class that invoked that certain callback and `e` of type `PropertyChangedCallbackArgs` which has these properties:
+The handlers of these callbacks get two values as arguments - `sender` which holds the reference to the class that invoked that certain callback and `e` of type `PropertyChangedCallbackArgs` which has the following properties:
 
    - `Handled` - indicates whether this certain callback has been handled. Default value is `false`.
    - `OldValue` - holds the previous value of the related property.
