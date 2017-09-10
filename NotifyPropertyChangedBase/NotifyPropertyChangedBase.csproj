@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45;net40;netstandard1.0;</TargetFrameworks>
+    <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
+    <Title>NotifyPropertyChangedBase</Title>
+    <Product>NotifyPropertyChangedBase</Product>
+    <PackageId>NotifyPropertyChangedBase</PackageId>
+    <Description>A simple to use yet powerful implementation of INotifyPropertyChanged.</Description>
+    <Company>Marian Dolinský</Company>
+    <Authors>Marian Dolinský</Authors>
+    <Copyright>© 2017 Marian Dolinský</Copyright>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Model-View-ViewModel Binding Bindings Helper Helpers</PackageTags>
+    <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="**\*.orig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyName>NotifyPropertyChangedBase.Net45</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Net45</AssemblyTitle>
+    <DefineConstants>NET_45;HAVE_COM_ATTRIBUTES</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <AssemblyName>NotifyPropertyChangedBase.Net40</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.Net40</AssemblyTitle>
+    <DefineConstants>NET_40;HAVE_COM_ATTRIBUTES</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
+    <AssemblyName>NotifyPropertyChangedBase.NetStandard</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase.NetStandard</AssemblyTitle>
+    <DefineConstants>NETSTANDARD1_0</DefineConstants>
+  </PropertyGroup>
+</Project>
