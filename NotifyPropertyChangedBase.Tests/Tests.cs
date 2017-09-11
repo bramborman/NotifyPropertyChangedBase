@@ -230,17 +230,11 @@ namespace NotifyPropertyChangedBase.Tests
 
                     void CheckEventsInvoked(bool shouldInvokeEvents)
                     {
-                        if (shouldInvokeEvents)
-                        {
-                            Assert.AreEqual(1, propertyChangedEventInvokeCount);
-                            propertyChangedEventInvokeCount = 0;
+                        Assert.AreEqual(shouldInvokeEvents ? 1 : 0, propertyChangedEventInvokeCount);
+                        propertyChangedEventInvokeCount = 0;
 
-                            if (propertyChangedCallbackRegistered)
-                            {
-                                Assert.AreEqual(1, propertyChangedCallbackInvokeCount);
-                                propertyChangedCallbackInvokeCount = 0;
-                            }
-                        }
+                        Assert.AreEqual(shouldInvokeEvents && propertyChangedCallbackRegistered ? 1 : 0, propertyChangedCallbackInvokeCount);
+                        propertyChangedCallbackInvokeCount = 0;
                     }
                 }
             }
