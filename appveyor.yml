@@ -12,6 +12,7 @@ skip_commits:
     - .gitignore
     - LICENSE.md
     - README.md
+    - Run-UnitTests.ps1
 image: Visual Studio 2017
 build_script:
 - ps: '& .\AppVeyor-Build.ps1'
