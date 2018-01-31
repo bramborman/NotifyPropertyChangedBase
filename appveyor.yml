@@ -10,7 +10,6 @@ skip_commits:
   files:
     - .gitattributes
     - .gitignore
-    - LICENSE.md
     - README.md
     - Run-UnitTests.ps1
 image: Visual Studio 2017
