@@ -42,10 +42,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj">
-      <Project>{6781f993-6d8c-4107-994f-e942bb13fcfb}</Project>
-      <Name>NotifyPropertyChangedBase</Name>
-    </ProjectReference>
+    <PackageReference Include="NotifyPropertyChangedBase">
+      <Version>1.4.0-dev-20180131-112300-220</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

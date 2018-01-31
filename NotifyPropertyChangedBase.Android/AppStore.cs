@@ -33,7 +33,7 @@ namespace NotifyPropertyChangedBase.Android
 {
     public abstract class AppStore : NotifyPropertyChanged
     {
-        private readonly Dictionary<string, (string name, object defaultValue)> keyNameDictionary = new Dictionary<string, (string, object)>();
+        private readonly Dictionary<string, (string name, object defaultValue)> propertyData = new Dictionary<string, (string, object)>();
         private readonly Dictionary<string, string> nameKeyDictionary = new Dictionary<string, string>();
         private readonly ISharedPreferences preferences;
         private readonly ISharedPreferencesEditor editor;
@@ -64,13 +64,13 @@ namespace NotifyPropertyChangedBase.Android
 
         protected void RegisterAppStoreProperty(string key, string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            if (keyNameDictionary.ContainsKey(key))
+            if (propertyData.ContainsKey(key))
             {
                 throw new ArgumentException($"This class already contains a registered property with key '{key}'.");
             }
 
             RegisterProperty(name, type, GetAppStoreValue(key, defaultValue), propertyChangedCallback);
-            keyNameDictionary.Add(key, (name, defaultValue));
+            propertyData.Add(key, (name, defaultValue));
             nameKeyDictionary.Add(name, key);
         }
 
@@ -84,16 +84,11 @@ namespace NotifyPropertyChangedBase.Android
             base.OnPropertyChanged(propertyName);
         }
 
-        protected void Detach()
-        {
-            preferences.UnregisterOnSharedPreferenceChangeListener(listener);
-        }
-
         private void Listener_SharedPreferenceChanged(string key)
         {
-            if (keyNameDictionary.ContainsKey(key))
+            if (propertyData.ContainsKey(key))
             {
-                SetValue(GetAppStoreValue(key, keyNameDictionary[key].defaultValue), keyNameDictionary[key].name);
+                SetValue(GetAppStoreValue(key, propertyData[key].defaultValue), propertyData[key].name);
             }
         }
         
@@ -157,6 +152,11 @@ namespace NotifyPropertyChangedBase.Android
             }
 
             editor.Apply();
+        }
+
+        protected void Detach()
+        {
+            preferences.UnregisterOnSharedPreferenceChangeListener(listener);
         }
 
 
