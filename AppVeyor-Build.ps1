@@ -23,8 +23,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-Write-Host "`nChecking license headers" 
-Write-Host   "========================" 
+Write-Host "`nChecking license headers"
+Write-Host   "========================"
 .\Check-LicenseHeaders.ps1
 
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-BuildVersion.ps1"
@@ -33,44 +33,43 @@ Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildSc
 Start-FileDownload "https://raw.githubusercontent.com/bramborman/AppVeyorBuildScripts/master/Scripts/Set-PureBuildVersion.ps1"
 .\Set-PureBuildVersion.ps1
 
-Write-Host "`nVersions patching" 
-Write-Host   "=================" 
-Install-Module -Name powershell-yaml -Force 
- 
-if($LastExitCode -ne 0) 
-{ 
-  $host.SetShouldExit($LastExitCode) 
-} 
- 
-$yaml           = Get-Content .\appveyor.yml -Raw 
-$appveyorConfig = ConvertFrom-Yaml $yaml 
-$buildVersion   = $appveyorConfig.version.Replace('-', '.').Replace("{branch}", $null).Replace("{build}", $env:APPVEYOR_BUILD_NUMBER) 
-$projectFiles   = Get-ChildItem -Include "*.csproj" -Recurse 
- 
-foreach ($projectFile in $projectFiles) 
-{ 
-    $xml = [xml](Get-Content $projectFile.FullName) 
- 
-    $propertyGroup = $xml | Select-Xml -XPath "/Project/PropertyGroup[Version='1.0.0']" 
-    $propertyGroup = $propertyGroup.Node 
- 
-    $propertyGroup.Version          = $buildVersion 
-    $propertyGroup.FileVersion      = $buildVersion 
-  $propertyGroup.AssemblyVersion  = $buildVersion 
- 
-  if (!($projectFile.Name.Contains("Tests"))) 
-  { 
-    $propertyGroup.PackageVersion = $env:APPVEYOR_BUILD_VERSION 
-  } 
- 
-    $xml.Save($projectFile.FullName) 
- 
-    if($LastExitCode -ne 0) 
-    { 
-        $host.SetShouldExit($LastExitCode) 
-    } 
-} 
- 
+Write-Host "`nVersions patching"
+Write-Host   "================="
+Install-Module -Name powershell-yaml -Force
+
+if($LastExitCode -ne 0)
+{
+    Exit-AppveyorBuild
+}
+
+$yaml           = Get-Content .\appveyor.yml -Raw
+$appveyorConfig = ConvertFrom-Yaml $yaml
+$buildVersion   = $appveyorConfig.version.Replace('-', '.').Replace("{branch}", $null).Replace("{build}", $env:APPVEYOR_BUILD_NUMBER)
+$projectFiles   = Get-ChildItem -Include "*.csproj" -Recurse
+
+foreach ($projectFile in $projectFiles)
+{
+    $xml = [xml](Get-Content $projectFile.FullName)
+
+    $propertyGroup = $xml | Select-Xml -XPath "/Project/PropertyGroup[Version='1.0.0']"
+    $propertyGroup = $propertyGroup.Node
+
+    $propertyGroup.Version          = $buildVersion
+    $propertyGroup.FileVersion      = $buildVersion
+    $propertyGroup.AssemblyVersion  = $buildVersion
+
+    if (!($projectFile.Name.Contains("Tests")))
+    {
+        $propertyGroup.PackageVersion = $env:APPVEYOR_BUILD_VERSION
+    }
+
+    $xml.Save($projectFile.FullName)
+
+    if($LastExitCode -ne 0)
+    {
+        Exit-AppveyorBuild
+    }
+}
 
 Write-Host "`nLibrary Build"
 Write-Host   "============="
@@ -95,11 +94,12 @@ foreach ($projectFolder in $projectFolders)
 	if (!(Test-Path $releaseFolder))
 	{
 		throw "Invalid project release folder. `$releaseFolder: '$releaseFolder'"
+        Exit-AppveyorBuild
 	}
 
 	$zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
 	7z a $zipFileName "$releaseFolder\*"
-	
+
 	Push-AppveyorArtifact $zipFileName
 }
 
