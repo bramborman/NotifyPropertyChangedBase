@@ -140,6 +140,7 @@ namespace NotifyPropertyChangedBase.Android
             editor.Apply();
         }
 
+
         private sealed class OnSharedPreferenceChangeListener : Java.Lang.Object, ISharedPreferencesOnSharedPreferenceChangeListener
         {
             private readonly Action<string> sharedPreferenceChanged;
