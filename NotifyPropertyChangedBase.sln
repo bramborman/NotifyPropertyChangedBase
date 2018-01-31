@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase.Tests", "NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj", "{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyPropertyChangedBase.Android", "NotifyPropertyChangedBase.Android\NotifyPropertyChangedBase.Android.csproj", "{A67FE0F7-668E-4F4E-AAA9-E64345AC7B93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A1B2AF-E249-4B07-91DC-5C3E80D0567B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A67FE0F7-668E-4F4E-AAA9-E64345AC7B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A67FE0F7-668E-4F4E-AAA9-E64345AC7B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A67FE0F7-668E-4F4E-AAA9-E64345AC7B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A67FE0F7-668E-4F4E-AAA9-E64345AC7B93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
