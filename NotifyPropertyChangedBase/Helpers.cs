@@ -24,7 +24,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Reflection;
 
 namespace NotifyPropertyChangedBase
 {
@@ -44,16 +43,6 @@ namespace NotifyPropertyChangedBase
             {
                 throw new ArgumentException("Value cannot be white space or null.", parameterName);
             }
-        }
-        
-        internal static bool GetIsValueType(this Type type)
-        {
-            return type.GetTypeInfo().IsValueType;
-        }
-        
-        internal static bool GetIsAssignableFrom(this Type type, Type secondType)
-        {
-            return type.GetTypeInfo().IsAssignableFrom(secondType.GetTypeInfo());
         }
     }
 }

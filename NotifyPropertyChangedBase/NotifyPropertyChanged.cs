@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase
@@ -266,14 +267,14 @@ namespace NotifyPropertyChangedBase
         {
             if (value == null)
             {
-                if (type.GetIsValueType() && Nullable.GetUnderlyingType(type) == null)
+                if (type.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(type) == null)
                 {
                     throw new ArgumentException($"The type '{type}' is not a nullable type.");
                 }
             }
             else
             {
-                if (!type.GetIsAssignableFrom(value.GetType()))
+                if (!type.GetTypeInfo().IsAssignableFrom(value.GetType().GetTypeInfo()))
                 {
                     throw new ArgumentException($"The specified value cannot be assigned to a property of type ({type})");
                 }
