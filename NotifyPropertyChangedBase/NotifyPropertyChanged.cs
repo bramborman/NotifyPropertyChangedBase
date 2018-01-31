@@ -1,6 +1,6 @@
 ﻿// MIT License
 //
-// Copyright (c) 2017 Marian Dolinský
+// Copyright (c) 2018 Marian Dolinský
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -114,7 +114,7 @@ namespace NotifyPropertyChangedBase
 
             if (backingStore.ContainsKey(name))
             {
-                throw new ArgumentException($"This class already contains registered property named '{name}'.");
+                throw new ArgumentException($"This instance already contains a registered property named '{name}'.");
             }
 
             backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
@@ -248,7 +248,7 @@ namespace NotifyPropertyChangedBase
             // Calling Equals calls the overriden method even when the value is boxed
             bool? valuesEqual = propertyData.Value?.Equals(value);
 
-            if (forceSetValue || (valuesEqual == null && !ReferenceEquals(value, null)) || valuesEqual == false)
+            if (forceSetValue || (valuesEqual == null && !(value is null)) || valuesEqual == false)
             {
                 object oldValue = propertyData.Value;
                 propertyData.Value = value;
@@ -308,9 +308,10 @@ namespace NotifyPropertyChangedBase
             }
             catch (KeyNotFoundException)
             {
-                throw new ArgumentException($"There is no registered property called '{propertyName}'.", propertyNameParameterName);
+                throw new ArgumentException($"There is no registered property called '{propertyName}' in this instance.", propertyNameParameterName);
             }
         }
+
 
         private class PropertyData
         {

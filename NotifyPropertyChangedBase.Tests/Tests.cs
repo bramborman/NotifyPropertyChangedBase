@@ -1,6 +1,6 @@
 ﻿// MIT License
 //
-// Copyright (c) 2017 Marian Dolinský
+// Copyright (c) 2018 Marian Dolinský
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -124,7 +124,8 @@ namespace NotifyPropertyChangedBase.Tests
 
                 propertyChangedEventInvokeCount++;
             };
-            PropertyChangedCallbackHandler propertyChangedCallback = (sender, e) =>
+
+            void propertyChangedCallback(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e)
             {
                 Assert.AreEqual(w, sender);
                 Assert.IsFalse(e.Handled);
@@ -132,7 +133,7 @@ namespace NotifyPropertyChangedBase.Tests
                 Assert.AreEqual(value, e.NewValue);
 
                 propertyChangedCallbackInvokeCount++;
-            };
+            }
 
             foreach (TypeData typeData in typeDataCollection)
             {
