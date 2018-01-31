@@ -138,7 +138,7 @@ namespace NotifyPropertyChangedBase
         protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
-            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback += propertyChangedCallback;
+            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback += propertyChangedCallback;
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace NotifyPropertyChangedBase
         protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
-            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback -= propertyChangedCallback;
+            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback -= propertyChangedCallback;
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected object GetValue([CallerMemberName]string propertyName = null)
         {
-            return GetPropertyData(propertyName, nameof(propertyName)).Value;
+            return GetPropertyData(propertyName, nameof(propertyName)).value;
         }
 
         /// <summary>
@@ -230,19 +230,19 @@ namespace NotifyPropertyChangedBase
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             PropertyData propertyData = GetPropertyData(propertyName, nameof(propertyName));
-            ValidateValueForType(value, propertyData.Type);
+            ValidateValueForType(value, propertyData.type);
             
             // Calling Equals calls the overriden method even when the value is boxed
-            bool? valuesEqual = propertyData.Value?.Equals(value);
+            bool? valuesEqual = propertyData.value?.Equals(value);
 
             if (forceSetValue || (valuesEqual == null && !(value is null)) || valuesEqual == false)
             {
-                object oldValue = propertyData.Value;
-                propertyData.Value = value;
+                object oldValue = propertyData.value;
+                propertyData.value = value;
 
                 if (IsPropertyChangedCallbackInvokingEnabled)
                 {
-                    propertyData.InvokePropertyChangedCallback(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    propertyData.propertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
                 }
 
                 if (IsPropertyChangedEventInvokingEnabled)
@@ -298,22 +298,17 @@ namespace NotifyPropertyChangedBase
 
         private sealed class PropertyData
         {
-            internal object Value { get; set; }
-            internal Type Type { get; }
+            public readonly Type type;
 
-            internal event PropertyChangedCallbackHandler PropertyChangedCallback;
+            public object value;
+            public PropertyChangedCallbackHandler propertyChangedCallback;
 
-            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
+            public PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
-                Value = defaultValue;
-                Type = type;
+                this.type = type;
 
-                PropertyChangedCallback += propertyChangedCallback;
-            }
-
-            internal void InvokePropertyChangedCallback(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e)
-            {
-                PropertyChangedCallback?.Invoke(sender, e);
+                value = defaultValue;
+                this.propertyChangedCallback = propertyChangedCallback;
             }
         }
     }
