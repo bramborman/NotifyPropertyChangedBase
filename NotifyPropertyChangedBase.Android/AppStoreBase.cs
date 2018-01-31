@@ -76,12 +76,17 @@ namespace NotifyPropertyChangedBase.Android
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            base.OnPropertyChanged(propertyName);
-
             if (nameKeyDictionary.ContainsKey(propertyName))
             {
                 SetAppStoreValue(nameKeyDictionary[propertyName], GetValue(propertyName));
             }
+
+            base.OnPropertyChanged(propertyName);
+        }
+
+        protected void Detach()
+        {
+            preferences.UnregisterOnSharedPreferenceChangeListener(listener);
         }
 
         private void Listener_SharedPreferenceChanged(string key)
@@ -91,7 +96,7 @@ namespace NotifyPropertyChangedBase.Android
                 SetValue(GetAppStoreValue(key, keyNameDictionary[key].defaultValue), keyNameDictionary[key].name);
             }
         }
-
+        
         private object GetAppStoreValue(string key, object defaultValue)
         {
             Type valueType = defaultValue?.GetType();
