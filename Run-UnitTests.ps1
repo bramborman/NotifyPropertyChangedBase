@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 Marian Dolinský
+# Copyright (c) 2018 Marian DolinskÃ½
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
