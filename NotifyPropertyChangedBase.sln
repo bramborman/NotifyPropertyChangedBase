@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{121EBC4B-EA90-4A53-8E99-B56DA7C6646F}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		AppVeyor-Build.ps1 = AppVeyor-Build.ps1
 		appveyor.yml = appveyor.yml
+		Check-LicenseHeaders.ps1 = Check-LicenseHeaders.ps1
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 		Run-UnitTests.ps1 = Run-UnitTests.ps1
