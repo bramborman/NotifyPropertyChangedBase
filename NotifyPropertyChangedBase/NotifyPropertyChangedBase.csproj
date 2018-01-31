@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;net40;netstandard1.0;</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.0;</TargetFrameworks>
     <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
@@ -31,11 +31,6 @@
     <AssemblyName>NotifyPropertyChangedBase.Net45</AssemblyName>
     <AssemblyTitle>NotifyPropertyChangedBase.Net45</AssemblyTitle>
     <DefineConstants>NET_45;HAVE_COM_ATTRIBUTES</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
-    <AssemblyName>NotifyPropertyChangedBase.Net40</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase.Net40</AssemblyTitle>
-    <DefineConstants>NET_40;HAVE_COM_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
     <AssemblyName>NotifyPropertyChangedBase.NetStandard</AssemblyName>

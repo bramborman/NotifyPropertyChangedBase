@@ -26,9 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if !NET_40
 using System.Runtime.CompilerServices;
-#endif
 
 namespace NotifyPropertyChangedBase
 {
@@ -177,11 +175,7 @@ namespace NotifyPropertyChangedBase
         ///         Actual instance does not contain registered property with the specified name.
         ///     </para>
         /// </exception>
-#if NET_40
-        protected object GetValue(string propertyName)
-#else
         protected object GetValue([CallerMemberName]string propertyName = null)
-#endif
         {
             return GetPropertyData(propertyName, nameof(propertyName)).Value;
         }
@@ -204,11 +198,7 @@ namespace NotifyPropertyChangedBase
         ///         Actual instance does not contain registered property with the specified name.
         ///     </para>
         /// </exception>
-#if NET_40
-        protected void ForceSetValue(object value, string propertyName)
-#else
         protected void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
-#endif
         {
             SetValue(value, propertyName, true);
         }
@@ -231,11 +221,7 @@ namespace NotifyPropertyChangedBase
         ///         Actual instance does not contain registered property with the specified name.
         ///     </para>
         /// </exception>
-#if NET_40
-        protected void SetValue(object value, string propertyName)
-#else
         protected void SetValue(object value, [CallerMemberName]string propertyName = null)
-#endif
         {
             SetValue(value, propertyName, false);
         }
@@ -270,11 +256,7 @@ namespace NotifyPropertyChangedBase
         /// </summary>
         /// <param name="propertyName">Name of the changed property.</param>
         /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
-#if NET_40
-        protected virtual void OnPropertyChanged(string propertyName)
-#else
         protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
-#endif
         {
             Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

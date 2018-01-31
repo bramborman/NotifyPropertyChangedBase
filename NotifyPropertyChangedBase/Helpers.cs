@@ -24,9 +24,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-#if !NET_40
 using System.Reflection;
-#endif
 
 namespace NotifyPropertyChangedBase
 {
@@ -50,20 +48,12 @@ namespace NotifyPropertyChangedBase
         
         internal static bool GetIsValueType(this Type type)
         {
-#if !NET_40
             return type.GetTypeInfo().IsValueType;
-#else
-            return type.IsValueType;
-#endif
         }
         
         internal static bool GetIsAssignableFrom(this Type type, Type secondType)
         {
-#if !NET_40
             return type.GetTypeInfo().IsAssignableFrom(secondType.GetTypeInfo());
-#else
-            return type.IsAssignableFrom(secondType);
-#endif
         }
     }
 }
