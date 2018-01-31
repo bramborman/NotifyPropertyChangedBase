@@ -27,12 +27,14 @@ using Android.Content;
 using Android.Preferences;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase.Android
 {
     public abstract class AppStore : NotifyPropertyChanged
     {
         private readonly Dictionary<string, (string name, object defaultValue)> keyNameDictionary = new Dictionary<string, (string, object)>();
+        private readonly Dictionary<string, string> nameKeyDictionary = new Dictionary<string, string>();
         private readonly ISharedPreferences preferences;
         private readonly ISharedPreferencesEditor editor;
         private readonly OnSharedPreferenceChangeListener listener;
@@ -52,6 +54,7 @@ namespace NotifyPropertyChangedBase.Android
             preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
             editor = preferences.Edit();
             listener = new OnSharedPreferenceChangeListener(Listener_SharedPreferenceChanged);
+            preferences.RegisterOnSharedPreferenceChangeListener(listener);
         }
 
         protected void RegisterAppStoreProperty(string key, string name, Type type, object defaultValue)
@@ -66,8 +69,19 @@ namespace NotifyPropertyChangedBase.Android
                 throw new ArgumentException($"This class already contains a registered property with key '{key}'.");
             }
 
-            RegisterProperty(name, type, defaultValue, propertyChangedCallback);
+            RegisterProperty(name, type, GetAppStoreValue(key, defaultValue), propertyChangedCallback);
             keyNameDictionary.Add(key, (name, defaultValue));
+            nameKeyDictionary.Add(name, key);
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            if (nameKeyDictionary.ContainsKey(propertyName))
+            {
+                SetAppStoreValue(nameKeyDictionary[propertyName], GetValue(propertyName));
+            }
         }
 
         private void Listener_SharedPreferenceChanged(string key)
