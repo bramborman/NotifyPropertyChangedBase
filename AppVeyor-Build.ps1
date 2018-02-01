@@ -63,9 +63,10 @@ foreach ($projectFile in $projectFiles)
         $propertyGroup.PackageVersion = $env:APPVEYOR_BUILD_VERSION
     }
 
-    if ($projectFile.Name -eq "NotifyPropertyChangedBase.Android")
+    if ($projectFile.Name -eq "NotifyPropertyChangedBase.Android.csproj")
     {
         # This will make the Android project dependent on the actual build
+        # This should probably be moved to MSBuild pre-build script
         $packageReference = $xml | Select-Xml -XPath "/Project/ItemGroup/PackageReference[@Include='NotifyPropertyChangedBase']"
         $packageReference.Node.Version = $buildVersion
     }
