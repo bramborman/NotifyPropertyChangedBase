@@ -81,7 +81,7 @@ Write-Host   "============="
 dotnet restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
 dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release --no-incremental /p:DebugType=PdbOnly
-msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /restore /nologo /verbosity:minimal
+msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /t:restore /nologo /verbosity:minimal
 
 Write-Host "`nTests Build"
 Write-Host   "==========="
