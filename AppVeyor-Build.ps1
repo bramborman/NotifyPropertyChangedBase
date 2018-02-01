@@ -122,7 +122,7 @@ choco install opencover.portable codecov --no-progress
 
 $target = "dotnet.exe"
 $targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 --no-build"
-$filter = """+[NotifyPropertyChangedBase*]* -[NotifyPropertyChangedBase.Tests*]*"""
+$filter = """+[*]* -[NotifyPropertyChangedBase.Tests*]*"""
 $output = "OpenCoverResults.xml"
 
 OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
