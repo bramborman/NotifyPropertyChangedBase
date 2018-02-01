@@ -49,6 +49,11 @@ $projectFiles   = Get-ChildItem -Include "*.csproj" -Recurse
 
 foreach ($projectFile in $projectFiles)
 {
+    if ($projectFile.Name -eq "NotifyPropertyChangedBase.Android.csproj")
+    {
+        continue
+    }
+
     $xml = [xml](Get-Content $projectFile.FullName)
 
     $propertyGroup = $xml | Select-Xml -XPath "/Project/PropertyGroup[Version='1.0.0']"
@@ -76,6 +81,7 @@ Write-Host   "============="
 dotnet restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
 dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release --no-incremental /p:DebugType=PdbOnly
+msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /restore /nologo /verbosity:minimal
 
 Write-Host "`nTests Build"
 Write-Host   "==========="
