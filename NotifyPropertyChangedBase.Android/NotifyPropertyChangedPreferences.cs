@@ -31,7 +31,7 @@ using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase.Android
 {
-    public abstract class AppStore : NotifyPropertyChanged
+    public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged
     {
         private readonly Dictionary<string, (string name, object defaultValue)> propertyData = new Dictionary<string, (string, object)>();
         private readonly Dictionary<string, string> nameKeyDictionary = new Dictionary<string, string>();
@@ -39,17 +39,17 @@ namespace NotifyPropertyChangedBase.Android
         private readonly ISharedPreferencesEditor editor;
         private readonly OnSharedPreferenceChangeListener listener;
 
-        protected AppStore(Context context) : this(context, null)
+        protected NotifyPropertyChangedPreferences(Context context) : this(context, null)
         {
 
         }
 
-        protected AppStore(Context context, string sharedPrerefencesName) : this(context, sharedPrerefencesName, 0)
+        protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName) : this(context, sharedPrerefencesName, 0)
         {
 
         }
 
-        protected AppStore(Context context, string sharedPrerefencesName, FileCreationMode fileCreationMode)
+        protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName, FileCreationMode fileCreationMode)
         {
             preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
             editor = preferences.Edit();
