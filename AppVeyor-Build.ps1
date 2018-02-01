@@ -85,7 +85,11 @@ dotnet build NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csp
 Write-Host "`nArtifacts"
 Write-Host   "========="
 
-Push-AppveyorArtifact *.nupkg
+foreach ($nuget in Get-ChildItem *.nupkg)
+{
+    Push-AppveyorArtifact $nuget
+}
+
 $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
