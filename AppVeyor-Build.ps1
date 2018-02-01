@@ -76,7 +76,7 @@ Write-Host   "============="
 nuget restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
 dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release --no-incremental /p:DebugType=PdbOnly
-msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /nologo /verbosity:minimal
+msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /nologo /verbosity:minimal /t:pack /p:PackageOutputPath=$(Get-Location)
 
 Write-Host "`nTests Build"
 Write-Host   "==========="
