@@ -78,10 +78,10 @@ foreach ($projectFile in $projectFiles)
 
 Write-Host "`nLibrary Build"
 Write-Host   "============="
-dotnet restore
+nuget restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
 dotnet build NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release --no-incremental /p:DebugType=PdbOnly
-msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /t:restore /nologo /verbosity:minimal
+msbuild NotifyPropertyChangedBase.Android /p:Configuration=Release /nologo /verbosity:minimal
 
 Write-Host "`nTests Build"
 Write-Host   "==========="
