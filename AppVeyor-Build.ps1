@@ -49,11 +49,6 @@ $projectFiles   = Get-ChildItem -Include "*.csproj" -Recurse
 
 foreach ($projectFile in $projectFiles)
 {
-    if ($projectFile.Name -eq "NotifyPropertyChangedBase.Android.csproj")
-    {
-        continue
-    }
-
     $xml = [xml](Get-Content $projectFile.FullName)
 
     $propertyGroup = $xml | Select-Xml -XPath "/Project/PropertyGroup[Version='1.0.0']"
