@@ -31,6 +31,9 @@ using System.Runtime.CompilerServices;
 
 namespace NotifyPropertyChangedBase.Android
 {
+    /// <summary>
+    /// Abstract base class inheriting from <see cref="NotifyPropertyChanged"/> adding Android shared preferences functionality.
+    /// </summary>
     public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged
     {
         private readonly Dictionary<string, (string name, object defaultValue)> propertyData = new Dictionary<string, (string, object)>();
@@ -39,16 +42,31 @@ namespace NotifyPropertyChangedBase.Android
         private readonly ISharedPreferencesEditor editor;
         private readonly OnSharedPreferenceChangeListener listener;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyPropertyChangedPreferences"/> class using default shared preferences.
+        /// </summary>
+        /// <param name="context">The context where the preferences will be obtained.</param>
         protected NotifyPropertyChangedPreferences(Context context) : this(context, null)
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyPropertyChangedPreferences"/> class using shared preferences of the given name.
+        /// </summary>
+        /// <param name="context">The context where the preferences will be obtained.</param>
+        /// <param name="sharedPrerefencesName">The name of the shared preferences to use.</param>
         protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName) : this(context, sharedPrerefencesName, 0)
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyPropertyChangedPreferences"/> class using shared preferences of the given name.
+        /// </summary>
+        /// <param name="context">The context where the preferences will be obtained.</param>
+        /// <param name="sharedPrerefencesName">The name of shared preferences to use.</param>
+        /// <param name="fileCreationMode">Mode used when obtaining the shared preferences.</param>
         protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName, FileCreationMode fileCreationMode)
         {
             preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
@@ -58,17 +76,75 @@ namespace NotifyPropertyChangedBase.Android
             // We don't need to unregister this later since this reference is held as a weak reference
             preferences.RegisterOnSharedPreferenceChangeListener(listener);
         }
-        
+
+        /// <summary>
+        /// Registers a new property in the actual instance of <see cref="NotifyPropertyChangedPreferences"/>.
+        /// This property is synced with used shared preferences using the key specified.
+        /// </summary>
+        /// <param name="key">Key used for syncing with shared preferences.</param>
+        /// <param name="name">Name of the registered property.</param>
+        /// <param name="type">Type of the registered property.</param>
+        /// <param name="defaultValue">Default value of the registered property.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="key"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to a property of type specified in the <paramref name="type"/> parameter.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains a registered property named the same as specified in parameter <paramref name="name"/>.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains a registered property with the same key as specified in parameter <paramref name="key"/>.
+        ///     </para>
+        /// </exception>
+        /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue)
         {
             RegisterPreferencesProperty(key, name, type, defaultValue, null);
         }
 
+        /// <summary>
+        /// Registers a new property in the actual instance of <see cref="NotifyPropertyChangedPreferences"/>.
+        /// This property is synced with used shared preferences using the key specified.
+        /// </summary>
+        /// <param name="key">Key used for syncing with shared preferences.</param>
+        /// <param name="name">Name of the registered property.</param>
+        /// <param name="type">Type of the registered property.</param>
+        /// <param name="defaultValue">Default value of the registered property.</param>
+        /// <param name="propertyChangedCallback">Callback invoked right after the registered property changes.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="key"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Parameter <paramref name="name"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Value of <paramref name="defaultValue"/> cannot be assigned to a property of type specified in the <paramref name="type"/> parameter.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains a registered property named the same as specified in parameter <paramref name="name"/>.
+        ///     </para>
+        ///     <para>
+        ///         Instance already contains a registered property with the same key as specified in parameter <paramref name="key"/>.
+        ///     </para>
+        /// </exception>
+        /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Value cannot be white space or null.", nameof(key));
+            }
+
             if (propertyData.ContainsKey(key))
             {
-                throw new ArgumentException($"This class already contains a registered property with key '{key}'.");
+                throw new ArgumentException($"This instance already contains a registered property with key '{key}'.");
             }
 
             RegisterProperty(name, type, GetPreferencesValue(key, defaultValue), propertyChangedCallback);
@@ -76,6 +152,12 @@ namespace NotifyPropertyChangedBase.Android
             nameKeyDictionary.Add(name, key);
         }
 
+        /// <summary>
+        /// Invokes the <see cref="NotifyPropertyChanged.PropertyChanged"/> event and if the changed property
+        /// is synced with shared preferences, this method syncs it.
+        /// </summary>
+        /// <param name="propertyName">Name of the changed property.</param>
+        /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (nameKeyDictionary.ContainsKey(propertyName))
