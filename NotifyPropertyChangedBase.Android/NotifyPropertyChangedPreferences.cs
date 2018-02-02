@@ -184,13 +184,13 @@ namespace NotifyPropertyChangedBase.Android
             {
                 return preferences.GetBoolean(key, (bool)defaultValue);
             }
-            else if (valueType == typeof(string) || valueType == null)
-            {
-                return preferences.GetString(key, (string)defaultValue);
-            }
             else if (valueType == typeof(int))
             {
                 return preferences.GetInt(key, (int)defaultValue);
+            }
+            else if (valueType == typeof(string) || valueType == null)
+            {
+                return preferences.GetString(key, (string)defaultValue);
             }
             else if (valueType == typeof(float))
             {
@@ -199,6 +199,10 @@ namespace NotifyPropertyChangedBase.Android
             else if (valueType == typeof(long))
             {
                 return preferences.GetLong(key, (long)defaultValue);
+            }
+            else if (valueType == typeof(ICollection<string>))
+            {
+                return preferences.GetStringSet(key, (ICollection<string>)defaultValue);
             }
             else
             {
@@ -214,13 +218,13 @@ namespace NotifyPropertyChangedBase.Android
             {
                 editor.PutBoolean(key, (bool)newValue);
             }
-            else if (valueType == typeof(string) || valueType == null)
-            {
-                editor.PutString(key, (string)newValue);
-            }
             else if (valueType == typeof(int))
             {
                 editor.PutInt(key, (int)newValue);
+            }
+            else if (valueType == typeof(string) || valueType == null)
+            {
+                editor.PutString(key, (string)newValue);
             }
             else if (valueType == typeof(float))
             {
@@ -229,6 +233,10 @@ namespace NotifyPropertyChangedBase.Android
             else if (valueType == typeof(long))
             {
                 editor.PutLong(key, (long)newValue);
+            }
+            else if (valueType == typeof(ICollection<string>))
+            {
+                editor.PutStringSet(key, (ICollection<string>)newValue);
             }
             else
             {
