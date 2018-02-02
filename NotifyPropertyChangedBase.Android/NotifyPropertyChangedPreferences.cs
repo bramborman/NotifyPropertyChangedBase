@@ -53,23 +53,25 @@ namespace NotifyPropertyChangedBase.Android
         {
             preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
             editor = preferences.Edit();
+
             listener = new OnSharedPreferenceChangeListener(Listener_SharedPreferenceChanged);
+            // We don't need to unregister this later since this reference is held as a weak reference
             preferences.RegisterOnSharedPreferenceChangeListener(listener);
         }
-
-        protected void RegisterAppStoreProperty(string key, string name, Type type, object defaultValue)
+        
+        protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue)
         {
-            RegisterAppStoreProperty(key, name, type, defaultValue, null);
+            RegisterPreferencesProperty(key, name, type, defaultValue, null);
         }
 
-        protected void RegisterAppStoreProperty(string key, string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
+        protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             if (propertyData.ContainsKey(key))
             {
                 throw new ArgumentException($"This class already contains a registered property with key '{key}'.");
             }
 
-            RegisterProperty(name, type, GetAppStoreValue(key, defaultValue), propertyChangedCallback);
+            RegisterProperty(name, type, GetPreferencesValue(key, defaultValue), propertyChangedCallback);
             propertyData.Add(key, (name, defaultValue));
             nameKeyDictionary.Add(name, key);
         }
@@ -78,7 +80,7 @@ namespace NotifyPropertyChangedBase.Android
         {
             if (nameKeyDictionary.ContainsKey(propertyName))
             {
-                SetAppStoreValue(nameKeyDictionary[propertyName], GetValue(propertyName));
+                SetPreferencesValue(nameKeyDictionary[propertyName], GetValue(propertyName));
             }
 
             base.OnPropertyChanged(propertyName);
@@ -88,11 +90,11 @@ namespace NotifyPropertyChangedBase.Android
         {
             if (propertyData.ContainsKey(key))
             {
-                SetValue(GetAppStoreValue(key, propertyData[key].defaultValue), propertyData[key].name);
+                SetValue(GetPreferencesValue(key, propertyData[key].defaultValue), propertyData[key].name);
             }
         }
         
-        private object GetAppStoreValue(string key, object defaultValue)
+        private object GetPreferencesValue(string key, object defaultValue)
         {
             Type valueType = defaultValue?.GetType();
 
@@ -122,7 +124,7 @@ namespace NotifyPropertyChangedBase.Android
             }
         }
 
-        private void SetAppStoreValue(string key, object newValue)
+        private void SetPreferencesValue(string key, object newValue)
         {
             Type valueType = newValue?.GetType();
 
@@ -152,11 +154,6 @@ namespace NotifyPropertyChangedBase.Android
             }
 
             editor.Apply();
-        }
-
-        protected void Detach()
-        {
-            preferences.UnregisterOnSharedPreferenceChangeListener(listener);
         }
 
 
