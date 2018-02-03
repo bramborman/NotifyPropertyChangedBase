@@ -241,6 +241,22 @@ namespace NotifyPropertyChangedBase.Tests
             }
         }
 
+        [TestMethod]
+        public void EventsTest()
+        {
+            Wrapper w = new Wrapper();
+
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.OnPropertyChanged(invalidPropertyName));
+            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.OnPropertyChangedCallback(0, 1, invalidPropertyName));
+
+            w.OnPropertyChanged("NotRegisteredProperty");
+            Assert.ThrowsException<ArgumentException>(() => w.OnPropertyChangedCallback(0, 1, "NotRegisteredProperty"));
+
+            w.RegisterProperty("Property", typeof(bool), false);
+            w.OnPropertyChanged("Property");
+            w.OnPropertyChangedCallback(false, true, "Property");
+        }
+
         private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action) where TException : Exception
         {
             foreach (TObject item in collection)

@@ -79,5 +79,10 @@ namespace NotifyPropertyChangedBase.Tests
         {
             base.OnPropertyChanged(propertyName);
         }
+
+        internal new void OnPropertyChangedCallback(object oldValue, object newValue, string propertyName)
+        {
+            base.OnPropertyChangedCallback(oldValue, newValue, propertyName);
+        }
     }
 }
