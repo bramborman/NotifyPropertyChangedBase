@@ -1,6 +1,7 @@
 # NotifyPropertyChangedBase
 [![NuGet](https://img.shields.io/nuget/v/NotifyPropertyChangedBase.svg)](https://www.nuget.org/packages/NotifyPropertyChangedBase/)
 [![Build status](https://ci.appveyor.com/api/projects/status/jc9gcr4gldjr8nq6/branch/master?svg=true)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/master)
+[![Tests status](https://img.shields.io/appveyor/tests/bramborman/notifypropertychangedbase.svg)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase)
 [![Code coverage](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/master/graph/badge.svg)](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase)
 [![Issues](https://img.shields.io/github/issues/bramborman/NotifyPropertyChangedBase.svg)](https://github.com/bramborman/NotifyPropertyChangedBase/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md)
@@ -10,8 +11,9 @@ NotifyPropertyChangedBase provides a simple to use yet powerful base class `Noti
 This is an open-source project so feel free to send a pull request or open an issue.
 
 ### Pre-release
-[![MyGet](https://img.shields.io/myget/bramborman/vpre/NotifyPropertyChangedBase.svg)][MyGet]
+[![MyGet](https://img.shields.io/myget/bramborman/vpre/NotifyPropertyChangedBase.svg?label=myget)][MyGet]
 [![Build status](https://ci.appveyor.com/api/projects/status/jc9gcr4gldjr8nq6/branch/dev?svg=true)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/dev)
+[![Tests status](https://img.shields.io/appveyor/tests/bramborman/notifypropertychangedbase/dev.svg)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/dev)
 [![Code coverage](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev/graph/badge.svg)](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev)
 
 If you want to get updates more frequently or test bugfixes and new features before they go into production and you don't mind the possibility of new bugs, you can use the pre-release version of NotifyPropertyChangedBase from MyGet.org.
