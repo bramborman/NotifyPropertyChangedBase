@@ -242,7 +242,7 @@ namespace NotifyPropertyChangedBase
 
                 if (IsPropertyChangedCallbackInvokingEnabled)
                 {
-                    propertyData.propertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, value));
+                    OnPropertyChangedCallback(oldValue, value, propertyName);
                 }
 
                 if (IsPropertyChangedEventInvokingEnabled)
@@ -250,6 +250,25 @@ namespace NotifyPropertyChangedBase
                     OnPropertyChanged(propertyName);
                 }
             }
+        }
+
+        /// <summary>
+        /// Invokes the PropertyChangedCallback for the given property.
+        /// </summary>
+        /// <param name="oldValue">Previous value of the changed property.</param>
+        /// <param name="newValue">Current value of the changed property.</param>
+        /// <param name="propertyName">Name of the changed property.</param>
+        /// <exception cref="ArgumentException">
+        ///     <para>
+        ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
+        ///     </para>
+        ///     <para>
+        ///         Actual instance does not contain registered property with the specified name.
+        ///     </para>
+        /// </exception>
+        protected virtual void OnPropertyChangedCallback(object oldValue, object newValue, [CallerMemberName]string propertyName = null)
+        {
+            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, newValue));
         }
 
         /// <summary>
@@ -262,7 +281,7 @@ namespace NotifyPropertyChangedBase
             Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
+
         private void ValidateValueForType(object value, Type type)
         {
             if (value == null)
