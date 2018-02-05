@@ -129,7 +129,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         ///     <para>
         ///         Parameter <paramref name="propertyChangedCallback"/> is <c>null</c>.
@@ -151,7 +151,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         ///     <para>
         ///         Parameter <paramref name="propertyChangedCallback"/> is <c>null</c>.
@@ -173,7 +173,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         /// </exception>
         protected object GetValue([CallerMemberName]string propertyName = null)
@@ -196,7 +196,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         /// </exception>
         protected void ForceSetValue(object value, [CallerMemberName]string propertyName = null)
@@ -219,7 +219,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         /// </exception>
         protected void SetValue(object value, [CallerMemberName]string propertyName = null)
@@ -263,7 +263,7 @@ namespace NotifyPropertyChangedBase
         ///         Parameter <paramref name="propertyName"/> is <c>null</c> or white space.
         ///     </para>
         ///     <para>
-        ///         Actual instance does not contain registered property with the specified name.
+        ///         Actual instance does not contain any registered property with the specified name.
         ///     </para>
         /// </exception>
         protected virtual void OnPropertyChangedCallback(object oldValue, object newValue, [CallerMemberName]string propertyName = null)
