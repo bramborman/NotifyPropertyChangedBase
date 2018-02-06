@@ -7,7 +7,7 @@
     <PackageId>NotifyPropertyChangedBase.Android</PackageId>
     <AssemblyName>NotifyPropertyChangedBase.Android</AssemblyName>
     <AssemblyTitle>NotifyPropertyChangedBase.Android</AssemblyTitle>
-    <Description>Android preferences base class implementing INotifyPropertyChanged.</Description>
+    <Description>Android shared preferences extension for NotifyPropertyChangedBase.</Description>
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
     <Copyright>© 2018 Marian Dolinský</Copyright>

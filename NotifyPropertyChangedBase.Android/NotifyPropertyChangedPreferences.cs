@@ -32,7 +32,7 @@ using System.Runtime.CompilerServices;
 namespace NotifyPropertyChangedBase.Android
 {
     /// <summary>
-    /// Abstract base class inheriting from <see cref="NotifyPropertyChanged"/> adding Android shared preferences functionality.
+    /// Abstract base class extending <see cref="NotifyPropertyChanged"/> of Android shared preferences functionality.
     /// </summary>
     public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged
     {
@@ -166,6 +166,28 @@ namespace NotifyPropertyChangedBase.Android
             }
 
             base.OnPropertyChanged(propertyName);
+        }
+
+        /// <summary>
+        /// Saves values of all preference properties to shared preferences.
+        /// </summary>
+        protected void SaveAllToPreferences()
+        {
+            foreach (string name in nameKeyDictionary.Keys)
+            {
+                SaveToPreferences(name);
+            }
+        }
+
+        /// <summary>
+        /// Saves a value of the registered preferences property to shared preferences.
+        /// </summary>
+        /// <param name="propertyName">The name of a registered property whose value should be saved.</param>
+        protected void SaveToPreferences(string propertyName)
+        {
+            // GetValue will check the propertyName's value for us - no need
+            // to check if the property name exists here
+            SetPreferencesValue(nameKeyDictionary[propertyName], GetValue(propertyName));
         }
 
         private void Listener_SharedPreferenceChanged(string key)
