@@ -15,12 +15,14 @@
     <FileVersion>1.0.0.0</FileVersion>
     <PackageVersion>1.0.0</PackageVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
     <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers Android Xamarin</PackageTags>
     <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <DefineConstants>HAVE_COM_ATTRIBUTES</DefineConstants>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
