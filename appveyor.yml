@@ -17,8 +17,8 @@ image: Visual Studio 2017
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: ${SEMANTIC_VERSION}
-  package_version: '{version}'
+  version: '{version}'
+  package_version: ${PURE_BUILD_VERSION}
   assembly_version: ${PURE_BUILD_VERSION}
   file_version: ${PURE_BUILD_VERSION}
   informational_version: '{version}'
