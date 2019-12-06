@@ -18,9 +18,9 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
-  package_version: ${PURE_BUILD_VERSION}
-  assembly_version: ${PURE_BUILD_VERSION}
-  file_version: ${PURE_BUILD_VERSION}
+  package_version: $(PURE_BUILD_VERSION)
+  assembly_version: $(PURE_BUILD_VERSION)
+  file_version: $(PURE_BUILD_VERSION)
   informational_version: '{version}'
 install:
 - ps: '& .\AppVeyor-Init.ps1'
