@@ -14,8 +14,6 @@ skip_commits:
     - README.md
     - Run-UnitTests.ps1
 image: Visual Studio 2017
-init:
-- ps: '& .\AppVeyor-Init.ps1'
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -25,6 +23,8 @@ dotnet_csproj:
   assembly_version: ${PURE_BUILD_VERSION}
   file_version: ${PURE_BUILD_VERSION}
   informational_version: '{version}'
+install:
+- ps: '& .\AppVeyor-Init.ps1'
 build_script:
 - ps: '& .\AppVeyor-Build.ps1'
 deploy:
