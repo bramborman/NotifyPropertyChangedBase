@@ -18,7 +18,6 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: ${SEMANTIC_VERSION}
-  version_prefix: '{version}'
   package_version: '{version}'
   assembly_version: ${PURE_BUILD_VERSION}
   file_version: ${PURE_BUILD_VERSION}
