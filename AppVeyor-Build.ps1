@@ -23,10 +23,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-Write-Host "`nChecking license headers"
-Write-Host   "========================"
-.\Check-LicenseHeaders.ps1
-
 Write-Host "`nLibrary Build"
 Write-Host   "============="
 nuget restore
