@@ -8,11 +8,11 @@
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
     <Copyright>© 2018 Marian Dolinský</Copyright>
-    <Version>1.0.0</Version>
+    <Version>1.0.0-debug</Version>
     <FileVersion>1.0.0.0</FileVersion>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.0-debug</PackageVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0</InformationalVersion>
+    <InformationalVersion>1.0.0-debug</InformationalVersion>
     <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
