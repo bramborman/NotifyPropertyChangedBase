@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.0;</TargetFrameworks>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
     <Title>NotifyPropertyChangedBase</Title>
     <Product>NotifyPropertyChangedBase</Product>
     <PackageId>NotifyPropertyChangedBase</PackageId>
+    <AssemblyName>NotifyPropertyChangedBase</AssemblyName>
+    <AssemblyTitle>NotifyPropertyChangedBase</AssemblyTitle>
     <Description>A simple to use yet powerful implementation of INotifyPropertyChanged.</Description>
     <Company>Marian Dolinský</Company>
     <Authors>Marian Dolinský</Authors>
@@ -29,14 +31,4 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-    <AssemblyName>NotifyPropertyChangedBase.Net45</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase.Net45</AssemblyTitle>
-    <DefineConstants>NET_45;HAVE_COM_ATTRIBUTES</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
-    <AssemblyName>NotifyPropertyChangedBase.NetStandard</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase.NetStandard</AssemblyTitle>
-    <DefineConstants>NETSTANDARD1_0</DefineConstants>
-  </PropertyGroup>
 </Project>
