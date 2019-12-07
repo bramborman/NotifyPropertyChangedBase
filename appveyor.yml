@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - dev
+  - appveyor-version-patching
 skip_tags: true
 skip_commits:
   files:
@@ -13,6 +14,16 @@ skip_commits:
     - README.md
     - Run-UnitTests.ps1
 image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: $(MAJOR_MINOR_PATCH_BUILD_VERSION)
+  file_version: $(MAJOR_MINOR_PATCH_BUILD_VERSION)
+  informational_version: '{version}'
+install:
+- ps: '& .\AppVeyor-Init.ps1'
 build_script:
 - ps: '& .\AppVeyor-Build.ps1'
 deploy:
