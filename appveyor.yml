@@ -5,7 +5,6 @@ branches:
   only:
   - master
   - dev
-  - appveyor-version-patching
 skip_tags: true
 skip_commits:
   files:
@@ -13,7 +12,7 @@ skip_commits:
     - .gitignore
     - README.md
     - Run-UnitTests.ps1
-image: Visual Studio 2017
+image: Visual Studio 2019
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -23,9 +22,9 @@ dotnet_csproj:
   file_version: $(MAJOR_MINOR_PATCH_BUILD_VERSION)
   informational_version: '{version}'
 install:
-- ps: '& .\AppVeyor-Init.ps1'
+- cmd: pwsh AppVeyor-Init.ps1
 build_script:
-- ps: '& .\AppVeyor-Build.ps1'
+- cmd: pwsh AppVeyor-Build.ps1
 deploy:
 - provider: Environment
   name: MyGet
