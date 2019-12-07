@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 Marian Dolinský
+# Copyright (c) 2019 Marian Dolinský
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -31,7 +31,7 @@ function GetOneLined ($Path)
     foreach ($line in $content)
     {
         $output += $line
-        
+
         if ($line -ne "")
         {
             $output += " "
@@ -64,11 +64,11 @@ foreach ($file in $files)
     {
         $fileContent = $fileContent.Replace("# ", "")
     }
-    
+
     if (!($fileContent.StartsWith($license)))
     {
         throw "File $($file.FullName.Substring((Resolve-Path .).Path.Length)) has a license header issue on line $($i + 1)"
-    
+
         if ($env:APPVEYOR)
         {
             Exit-AppveyorBuild
