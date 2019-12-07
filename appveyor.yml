@@ -22,9 +22,9 @@ dotnet_csproj:
   file_version: $(MAJOR_MINOR_PATCH_BUILD_VERSION)
   informational_version: '{version}'
 install:
-- cmd: pwsh AppVeyor-Init.ps1
+- cmd: powershell AppVeyor-Init.ps1
 build_script:
-- cmd: pwsh AppVeyor-Build.ps1
+- cmd: powershell AppVeyor-Build.ps1
 deploy:
 - provider: Environment
   name: MyGet
