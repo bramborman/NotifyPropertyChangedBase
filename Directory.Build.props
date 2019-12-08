@@ -15,7 +15,6 @@
     <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
