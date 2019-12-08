@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
 
   <PropertyGroup>
-    <TargetFramework>xamarinandroid9.0</TargetFramework>
+    <TargetFramework>monoandroid10.0</TargetFramework>
     <Product>$(BaseLibraryName).Android</Product>
 
     <RootNamespace>$(Product)</RootNamespace>
