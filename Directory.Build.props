@@ -16,7 +16,6 @@
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
     <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers</PackageTags>
 
@@ -26,7 +25,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Link="Properties\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
 
