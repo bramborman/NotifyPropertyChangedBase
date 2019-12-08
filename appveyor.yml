@@ -15,7 +15,7 @@ skip_commits:
 image: Visual Studio 2019
 dotnet_csproj:
   patch: true
-  file: '**\*.csproj'
+  file: Directory.Build.props
   version: '{version}'
   package_version: '{version}'
   assembly_version: $(MAJOR_MINOR_PATCH_BUILD_VERSION)
