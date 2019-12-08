@@ -1,34 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <RootNamespace>NotifyPropertyChangedBase</RootNamespace>
-    <Title>NotifyPropertyChangedBase</Title>
-    <Product>NotifyPropertyChangedBase</Product>
-    <PackageId>NotifyPropertyChangedBase</PackageId>
-    <AssemblyName>NotifyPropertyChangedBase</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase</AssemblyTitle>
+    <Product>$(BaseLibraryName)</Product>
+
+    <RootNamespace>$(Product)</RootNamespace>
+    <Title>$(Product)</Title>
+    <PackageId>$(Product)</PackageId>
+    <AssemblyName>$(Product)</AssemblyName>
+    <AssemblyTitle>$(Product)</AssemblyTitle>
+
     <Description>A simple to use yet powerful implementation of INotifyPropertyChanged.</Description>
-    <Company>Marian Dolinský</Company>
-    <Authors>Marian Dolinský</Authors>
-    <Copyright>© 2019 Marian Dolinský</Copyright>
-    <Version>1.0.0-debug</Version>
-    <FileVersion>1.0.0.0</FileVersion>
-    <PackageVersion>1.0.0-debug</PackageVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0-debug</InformationalVersion>
-    <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers</PackageTags>
-    <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="**\*.orig" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
+
 </Project>

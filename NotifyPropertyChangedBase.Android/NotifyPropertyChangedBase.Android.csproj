@@ -1,38 +1,23 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
+
   <PropertyGroup>
     <TargetFramework>xamarinandroid10.0</TargetFramework>
-    <RootNamespace>NotifyPropertyChangedBase.Android</RootNamespace>
-    <Title>NotifyPropertyChangedBase.Android</Title>
-    <Product>NotifyPropertyChangedBase.Android</Product>
-    <PackageId>NotifyPropertyChangedBase.Android</PackageId>
-    <AssemblyName>NotifyPropertyChangedBase.Android</AssemblyName>
-    <AssemblyTitle>NotifyPropertyChangedBase.Android</AssemblyTitle>
+    <Product>$(BaseLibraryName).Android</Product>
+
+    <RootNamespace>$(Product)</RootNamespace>
+    <Title>$(Product)</Title>
+    <PackageId>$(Product)</PackageId>
+    <AssemblyName>$(Product)</AssemblyName>
+    <AssemblyTitle>$(Product)</AssemblyTitle>
+
     <Description>Android shared preferences extension for NotifyPropertyChangedBase.</Description>
-    <Company>Marian Dolinský</Company>
-    <Authors>Marian Dolinský</Authors>
-    <Copyright>© 2019 Marian Dolinský</Copyright>
-    <Version>1.0.0-debug</Version>
-    <FileVersion>1.0.0.0</FileVersion>
-    <PackageVersion>1.0.0-debug</PackageVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0-debug</InformationalVersion>
-    <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers Android Xamarin</PackageTags>
-    <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <DefineConstants>HAVE_COM_ATTRIBUTES</DefineConstants>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <LangVersion>latest</LangVersion>
+    <PackageTags>$(PackageTags) Android Xamarin</PackageTags>
+
+    <DefineConstants>$(DefineConstants);HAVE_COM_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="**\*.orig" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj" />
   </ItemGroup>
+
 </Project>

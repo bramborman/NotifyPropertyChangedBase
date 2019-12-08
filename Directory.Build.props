@@ -1,0 +1,34 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <BaseLibraryName>NotifyPropertyChangedBase</BaseLibraryName>
+    <Authors>Marian Dolinský</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>© $([System.DateTime]::UtcNow.Year) $(Authors)</Copyright>
+
+    <Version>0.0.1-debug</Version>
+    <FileVersion>0.0.1.0</FileVersion>
+    <PackageVersion>0.0.1-debug</PackageVersion>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <InformationalVersion>0.0.1-debug</InformationalVersion>
+
+    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseUrl>https://github.com/bramborman/NotifyPropertyChangedBase/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
+    <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers</PackageTags>
+
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);DEBUG</DefineConstants>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Link="Properties\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+
+</Project>
