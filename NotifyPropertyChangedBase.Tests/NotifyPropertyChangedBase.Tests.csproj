@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net45;</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net4.8;net4.7.2;net4.6.2;net4.5.2</TargetFrameworks>
     <Product>$(BaseLibraryName).Tests</Product>
 
     <RootNamespace>$(Product)</RootNamespace>
     <Title>$(Product)</Title>
     <PackageId>$(Product)</PackageId>
-    <AssemblyName Condition="'$(TargetFramework)'=='netcoreapp1.0'">$(Product).NetCore</AssemblyName>
-    <AssemblyName Condition="'$(TargetFramework)'=='net45'">$(Product).Net45</AssemblyName>
+    <AssemblyName>$(Product).$(TargetFramework)</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
 
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <IsPackable>False</IsPackable>
 
-    <DefineConstants Condition="'$(TargetFramework)'=='netcoreapp1.0'">$(DefineConstants);NETCOREAPP1_0</DefineConstants>
-    <DefineConstants Condition="'$(TargetFramework)'=='net45'">$(DefineConstants);HAVE_COM_ATTRIBUTES</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)'=='netcoreapp3.1'">$(DefineConstants);NETCOREAPP3_1</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)'=='netcoreapp2.1'">$(DefineConstants);NETCOREAPP2_1</DefineConstants>
+    <DefineConstants Condition="$(TargetFramework.StartsWith('net4'))">$(DefineConstants);HAVE_COM_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
 
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
-    <PackageReference Condition="'$(TargetFramework)' == 'netcoreapp1.0'" Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Condition="$(TargetFramework.StartsWith('netcoreapp'))" Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
 
     <ProjectReference Include="..\NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj" />
   </ItemGroup>
