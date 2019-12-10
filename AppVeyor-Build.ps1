@@ -60,19 +60,19 @@ foreach ($projectFolder in $projectFolders)
 	Push-AppveyorArtifact $zipFileName
 }
 
-Write-Host "`n.NET Core tests"
-Write-Host   "==============="
-dotnet vstest NotifyPropertyChangedBase.Tests\bin\Release\netcoreapp1.0\NotifyPropertyChangedBase.Tests.NetCore.dll /logger:trx
-(New-Object "System.Net.WebClient").UploadFile("https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID", (Resolve-Path "TestResults\*.trx"))
+#Write-Host "`n.NET Core tests"
+#Write-Host   "==============="
+#dotnet vstest NotifyPropertyChangedBase.Tests\bin\Release\netcoreapp1.0\NotifyPropertyChangedBase.Tests.NetCore.dll /logger:trx
+#(New-Object "System.Net.WebClient").UploadFile("https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID", (Resolve-Path "TestResults\*.trx"))
 
-Write-Host "`nCodecov"
-Write-Host   "======="
-choco install opencover.portable codecov --no-progress
+#Write-Host "`nCodecov"
+#Write-Host   "======="
+#choco install opencover.portable codecov --no-progress
 
-$target = "dotnet.exe"
-$targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 --no-build"
-$filter = """+[*]* -[NotifyPropertyChangedBase.Tests*]*"""
-$output = "OpenCoverResults.xml"
+#$target = "dotnet.exe"
+#$targetArgs = "test NotifyPropertyChangedBase.Tests\NotifyPropertyChangedBase.Tests.csproj -c Release -f net45 --no-build"
+#$filter = """+[*]* -[NotifyPropertyChangedBase.Tests*]*"""
+#$output = "OpenCoverResults.xml"
 
-OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
-codecov -f $output
+#OpenCover.Console.exe -register:user -target:$target -targetargs:$targetArgs -filter:$filter -output:$output
+#codecov -f $output
