@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
 
   <PropertyGroup>
     <BaseLibraryName>NotifyPropertyChangedBase</BaseLibraryName>
@@ -12,12 +12,12 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <InformationalVersion>0.0.1-debug</InformationalVersion>
 
-    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryUrl>https://github.com/bramborman/NotifyPropertyChangedBase</RepositoryUrl>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/bramborman/NotifyPropertyChangedBase</PackageProjectUrl>
     <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
 
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);DEBUG</DefineConstants>
