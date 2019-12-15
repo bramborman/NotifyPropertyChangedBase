@@ -11,7 +11,6 @@ skip_commits:
     - .gitattributes
     - .gitignore
     - README.md
-    - Run-UnitTests.ps1
 image: Visual Studio 2019
 dotnet_csproj:
   patch: true
