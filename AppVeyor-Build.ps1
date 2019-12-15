@@ -1,29 +1,4 @@
-﻿# MIT License
-#
-# Copyright (c) 2019 Marian Dolinský
-#
-# Permission is hereby granted, free of charge, to any person
-# obtaining a copy of this software and associated documentation
-# files (the "Software"), to deal in the Software without
-# restriction, including without limitation the rights to use,
-# copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the
-# Software is furnished to do so, subject to the following
-# conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
-
-Write-Host "`nLibrary Build"
+﻿Write-Host "`nLibrary Build"
 Write-Host   "============="
 nuget restore
 dotnet pack NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj -c Release -o $(Get-Location)
@@ -46,18 +21,18 @@ $projectFolders = Get-ChildItem -Directory -Filter "NotifyPropertyChangedBase*"
 
 foreach ($projectFolder in $projectFolders)
 {
-	$releaseFolder = Join-Path $projectFolder.FullName "\bin\Release"
+    $releaseFolder = Join-Path $projectFolder.FullName "\bin\Release"
 
-	if (!(Test-Path $releaseFolder))
-	{
-		throw "Invalid project release folder. `$releaseFolder: '$releaseFolder'"
+    if (!(Test-Path $releaseFolder))
+    {
+        throw "Invalid project release folder. `$releaseFolder: '$releaseFolder'"
         Exit-AppveyorBuild
-	}
+    }
 
-	$zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
-	7z a $zipFileName "$releaseFolder\*"
+    $zipFileName = "$projectFolder.$env:APPVEYOR_BUILD_VERSION.zip"
+    7z a $zipFileName "$releaseFolder\*"
 
-	Push-AppveyorArtifact $zipFileName
+    Push-AppveyorArtifact $zipFileName
 }
 
 #Write-Host "`n.NET Core tests"
