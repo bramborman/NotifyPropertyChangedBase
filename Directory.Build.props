@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
 
   <PropertyGroup>
     <BaseLibraryName>NotifyPropertyChangedBase</BaseLibraryName>
@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" Visible="False" />
   </ItemGroup>
 
 </Project>
