@@ -1,0 +1,8 @@
+﻿# Suppress: EC112
+
+root = false
+
+[*.cs]
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// ---------------------------------------------------------------------------------------
+// <copyright file="NotifyPropertyChanged.cs" company="Marian Dolinský">
+// Copyright (c) Marian Dolinský. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -11,15 +17,15 @@ namespace NotifyPropertyChangedBase
     /// </summary>
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
-        private readonly Dictionary<string, PropertyData> backingStore = new Dictionary<string, PropertyData>();
+        private readonly Dictionary<string, PropertyData> _backingStore = new Dictionary<string, PropertyData>();
 
         /// <summary>
-        /// Gets or sets the value indicating whether the <see cref="PropertyChanged"/> event should be invoked
+        /// Gets or sets a value indicating whether the <see cref="PropertyChanged"/> event should be invoked
         /// when a property changes. The default value is <c>true</c>.
         /// </summary>
         protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
         /// <summary>
-        /// Gets or sets the value indicating whether registered <see cref="PropertyChangedCallbackHandler"/>s should be invoked
+        /// Gets or sets a value indicating whether registered <see cref="PropertyChangedCallbackHandler"/>s should be invoked
         /// when a property changes. The default value is <c>true</c>.
         /// </summary>
         protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
@@ -86,12 +92,12 @@ namespace NotifyPropertyChangedBase
             Helpers.ValidateObjectNotNull(type, nameof(type));
             ValidateValueForType(defaultValue, type);
 
-            if (backingStore.ContainsKey(name))
+            if (_backingStore.ContainsKey(name))
             {
                 throw new ArgumentException($"This instance already contains a registered property named '{name}'.");
             }
 
-            backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
+            _backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
         }
 
         /// <summary>
@@ -113,7 +119,7 @@ namespace NotifyPropertyChangedBase
         protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
-            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback += propertyChangedCallback;
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback += propertyChangedCallback;
         }
 
         /// <summary>
@@ -135,7 +141,7 @@ namespace NotifyPropertyChangedBase
         protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
             Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
-            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback -= propertyChangedCallback;
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback -= propertyChangedCallback;
         }
 
         /// <summary>
@@ -153,7 +159,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected object GetValue([CallerMemberName]string propertyName = null)
         {
-            return GetPropertyData(propertyName, nameof(propertyName)).value;
+            return GetPropertyData(propertyName, nameof(propertyName)).Value;
         }
 
         /// <summary>
@@ -205,15 +211,15 @@ namespace NotifyPropertyChangedBase
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             PropertyData propertyData = GetPropertyData(propertyName, nameof(propertyName));
-            ValidateValueForType(value, propertyData.type);
+            ValidateValueForType(value, propertyData.Type);
 
             // Calling Equals calls the overriden method even when the value is boxed
-            bool? valuesEqual = propertyData.value?.Equals(value);
+            bool? valuesEqual = propertyData.Value?.Equals(value);
 
             if (forceSetValue || (valuesEqual == null && !(value is null)) || valuesEqual == false)
             {
-                object oldValue = propertyData.value;
-                propertyData.value = value;
+                object oldValue = propertyData.Value;
+                propertyData.Value = value;
 
                 if (IsPropertyChangedCallbackInvokingEnabled)
                 {
@@ -243,7 +249,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected virtual void OnPropertyChangedCallback(object oldValue, object newValue, [CallerMemberName]string propertyName = null)
         {
-            GetPropertyData(propertyName, nameof(propertyName)).propertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, newValue));
+            GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback?.Invoke(this, new PropertyChangedCallbackArgs(oldValue, newValue));
         }
 
         /// <summary>
@@ -281,7 +287,7 @@ namespace NotifyPropertyChangedBase
 
             try
             {
-                return backingStore[propertyName];
+                return _backingStore[propertyName];
             }
             catch (KeyNotFoundException)
             {
@@ -289,20 +295,21 @@ namespace NotifyPropertyChangedBase
             }
         }
 
-
         private sealed class PropertyData
         {
-            public readonly Type type;
+#pragma warning disable SA1401 // Fields should be private
+            public readonly Type Type;
 
-            public object value;
-            public PropertyChangedCallbackHandler propertyChangedCallback;
+            public object Value;
+            public PropertyChangedCallbackHandler PropertyChangedCallback;
+#pragma warning restore SA1401 // Fields should be private
 
             public PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
-                this.type = type;
+                Type = type;
 
-                value = defaultValue;
-                this.propertyChangedCallback = propertyChangedCallback;
+                Value = defaultValue;
+                PropertyChangedCallback = propertyChangedCallback;
             }
         }
     }

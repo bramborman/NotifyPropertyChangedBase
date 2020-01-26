@@ -1,4 +1,4 @@
-# NotifyPropertyChangedBase
+﻿# NotifyPropertyChangedBase
 [![NuGet](https://img.shields.io/nuget/v/NotifyPropertyChangedBase.svg)](https://www.nuget.org/packages/NotifyPropertyChangedBase/)
 [![Build status](https://ci.appveyor.com/api/projects/status/jc9gcr4gldjr8nq6/branch/master?svg=true)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/master)
 [![Tests status](https://img.shields.io/appveyor/tests/bramborman/notifypropertychangedbase.svg)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase)

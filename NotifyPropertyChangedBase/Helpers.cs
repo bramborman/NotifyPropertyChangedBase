@@ -1,4 +1,10 @@
-﻿using System;
+﻿// ---------------------------------------------------------------------------------------
+// <copyright file="Helpers.cs" company="Marian Dolinský">
+// Copyright (c) Marian Dolinský. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------
+
+using System;
 
 namespace NotifyPropertyChangedBase
 {

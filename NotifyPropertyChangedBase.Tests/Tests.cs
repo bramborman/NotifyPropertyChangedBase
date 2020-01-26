@@ -1,6 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// ---------------------------------------------------------------------------------------
+// <copyright file="Tests.cs" company="Marian Dolinský">
+// Copyright (c) Marian Dolinský. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NotifyPropertyChangedBase.Tests
 {
@@ -13,19 +19,19 @@ namespace NotifyPropertyChangedBase.Tests
         // F = float
         // M = decimal
         // D = double
-        private static readonly string[] invalidPropertyNames = new string[] { null, "", "\n\t   \v\r" };
-        private static readonly object[] invalidInt32Values = new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
-        private static readonly object[] invalidNullableInt32Values = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
-        private static readonly object[] invalidUInt32Values = new object[] { null, true, 'x', "", (byte)0, (sbyte)0, 0, 0L, 0UL, 0F, 0M, 0D, new Test() };
-        private static readonly object[] invalidTestValues = new object[] { true, 'x', "", (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
-        private static readonly List<TypeData> typeDataCollection = new List<TypeData>()
+        private static readonly string[] InvalidPropertyNames = new string[] { null, string.Empty, "\n\t   \v\r" };
+        private static readonly object[] InvalidInt32Values = new object[] { null, true, 'x', string.Empty, (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private static readonly object[] InvalidNullableInt32Values = new object[] { true, 'x', string.Empty, (byte)0, (sbyte)0, 0U, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private static readonly object[] InvalidUInt32Values = new object[] { null, true, 'x', string.Empty, (byte)0, (sbyte)0, 0, 0L, 0UL, 0F, 0M, 0D, new Test() };
+        private static readonly object[] InvalidTestValues = new object[] { true, 'x', string.Empty, (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
+        private static readonly TypeData[] TypeDataCollection =
         {
-            new TypeData(typeof(int), new object[] { 0 }, value => (int)value + 1, invalidInt32Values),
-            new TypeData(typeof(int?), new object[] { null, 0 }, value => value == null ? 0 : ((int?)value).Value + 1,  invalidNullableInt32Values),
-            new TypeData(typeof(uint), new object[] { 0U }, value => (uint)value + 1, invalidUInt32Values),
-            new TypeData(typeof(ITest), new object[] { null, new Test() }, value => new Test(), invalidTestValues),
-            new TypeData(typeof(TestBase), new object[] { null, new Test() }, value => new Test(), invalidTestValues),
-            new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), invalidTestValues)
+            new TypeData(typeof(int), new object[] { 0 }, value => (int)value + 1, InvalidInt32Values),
+            new TypeData(typeof(int?), new object[] { null, 0 }, value => value == null ? 0 : ((int?)value).Value + 1,  InvalidNullableInt32Values),
+            new TypeData(typeof(uint), new object[] { 0U }, value => (uint)value + 1, InvalidUInt32Values),
+            new TypeData(typeof(ITest), new object[] { null, new Test() }, value => new Test(), InvalidTestValues),
+            new TypeData(typeof(TestBase), new object[] { null, new Test() }, value => new Test(), InvalidTestValues),
+            new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), InvalidTestValues)
         };
 
         [TestMethod]
@@ -42,12 +48,12 @@ namespace NotifyPropertyChangedBase.Tests
             Wrapper w = new Wrapper();
 
             // Invalid property name
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.RegisterProperty(invalidPropertyName, typeof(int), 0));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.RegisterProperty(invalidPropertyName, typeof(int), 0));
 
             // Invalid type argument
             Assert.ThrowsException<ArgumentNullException>(() => w.RegisterProperty("InvalidTypeArgument", null, 0));
 
-            foreach (TypeData typeData in typeDataCollection)
+            foreach (TypeData typeData in TypeDataCollection)
             {
                 // Valid arguments
                 for (int i = 0; i < typeData.DefaultValues.Length; i++)
@@ -67,7 +73,7 @@ namespace NotifyPropertyChangedBase.Tests
             }
 
             // Registering another property with a name of already registered property
-            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(typeDataCollection[0].Type.Name + '0', typeof(int), 0));
+            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(TypeDataCollection[0].Type.Name + '0', typeof(int), 0));
         }
 
         [TestMethod]
@@ -76,9 +82,9 @@ namespace NotifyPropertyChangedBase.Tests
             Wrapper w = new Wrapper();
 
             // Invalid property name
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.GetValue(invalidPropertyName));
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.SetValue(null, invalidPropertyName));
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.ForceSetValue(null, invalidPropertyName));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.GetValue(invalidPropertyName));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.SetValue(null, invalidPropertyName));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.ForceSetValue(null, invalidPropertyName));
 
             // Not registered property
             Assert.ThrowsException<ArgumentException>(() => w.GetValue("NotRegisteredProperty"));
@@ -100,7 +106,7 @@ namespace NotifyPropertyChangedBase.Tests
                 propertyChangedEventInvokeCount++;
             };
 
-            void propertyChangedCallback(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e)
+            void PropertyChangedCallback(NotifyPropertyChanged sender, PropertyChangedCallbackArgs e)
             {
                 Assert.AreEqual(w, sender);
                 Assert.IsFalse(e.Handled);
@@ -110,7 +116,7 @@ namespace NotifyPropertyChangedBase.Tests
                 propertyChangedCallbackInvokeCount++;
             }
 
-            foreach (TypeData typeData in typeDataCollection)
+            foreach (TypeData typeData in TypeDataCollection)
             {
                 for (int i = 0; i < typeData.DefaultValues.Length; i++)
                 {
@@ -141,14 +147,14 @@ namespace NotifyPropertyChangedBase.Tests
                     value = defaultValue;
 
                     // Default value
-                    w.RegisterProperty(propertyName, typeData.Type, value, propertyChangedCallback);
+                    w.RegisterProperty(propertyName, typeData.Type, value, PropertyChangedCallback);
                     Assert.AreEqual(value, w.GetValue(propertyName));
                     CheckEventsInvoked(false);
 
                     CheckNoChangeSet();
 
                     propertyChangedCallbackRegistered = false;
-                    w.UnregisterPropertyChangedCallback(propertyName, propertyChangedCallback);
+                    w.UnregisterPropertyChangedCallback(propertyName, PropertyChangedCallback);
 
                     // Changing value but not assigning it to property
                     SetValue(typeData.GetNewValue(value));
@@ -161,7 +167,7 @@ namespace NotifyPropertyChangedBase.Tests
 
                     CheckNoChangeSet();
 
-                    w.RegisterPropertyChangedCallback(propertyName, propertyChangedCallback);
+                    w.RegisterPropertyChangedCallback(propertyName, PropertyChangedCallback);
                     propertyChangedCallbackRegistered = true;
 
                     // Assigning default value e.g. null etc.
@@ -221,8 +227,8 @@ namespace NotifyPropertyChangedBase.Tests
         {
             Wrapper w = new Wrapper();
 
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.OnPropertyChanged(invalidPropertyName));
-            AllThrows<string, ArgumentException>(invalidPropertyNames, invalidPropertyName => w.OnPropertyChangedCallback(0, 1, invalidPropertyName));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.OnPropertyChanged(invalidPropertyName));
+            AllThrows<string, ArgumentException>(InvalidPropertyNames, invalidPropertyName => w.OnPropertyChangedCallback(0, 1, invalidPropertyName));
 
             w.OnPropertyChanged("NotRegisteredProperty");
             Assert.ThrowsException<ArgumentException>(() => w.OnPropertyChangedCallback(0, 1, "NotRegisteredProperty"));
@@ -232,7 +238,8 @@ namespace NotifyPropertyChangedBase.Tests
             w.OnPropertyChangedCallback(false, true, "Property");
         }
 
-        private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action) where TException : Exception
+        private void AllThrows<TObject, TException>(IEnumerable<TObject> collection, Action<TObject> action)
+            where TException : Exception
         {
             foreach (TObject item in collection)
             {
@@ -252,7 +259,6 @@ namespace NotifyPropertyChangedBase.Tests
 
         private sealed class Test : TestBase
         {
-
         }
 
         private sealed class TypeData

@@ -1,8 +1,14 @@
-﻿using Android.Content;
-using Android.Preferences;
+﻿// ---------------------------------------------------------------------------------------
+// <copyright file="NotifyPropertyChangedPreferences.cs" company="Marian Dolinský">
+// Copyright (c) Marian Dolinský. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Android.Content;
+using Android.Preferences;
 
 namespace NotifyPropertyChangedBase.Android
 {
@@ -11,19 +17,19 @@ namespace NotifyPropertyChangedBase.Android
     /// </summary>
     public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged
     {
-        private readonly Dictionary<string, (string name, object defaultValue)> propertyData = new Dictionary<string, (string, object)>();
-        private readonly Dictionary<string, string> nameKeyDictionary = new Dictionary<string, string>();
-        private readonly ISharedPreferences preferences;
-        private readonly ISharedPreferencesEditor editor;
-        private readonly OnSharedPreferenceChangeListener listener;
+        private readonly Dictionary<string, (string name, object defaultValue)> _propertyData = new Dictionary<string, (string, object)>();
+        private readonly Dictionary<string, string> _nameKeyDictionary = new Dictionary<string, string>();
+        private readonly ISharedPreferences _preferences;
+        private readonly ISharedPreferencesEditor _editor;
+        private readonly OnSharedPreferenceChangeListener _listener;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotifyPropertyChangedPreferences"/> class using default shared preferences.
         /// </summary>
         /// <param name="context">The context where the preferences will be obtained.</param>
-        protected NotifyPropertyChangedPreferences(Context context) : this(context, null)
+        protected NotifyPropertyChangedPreferences(Context context)
+            : this(context, null)
         {
-
         }
 
         /// <summary>
@@ -31,9 +37,9 @@ namespace NotifyPropertyChangedBase.Android
         /// </summary>
         /// <param name="context">The context where the preferences will be obtained.</param>
         /// <param name="sharedPrerefencesName">The name of the shared preferences to use.</param>
-        protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName) : this(context, sharedPrerefencesName, 0)
+        protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName)
+            : this(context, sharedPrerefencesName, 0)
         {
-
         }
 
         /// <summary>
@@ -44,12 +50,12 @@ namespace NotifyPropertyChangedBase.Android
         /// <param name="fileCreationMode">Mode used when obtaining the shared preferences.</param>
         protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName, FileCreationMode fileCreationMode)
         {
-            preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
-            editor = preferences.Edit();
+            _preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
+            _editor = _preferences.Edit();
 
-            listener = new OnSharedPreferenceChangeListener(Listener_SharedPreferenceChanged);
+            _listener = new OnSharedPreferenceChangeListener(Listener_SharedPreferenceChanged);
             // We don't need to unregister this later since this reference is held as a weak reference
-            preferences.RegisterOnSharedPreferenceChangeListener(listener);
+            _preferences.RegisterOnSharedPreferenceChangeListener(_listener);
         }
 
         /// <summary>
@@ -117,14 +123,14 @@ namespace NotifyPropertyChangedBase.Android
                 throw new ArgumentException("Value cannot be white space or null.", nameof(key));
             }
 
-            if (propertyData.ContainsKey(key))
+            if (_propertyData.ContainsKey(key))
             {
                 throw new ArgumentException($"This instance already contains a registered property with key '{key}'.");
             }
 
             RegisterProperty(name, type, GetPreferencesValue(key, defaultValue), propertyChangedCallback);
-            propertyData.Add(key, (name, defaultValue));
-            nameKeyDictionary.Add(name, key);
+            _propertyData.Add(key, (name, defaultValue));
+            _nameKeyDictionary.Add(name, key);
         }
 
         /// <summary>
@@ -135,9 +141,9 @@ namespace NotifyPropertyChangedBase.Android
         /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (nameKeyDictionary.ContainsKey(propertyName))
+            if (_nameKeyDictionary.ContainsKey(propertyName))
             {
-                SetPreferencesValue(nameKeyDictionary[propertyName], GetValue(propertyName));
+                SetPreferencesValue(_nameKeyDictionary[propertyName], GetValue(propertyName));
             }
 
             base.OnPropertyChanged(propertyName);
@@ -148,7 +154,7 @@ namespace NotifyPropertyChangedBase.Android
         /// </summary>
         protected void SaveAllToPreferences()
         {
-            foreach (string name in nameKeyDictionary.Keys)
+            foreach (string name in _nameKeyDictionary.Keys)
             {
                 SaveToPreferences(name);
             }
@@ -162,14 +168,14 @@ namespace NotifyPropertyChangedBase.Android
         {
             // GetValue will check the propertyName's value for us - no need
             // to check if the property name exists here
-            SetPreferencesValue(nameKeyDictionary[propertyName], GetValue(propertyName));
+            SetPreferencesValue(_nameKeyDictionary[propertyName], GetValue(propertyName));
         }
 
         private void Listener_SharedPreferenceChanged(string key)
         {
-            if (propertyData.ContainsKey(key))
+            if (_propertyData.ContainsKey(key))
             {
-                SetValue(GetPreferencesValue(key, propertyData[key].defaultValue), propertyData[key].name);
+                SetValue(GetPreferencesValue(key, _propertyData[key].defaultValue), _propertyData[key].name);
             }
         }
 
@@ -179,27 +185,27 @@ namespace NotifyPropertyChangedBase.Android
 
             if (valueType == typeof(bool))
             {
-                return preferences.GetBoolean(key, (bool)defaultValue);
+                return _preferences.GetBoolean(key, (bool)defaultValue);
             }
             else if (valueType == typeof(int))
             {
-                return preferences.GetInt(key, (int)defaultValue);
+                return _preferences.GetInt(key, (int)defaultValue);
             }
             else if (valueType == typeof(string) || valueType == null)
             {
-                return preferences.GetString(key, (string)defaultValue);
+                return _preferences.GetString(key, (string)defaultValue);
             }
             else if (valueType == typeof(float))
             {
-                return preferences.GetFloat(key, (float)defaultValue);
+                return _preferences.GetFloat(key, (float)defaultValue);
             }
             else if (valueType == typeof(long))
             {
-                return preferences.GetLong(key, (long)defaultValue);
+                return _preferences.GetLong(key, (long)defaultValue);
             }
             else if (valueType == typeof(ICollection<string>))
             {
-                return preferences.GetStringSet(key, (ICollection<string>)defaultValue);
+                return _preferences.GetStringSet(key, (ICollection<string>)defaultValue);
             }
             else
             {
@@ -213,49 +219,49 @@ namespace NotifyPropertyChangedBase.Android
 
             if (valueType == typeof(bool))
             {
-                editor.PutBoolean(key, (bool)newValue);
+                _editor.PutBoolean(key, (bool)newValue);
             }
             else if (valueType == typeof(int))
             {
-                editor.PutInt(key, (int)newValue);
+                _editor.PutInt(key, (int)newValue);
             }
             else if (valueType == typeof(string) || valueType == null)
             {
-                editor.PutString(key, (string)newValue);
+                _editor.PutString(key, (string)newValue);
             }
             else if (valueType == typeof(float))
             {
-                editor.PutFloat(key, (float)newValue);
+                _editor.PutFloat(key, (float)newValue);
             }
             else if (valueType == typeof(long))
             {
-                editor.PutLong(key, (long)newValue);
+                _editor.PutLong(key, (long)newValue);
             }
             else if (valueType == typeof(ICollection<string>))
             {
-                editor.PutStringSet(key, (ICollection<string>)newValue);
+                _editor.PutStringSet(key, (ICollection<string>)newValue);
             }
             else
             {
                 throw new Exception($"Invalid type of {nameof(newValue)}.");
             }
 
-            editor.Apply();
+            _editor.Apply();
         }
 
 
         private sealed class OnSharedPreferenceChangeListener : Java.Lang.Object, ISharedPreferencesOnSharedPreferenceChangeListener
         {
-            private readonly Action<string> sharedPreferenceChanged;
+            private readonly Action<string> _sharedPreferenceChanged;
 
             public OnSharedPreferenceChangeListener(Action<string> sharedPreferenceChanged)
             {
-                this.sharedPreferenceChanged = sharedPreferenceChanged;
+                _sharedPreferenceChanged = sharedPreferenceChanged;
             }
 
             public void OnSharedPreferenceChanged(ISharedPreferences sharedPreferences, string key)
             {
-                sharedPreferenceChanged(key);
+                _sharedPreferenceChanged(key);
             }
         }
     }

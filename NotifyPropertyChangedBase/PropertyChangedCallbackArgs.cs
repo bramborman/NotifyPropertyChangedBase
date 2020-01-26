@@ -1,4 +1,10 @@
-﻿namespace NotifyPropertyChangedBase
+﻿// ---------------------------------------------------------------------------------------
+// <copyright file="PropertyChangedCallbackArgs.cs" company="Marian Dolinský">
+// Copyright (c) Marian Dolinský. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------
+
+namespace NotifyPropertyChangedBase
 {
     /// <summary>
     /// Represents the callback that is invoked when a property registered in the <see cref="NotifyPropertyChanged"/> class changes.
@@ -13,7 +19,7 @@
     public sealed class PropertyChangedCallbackArgs
     {
         /// <summary>
-        /// Gets or sets a value that marks the callback as handled.
+        /// Gets or sets a value indicating whether the callback as handled.
         /// </summary>
         public bool Handled { get; set; }
         /// <summary>
