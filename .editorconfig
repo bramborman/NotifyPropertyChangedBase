@@ -1,0 +1,379 @@
+﻿# Suppress: EC112
+
+# Topmost EditorConfig file
+root = true
+
+# All Files
+[*]
+charset                     = utf-8-bom
+end_of_line                 = crlf
+indent_size                 = 4
+indent_style                = space
+insert_final_newline        = true
+trim_trailing_whitespace    = true
+
+# Project Files
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+[*.{json,yml,config,props,targets,nuspec,resx,ruleset}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+# ------------------------------------------------------------------------------------------------------------------------
+#
+#                               .NET/C# LANGUAGE CONVENTIONS
+#
+# ------------------------------------------------------------------------------------------------------------------------
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#language-conventions
+
+[*.{cs,csx,cake}]
+# "This." and "Me." qualifiers
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#this_and_me
+dotnet_style_qualification_for_field                                = false : warning
+dotnet_style_qualification_for_property                             = false : warning
+dotnet_style_qualification_for_method                               = false : warning
+dotnet_style_qualification_for_event                                = false : warning
+
+# Language keywords instead of framework type names for type references
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#language_keywords
+dotnet_style_predefined_type_for_locals_parameters_members          = true : warning
+dotnet_style_predefined_type_for_member_access                      = true : warning
+
+# Modifier preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#normalize_modifiers
+dotnet_style_require_accessibility_modifiers                        = always : warning
+csharp_preferred_modifier_order                                     = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async : warning
+dotnet_style_readonly_field                                         = true : suggestion
+
+# Parentheses preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2017#parentheses
+dotnet_style_parentheses_in_arithmetic_binary_operators             = always_for_clarity : silent
+dotnet_style_parentheses_in_relational_binary_operators             = always_for_clarity : silent
+dotnet_style_parentheses_in_other_binary_operators                  = always_for_clarity : silent
+dotnet_style_parentheses_in_other_operators                         = never_if_unnecessary : silent
+
+# Expression-level preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_level
+dotnet_style_object_initializer                                     = true : warning
+dotnet_style_collection_initializer                                 = true : warning
+dotnet_style_explicit_tuple_names                                   = true : warning
+dotnet_style_prefer_inferred_tuple_names                            = true : warning
+dotnet_style_prefer_inferred_anonymous_type_member_names            = true : warning
+dotnet_style_prefer_auto_properties                                 = true : warning
+dotnet_style_prefer_is_null_check_over_reference_equality_method    = true : warning
+dotnet_style_prefer_conditional_expression_over_assignment          = true : suggestion
+dotnet_style_prefer_conditional_expression_over_return              = true : suggestion
+
+# Null-checking preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#null_checking
+dotnet_style_coalesce_expression                                    = true : warning
+dotnet_style_null_propagation                                       = true : warning
+
+# Implicit and explicit types
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#implicit-and-explicit-types
+csharp_style_var_for_built_in_types                                 = false : warning
+csharp_style_var_when_type_is_apparent                              = false : warning
+csharp_style_var_elsewhere                                          = false : warning
+
+# Expression-bodied members
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_bodied_members
+csharp_style_expression_bodied_methods                              = true : none
+csharp_style_expression_bodied_constructors                         = false : warning
+csharp_style_expression_bodied_operators                            = true : warning
+csharp_style_expression_bodied_properties                           = true : warning
+csharp_style_expression_bodied_indexers                             = true : warning
+csharp_style_expression_bodied_accessors                            = true : warning
+
+# Pattern matching
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#pattern_matching
+csharp_style_pattern_matching_over_is_with_cast_check               = true : warning
+csharp_style_pattern_matching_over_as_with_null_check               = true : warning
+
+# Inlined variable declarations
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#inlined_variable_declarations
+csharp_style_inlined_variable_declaration                           = true : warning
+
+# Expression-level preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_level_csharp
+csharp_prefer_simple_default_expression                             = true : warning
+csharp_style_deconstructed_variable_declaration                     = true : warning
+csharp_style_pattern_local_over_anonymous_function                  = true : warning
+
+# "Null" checking preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#null_checking_csharp
+csharp_style_throw_expression                                       = true : warning
+csharp_style_conditional_delegate_call                              = true : warning
+
+# Code block preferences
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#code_block
+csharp_prefer_braces                                                = true : warning
+
+# ------------------------------------------------------------------------------------------------------------------------
+#
+#                               .NET/C# FORMATTING CONVENTIONS
+#
+# ------------------------------------------------------------------------------------------------------------------------
+#https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#formatting-conventions
+
+# Organize usings
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#net-formatting-settings
+dotnet_sort_system_directives_first                                         = true
+dotnet_separate_import_directive_groups                                     = false
+
+# C# formatting settings
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#c-formatting-settings
+csharp_new_line_before_open_brace                                           = all
+csharp_new_line_before_else                                                 = true
+csharp_new_line_before_catch                                                = true
+csharp_new_line_before_finally                                              = true
+csharp_new_line_before_members_in_object_initializers                       = true
+csharp_new_line_before_members_in_anonymous_types                           = true
+csharp_new_line_between_query_expression_clauses                            = true
+
+# Indentation options
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#indent
+csharp_indent_case_contents                                                 = true
+csharp_indent_switch_labels                                                 = true
+csharp_indent_labels                                                        = one_less_than_current
+
+# Spacing options
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#spacing
+csharp_space_after_cast                                                     = false
+csharp_space_after_keywords_in_control_flow_statements                      = true
+csharp_space_between_method_declaration_parameter_list_parentheses          = false
+csharp_space_between_method_call_parameter_list_parentheses                 = false
+csharp_space_between_parentheses                                            = false
+csharp_space_before_colon_in_inheritance_clause                             = true
+csharp_space_after_colon_in_inheritance_clause                              = true
+csharp_space_around_binary_operators                                        = before_and_after
+csharp_space_between_method_declaration_empty_parameter_list_parentheses    = false
+csharp_space_between_method_call_name_and_opening_parenthesis               = false
+csharp_space_between_method_call_empty_parameter_list_parentheses           = false
+
+# Wrapping options
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#wrapping
+csharp_preserve_single_line_statements                                      = false
+csharp_preserve_single_line_blocks                                          = true
+
+# Undocumented
+# https://github.com/dotnet/roslyn/blob/master/src/Workspaces/CSharp/Portable/Formatting/CSharpFormattingOptions.cs
+# https://kent-boogaart.com/blog/editorconfig-reference-for-c-developers
+csharp_space_after_comma                                                    = true
+csharp_space_after_dot                                                      = false
+csharp_space_after_semicolon_in_for_statement                               = true
+csharp_space_around_declaration_statements                                  = do_not_ignore
+csharp_space_before_comma                                                   = false
+csharp_space_before_dot                                                     = false
+csharp_space_before_semicolon_in_for_statement                              = false
+csharp_space_before_open_square_brackets                                    = false
+csharp_space_between_empty_square_brackets                                  = false
+csharp_space_between_method_declaration_name_and_open_parenthesis           = false
+csharp_space_between_square_brackets                                        = false
+csharp_indent_block_contents                                                = true
+csharp_indent_braces                                                        = false
+csharp_indent_case_contents_when_block                                      = true
+
+# ------------------------------------------------------------------------------------------------------------------------
+#
+#                               .NET/C# NAMING CONVENTIONS
+#
+# ------------------------------------------------------------------------------------------------------------------------
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-naming-conventions
+# https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines
+
+# ----------------------
+# NAMING SYMBOLS
+# ----------------------
+
+# constant_fields
+dotnet_naming_symbols.constant_fields.applicable_kinds                          = field
+dotnet_naming_symbols.constant_fields.required_modifiers                        = const
+
+# non_private_readonly_fields
+dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities    = public, internal, protected
+dotnet_naming_symbols.non_private_readonly_fields.applicable_kinds              = field
+dotnet_naming_symbols.non_private_readonly_fields.required_modifiers            = readonly
+
+# static_readonly_fields
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds                   = field
+dotnet_naming_symbols.static_readonly_fields.required_modifiers                 = static, readonly
+
+# private_readonly_fields
+dotnet_naming_symbols.private_readonly_fields.applicable_accessibilities        = private
+dotnet_naming_symbols.private_readonly_fields.applicable_kinds                  = field
+dotnet_naming_symbols.private_readonly_fields.required_modifiers                = readonly
+
+# public_internal_fields
+dotnet_naming_symbols.public_internal_fields.applicable_accessibilities         = public, internal
+dotnet_naming_symbols.public_internal_fields.applicable_kinds                   = field
+
+# private_protected_fields
+dotnet_naming_symbols.private_protected_fields.applicable_accessibilities       = private, protected
+dotnet_naming_symbols.private_protected_fields.applicable_kinds                 = field
+
+# private_fields
+dotnet_naming_symbols.private_fields.applicable_accessibilities                 = private
+dotnet_naming_symbols.private_fields.applicable_kinds                           = field
+
+# method_property_event_members
+dotnet_naming_symbols.method_property_event_members.applicable_kinds            = method, property, event
+
+# parameters
+dotnet_naming_symbols.parameters.applicable_kinds                               = parameter
+
+# non_interface_types
+dotnet_naming_symbols.non_interface_types.applicable_kinds                      = class, struct, enum, delegate
+
+# interface_types
+dotnet_naming_symbols.interface_types.applicable_kinds                          = interface
+
+# async_method
+dotnet_naming_symbols.async_methods.applicable_kinds                             = method
+dotnet_naming_symbols.async_methods.required_modifiers                           = async
+
+# ----------------------
+# NAMING STYLES
+# ----------------------
+
+# camel_case_style
+dotnet_naming_style.camel_case_style.capitalization                             = camel_case
+
+# pascal_case_style
+dotnet_naming_style.pascal_case_style.capitalization                            = pascal_case
+
+# camel_case_prefix_underscore_style
+dotnet_naming_style.camel_case_prefix_underscore_style.required_prefix          = _
+dotnet_naming_style.camel_case_prefix_underscore_style.capitalization           = camel_case
+
+# pascal_case_prefix_i_style
+dotnet_naming_style.pascal_case_prefix_i_style.required_prefix                  = I
+dotnet_naming_style.pascal_case_prefix_i_style.capitalization                   = pascal_case
+
+# pascal_case_suffix_async_style
+dotnet_naming_style.pascal_case_suffix_async_style.capitalization               = pascal_case
+dotnet_naming_style.pascal_case_suffix_async_style.required_suffix              = Async
+
+# ----------------------
+# NAMING RULES
+# ----------------------
+
+dotnet_naming_rule.constant_fields_must_be_pascal_case.severity                 = warning
+dotnet_naming_rule.constant_fields_must_be_pascal_case.symbols                  = constant_fields
+dotnet_naming_rule.constant_fields_must_be_pascal_case.style                    = pascal_case_style
+
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.severity          = warning
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.symbols           = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.style             = pascal_case_style
+
+dotnet_naming_rule.private_fields_must_be_camel_case_with_underscore.severity   = warning
+dotnet_naming_rule.private_fields_must_be_camel_case_with_underscore.symbols    = private_fields
+dotnet_naming_rule.private_fields_must_be_camel_case_with_underscore.style      = camel_case_prefix_underscore_style
+
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.severity     = warning
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.symbols      = non_private_readonly_fields
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.style        = pascal_case_style
+
+dotnet_naming_rule.public_internal_fields_must_be_pascal_case.severity          = warning
+dotnet_naming_rule.public_internal_fields_must_be_pascal_case.symbols           = public_internal_fields
+dotnet_naming_rule.public_internal_fields_must_be_pascal_case.style             = pascal_case_style
+
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.severity             = warning
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.symbols              = non_interface_types
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.style                = pascal_case_style
+
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity             = error
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols              = interface_types
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style                = pascal_case_prefix_i_style
+
+dotnet_naming_rule.suffix_method_with_async.severity                            = warning
+dotnet_naming_rule.suffix_method_with_async.symbols                             = async_methods
+dotnet_naming_rule.suffix_method_with_async.style                               = pascal_case_suffix_async_style
+
+dotnet_naming_rule.method_property_event_members_must_be_pascal_case.severity   = warning
+dotnet_naming_rule.method_property_event_members_must_be_pascal_case.symbols    = method_property_event_members
+dotnet_naming_rule.method_property_event_members_must_be_pascal_case.style      = pascal_case_style
+
+dotnet_naming_rule.parameters_must_be_camel_case.severity                       = warning
+dotnet_naming_rule.parameters_must_be_camel_case.symbols                        = parameters
+dotnet_naming_rule.parameters_must_be_camel_case.style                          = camel_case_style
+
+# CA1024: Use properties where appropriate
+dotnet_diagnostic.CA1024.severity = warning
+
+# CA1027: Mark enums with FlagsAttribute
+dotnet_diagnostic.CA1027.severity = warning
+
+# CA1050: Declare types in namespaces
+dotnet_diagnostic.CA1050.severity = warning
+
+# CA1505: Avoid unmaintainable code
+dotnet_diagnostic.CA1505.severity = warning
+
+# CA1502: Avoid excessive complexity
+dotnet_diagnostic.CA1502.severity = warning
+
+# CA1501: Avoid excessive inheritance
+dotnet_diagnostic.CA1501.severity = warning
+
+# CA1506: Avoid excessive class coupling
+dotnet_diagnostic.CA1506.severity = warning
+
+# CA1508: Avoid dead conditional code
+dotnet_diagnostic.CA1508.severity = warning
+
+# CA1708: Identifiers should differ by more than case
+dotnet_diagnostic.CA1708.severity = warning
+
+# CA1711: Identifiers should not have incorrect suffix
+dotnet_diagnostic.CA1711.severity = warning
+
+# CA1725: Parameter names should match base declaration
+dotnet_diagnostic.CA1725.severity = warning
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = none
+
+# CA1003: Use generic event handler instances
+dotnet_diagnostic.CA1003.severity = warning
+
+# CA1019: Define accessors for attribute arguments
+dotnet_diagnostic.CA1019.severity = warning
+
+# CA1813: Avoid unsealed attributes
+dotnet_diagnostic.CA1813.severity = warning
+
+# CA2201: Do not raise reserved exception types
+dotnet_diagnostic.CA2201.severity = warning
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1305: Field names should not use Hungarian notation
+dotnet_diagnostic.SA1305.severity = warning
+
+# SA1412: Store files as UTF-8 with byte order mark
+dotnet_diagnostic.SA1412.severity = warning
+
+# SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = none
+
+# SA1609: Property documentation should have value
+dotnet_diagnostic.SA1609.severity = warning
+
+# SX1101: Do not prefix local calls with 'this.'
+dotnet_diagnostic.SX1101.severity = warning
+
+# SX1309: Field names should begin with underscore
+dotnet_diagnostic.SX1309.severity = warning
+
+# SX1309S: Static field names should begin with underscore
+dotnet_diagnostic.SX1309S.severity = warning
+
+# SA1515: Single-line comment should be preceded by blank line
+dotnet_diagnostic.SA1515.severity = none

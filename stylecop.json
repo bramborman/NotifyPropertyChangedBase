@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "Marian Dolinský",
+      "documentInternalElements": false,
+      "fileNamingConvention": "metadata"
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require"
+    },
+    "maintainabilityRules": {
+      "topLevelTypes": [ "class", "interface", "struct", "enum" ]
+    },
+    "orderingRules": {
+      "blankLinesBetweenUsingGroups": "omit",
+      "elementOrder": [ "constant", "static", "readonly" ],
+      "usingDirectivesPlacement": "outsideNamespace"
+    }
+  }
+}

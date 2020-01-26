@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{121EBC4B-EA90-4A53-8E99-B56DA7C6646F}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		AppVeyor-Build.ps1 = AppVeyor-Build.ps1
@@ -14,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyPropertyChangedBase", "NotifyPropertyChangedBase\NotifyPropertyChangedBase.csproj", "{6781F993-6D8C-4107-994F-E942BB13FCFB}"
