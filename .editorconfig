@@ -13,10 +13,7 @@ insert_final_newline        = true
 trim_trailing_whitespace    = true
 
 # Project Files
-[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
-indent_size = 2
-
-[*.{json,yml,config,props,targets,nuspec,resx,ruleset}]
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,json,vsext,yml,config,props,targets,nuspec,resx,ruleset}]
 indent_size = 2
 
 [*.md]
@@ -389,3 +386,12 @@ dotnet_diagnostic.SA1309.severity = none
 
 # SA1514: Element documentation header should be preceded by blank line
 dotnet_diagnostic.SA1514.severity = none
+
+# SA1600: Elements should be documented
+# This is ignored as CS1591 gives more info when a problem occurs
+# and is automatically enabled or disabled based on whether the
+# documentation should be generated for the specific project.
+dotnet_diagnostic.SA1600.severity = none
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = error

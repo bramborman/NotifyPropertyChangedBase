@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
 
   <PropertyGroup>
     <BaseLibraryName>NotifyPropertyChangedBase</BaseLibraryName>
@@ -19,7 +19,9 @@
     <PackageTags>INotifyPropertyChanged NotifyPropertyChanged MVVM Model View ViewModel Binding Bindings Helper Helpers</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
 
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <!-- Don't create documentation in debug builds. -->
+    <GenerateDocumentationFile Condition="'$(Configuration)'!='Debug'">True</GenerateDocumentationFile>
+
     <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);DEBUG</DefineConstants>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
   </PropertyGroup>
