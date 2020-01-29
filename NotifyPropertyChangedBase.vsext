@@ -1,0 +1,32 @@
+﻿{
+  "id": "21648c72-7d84-47e4-b609-57180368bd6d",
+  "name": "Recommended extensions",
+  "description": "A collection of extensions recommended for developing NotifyPropertyChangedBase",
+  "version": "1.0",
+  "extensions": [
+    {
+      "name": "CommentsPlus",
+      "vsixId": "MGH.CommentsPlus.a6539c2f-6785-4586-8028-ad923b47224d"
+    },
+    {
+      "name": "EditorConfig Language Service",
+      "vsixId": "1209461d-57f8-46a4-814a-dbe5fecef941"
+    },
+    {
+      "name": "Extension Manager 2019",
+      "vsixId": "4a196712-2c3f-4730-ad1d-e7cda4185eb2"
+    },
+    {
+      "name": "GitHub Extension for Visual Studio",
+      "vsixId": "c3d3dc68-c977-411f-b3e8-03b0dccf7dfc"
+    },
+    {
+      "name": "Markdown Editor",
+      "vsixId": "9ca64947-e9ca-4543-bfb8-6cce9be19fd6"
+    },
+    {
+      "name": "PowerShell Tools for Visual Studio",
+      "vsixId": "PowerShellTools.VS2017"
+    }
+  ]
+}

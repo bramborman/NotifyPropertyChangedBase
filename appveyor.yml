@@ -10,6 +10,7 @@ skip_commits:
   files:
     - .gitattributes
     - .gitignore
+    - NotifyPropertyChangedBase.vsext
     - README.md
 image: Visual Studio 2019
 dotnet_csproj:
