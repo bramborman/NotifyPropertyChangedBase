@@ -15,7 +15,7 @@
     },
     "orderingRules": {
       "blankLinesBetweenUsingGroups": "omit",
-      "elementOrder": [ "constant", "static", "readonly" ],
+      "elementOrder": [ "constant", "readonly" ],
       "usingDirectivesPlacement": "outsideNamespace"
     }
   }
