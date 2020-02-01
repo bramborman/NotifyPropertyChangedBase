@@ -23,26 +23,17 @@ namespace NotifyPropertyChangedBase
         /// Gets or sets a value indicating whether the <see cref="PropertyChanged"/> event should be invoked
         /// when a property changes. The default value is <c>true</c>.
         /// </summary>
-        protected bool IsPropertyChangedEventInvokingEnabled { get; set; }
+        protected bool IsPropertyChangedEventInvokingEnabled { get; set; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether registered <see cref="PropertyChangedCallbackHandler"/>s should be invoked
         /// when a property changes. The default value is <c>true</c>.
         /// </summary>
-        protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; }
+        protected bool IsPropertyChangedCallbackInvokingEnabled { get; set; } = true;
 
         /// <summary>
         /// Implementation of the <see cref="INotifyPropertyChanged.PropertyChanged"/> event. Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotifyPropertyChanged"/> class.
-        /// </summary>
-        protected NotifyPropertyChanged()
-        {
-            IsPropertyChangedCallbackInvokingEnabled = true;
-            IsPropertyChangedEventInvokingEnabled = true;
-        }
 
         /// <summary>
         /// Registers a new property in the actual instance of <see cref="NotifyPropertyChanged"/>.
@@ -88,16 +79,19 @@ namespace NotifyPropertyChangedBase
         /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         protected void RegisterProperty(string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateStringNotNullOrWhiteSpace(name, nameof(name));
-            Helpers.ValidateObjectNotNull(type, nameof(type));
-            ValidateValueForType(defaultValue, type);
+            ThrowIfStringIsNullOrWhiteSpace(name, nameof(name));
+            ThrowIfNull(type, nameof(type));
+            ThrowIfNotAssignable(defaultValue, type, name);
 
-            if (_backingStore.ContainsKey(name))
+            // Let's hope this try-catch performs better than if followed by .Add call (☞ﾟヮﾟ)☞
+            try
+            {
+                _backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
+            }
+            catch (ArgumentException) when (_backingStore.ContainsKey(name))
             {
                 throw new ArgumentException($"This instance already contains a registered property named '{name}'.");
             }
-
-            _backingStore.Add(name, new PropertyData(defaultValue, type, propertyChangedCallback));
         }
 
         /// <summary>
@@ -118,7 +112,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected void RegisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            ThrowIfNull(propertyChangedCallback, nameof(propertyChangedCallback));
             GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback += propertyChangedCallback;
         }
 
@@ -140,7 +134,7 @@ namespace NotifyPropertyChangedBase
         /// </exception>
         protected void UnregisterPropertyChangedCallback(string propertyName, PropertyChangedCallbackHandler propertyChangedCallback)
         {
-            Helpers.ValidateObjectNotNull(propertyChangedCallback, nameof(propertyChangedCallback));
+            ThrowIfNull(propertyChangedCallback, nameof(propertyChangedCallback));
             GetPropertyData(propertyName, nameof(propertyName)).PropertyChangedCallback -= propertyChangedCallback;
         }
 
@@ -211,7 +205,7 @@ namespace NotifyPropertyChangedBase
         private void SetValue(object value, string propertyName, bool forceSetValue)
         {
             PropertyData propertyData = GetPropertyData(propertyName, nameof(propertyName));
-            ValidateValueForType(value, propertyData.Type);
+            ThrowIfNotAssignable(value, propertyData.Type, propertyName);
 
             // Calling Equals calls the overriden method even when the value is boxed
             bool? valuesEqual = propertyData.Value?.Equals(value);
@@ -259,31 +253,13 @@ namespace NotifyPropertyChangedBase
         /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
         protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, nameof(propertyName));
+            ThrowIfStringIsNullOrWhiteSpace(propertyName, nameof(propertyName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void ValidateValueForType(object value, Type type)
-        {
-            if (value == null)
-            {
-                if (type.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(type) == null)
-                {
-                    throw new ArgumentException($"The type '{type}' is not a nullable type.");
-                }
-            }
-            else
-            {
-                if (!type.GetTypeInfo().IsAssignableFrom(value.GetType().GetTypeInfo()))
-                {
-                    throw new ArgumentException($"The specified value cannot be assigned to a property of type ({type})");
-                }
-            }
         }
 
         private PropertyData GetPropertyData(string propertyName, string propertyNameParameterName)
         {
-            Helpers.ValidateStringNotNullOrWhiteSpace(propertyName, propertyNameParameterName);
+            ThrowIfStringIsNullOrWhiteSpace(propertyName, propertyNameParameterName);
 
             try
             {
@@ -295,16 +271,57 @@ namespace NotifyPropertyChangedBase
             }
         }
 
+        private static void ThrowIfNotAssignable(object value, Type type, string propertyName)
+        {
+            if (value == null)
+            {
+                if (type.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(type) == null)
+                {
+                    throw new ArgumentException("Cannot assign a null value to a property of a non nullable type."
+                                                + $"{Environment.NewLine}Property name: {propertyName}"
+                                                + $"{Environment.NewLine}Property type: {type}");
+                }
+            }
+            else
+            {
+                Type valueType = value.GetType();
+
+                if (!type.GetTypeInfo().IsAssignableFrom(valueType.GetTypeInfo()))
+                {
+                    throw new ArgumentException($"Cannot assign a new value to a property because their types are not compatible."
+                                                + $"{Environment.NewLine}Value type: {valueType}"
+                                                + $"{Environment.NewLine}Property name: {propertyName}"
+                                                + $"{Environment.NewLine}Property type: {type}");
+                }
+            }
+        }
+
+        private static void ThrowIfNull(object obj, string parameterName)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(parameterName);
+            }
+        }
+
+        private static void ThrowIfStringIsNullOrWhiteSpace(string str, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                throw new ArgumentException("Value cannot be white space or null.", parameterName);
+            }
+        }
+
         private sealed class PropertyData
         {
 #pragma warning disable SA1401 // Fields should be private
-            public readonly Type Type;
+            internal Type Type;
 
-            public object Value;
-            public PropertyChangedCallbackHandler PropertyChangedCallback;
+            internal object Value;
+            internal PropertyChangedCallbackHandler PropertyChangedCallback;
 #pragma warning restore SA1401 // Fields should be private
 
-            public PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
+            internal PropertyData(object defaultValue, Type type, PropertyChangedCallbackHandler propertyChangedCallback)
             {
                 Type = type;
 
