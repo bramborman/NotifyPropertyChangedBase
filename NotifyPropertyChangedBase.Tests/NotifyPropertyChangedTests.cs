@@ -1,17 +1,18 @@
 ﻿// ---------------------------------------------------------------------------------------
-// <copyright file="Tests.cs" company="Marian Dolinský">
+// <copyright file="NotifyPropertyChangedTests.cs" company="Marian Dolinský">
 // Copyright (c) Marian Dolinský. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NotifyPropertyChangedBase.Tests
 {
     [TestClass]
-    public sealed class Tests
+    public sealed class NotifyPropertyChangedTests
     {
         // U = uint
         // L = long
@@ -26,12 +27,12 @@ namespace NotifyPropertyChangedBase.Tests
         private static readonly object[] InvalidTestValues = new object[] { true, 'x', string.Empty, (byte)0, (sbyte)0, 0, 0U, 0L, 0UL, 0F, 0M, 0D };
         private static readonly TypeData[] TypeDataCollection =
         {
-            new TypeData(typeof(int), new object[] { 0 }, value => (int)value + 1, InvalidInt32Values),
-            new TypeData(typeof(int?), new object[] { null, 0 }, value => value == null ? 0 : ((int?)value).Value + 1,  InvalidNullableInt32Values),
-            new TypeData(typeof(uint), new object[] { 0U }, value => (uint)value + 1, InvalidUInt32Values),
-            new TypeData(typeof(ITest), new object[] { null, new Test() }, value => new Test(), InvalidTestValues),
-            new TypeData(typeof(TestBase), new object[] { null, new Test() }, value => new Test(), InvalidTestValues),
-            new TypeData(typeof(Test), new object[] { null, new Test() }, value => new Test(), InvalidTestValues)
+            TypeData.Create(new int[] { 0 }, value => value + 1, InvalidInt32Values),
+            TypeData.Create(new int?[] { null, 0 }, value => value + 1 ?? 0, InvalidNullableInt32Values),
+            TypeData.Create(new uint[] { 0U }, value => value + 1U, InvalidUInt32Values),
+            TypeData.Create(new ITest[] { null, new Test() }, value => new Test(), InvalidTestValues),
+            TypeData.Create(new TestBase[] { null, new Test() }, value => new Test(), InvalidTestValues),
+            TypeData.Create(new Test[] { null, new Test() }, value => new Test(), InvalidTestValues)
         };
 
         [TestMethod]
@@ -68,12 +69,12 @@ namespace NotifyPropertyChangedBase.Tests
                 // Invalid default values
                 AllThrows<object, ArgumentException>(typeData.InvalidValues, invalidValue =>
                 {
-                    w.RegisterProperty(typeData.Type.Name + "_InvalidDefaultValue", typeData.Type, invalidValue);
+                    w.RegisterProperty($"{typeData.Type.Name}_InvalidDefaultValue", typeData.Type, invalidValue);
                 });
             }
 
             // Registering another property with a name of already registered property
-            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty(TypeDataCollection[0].Type.Name + '0', typeof(int), 0));
+            Assert.ThrowsException<ArgumentException>(() => w.RegisterProperty($"{TypeDataCollection[0].Type.Name}0", typeof(int), 0));
         }
 
         [TestMethod]
@@ -127,7 +128,7 @@ namespace NotifyPropertyChangedBase.Tests
                     propertyName += "_Forced";
                     Test(true, true, defaultValue);
 
-                    propertyName = typeData.Type.Name + i + "_NoPropertyChangedEvent";
+                    propertyName = $"{typeData.Type.Name}{i}_NoPropertyChangedEvent";
                     Test(false, false, defaultValue);
                     propertyName += "_Forced";
                     Test(true, false, defaultValue);
@@ -263,17 +264,26 @@ namespace NotifyPropertyChangedBase.Tests
 
         private sealed class TypeData
         {
-            public Type Type { get; }
-            public object[] DefaultValues { get; }
-            public Func<object, object> GetNewValue { get; }
-            public object[] InvalidValues { get; }
+            internal Type Type { get; }
+            internal object[] DefaultValues { get; }
+            internal Func<object, object> GetNewValue { get; }
+            internal object[] InvalidValues { get; }
 
-            public TypeData(Type type, object[] defaultValues, Func<object, object> getNewValue, object[] invalidValues)
+            private TypeData(Type type, object[] defaultValues, Func<object, object> getNewValue, object[] invalidValues)
             {
                 Type = type;
                 DefaultValues = defaultValues;
                 GetNewValue = getNewValue;
                 InvalidValues = invalidValues;
+            }
+
+            internal static TypeData Create<T>(T[] defaultValues, Func<T, T> getNewValue, object[] invalidValues)
+            {
+                return new TypeData(
+                    typeof(T),
+                    defaultValues.Cast<object>().ToArray(),
+                    value => getNewValue((T)value),
+                    invalidValues);
             }
         }
     }
