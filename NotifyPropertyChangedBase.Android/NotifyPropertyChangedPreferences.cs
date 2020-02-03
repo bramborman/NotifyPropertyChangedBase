@@ -15,13 +15,16 @@ namespace NotifyPropertyChangedBase.Android
     /// <summary>
     /// Abstract base class extending <see cref="NotifyPropertyChanged"/> of Android shared preferences functionality.
     /// </summary>
-    public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged
+    [Obsolete("This class uses the deprecated Android.Preferences.PreferenceManager.")]
+    public abstract class NotifyPropertyChangedPreferences : NotifyPropertyChanged, IDisposable
     {
-        private readonly Dictionary<string, (string name, object defaultValue)> _propertyData = new Dictionary<string, (string, object)>();
+        private readonly Dictionary<string, (string Name, object DefaultValue, Type Type)> _propertyData = new Dictionary<string, (string, object, Type)>();
         private readonly Dictionary<string, string> _nameKeyDictionary = new Dictionary<string, string>();
         private readonly ISharedPreferences _preferences;
         private readonly ISharedPreferencesEditor _editor;
         private readonly OnSharedPreferenceChangeListener _listener;
+
+        private bool _isDisposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotifyPropertyChangedPreferences"/> class using default shared preferences.
@@ -50,6 +53,11 @@ namespace NotifyPropertyChangedBase.Android
         /// <param name="fileCreationMode">Mode used when obtaining the shared preferences.</param>
         protected NotifyPropertyChangedPreferences(Context context, string sharedPrerefencesName, FileCreationMode fileCreationMode)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             _preferences = context.GetSharedPreferences(sharedPrerefencesName ?? PreferenceManager.GetDefaultSharedPreferencesName(context), fileCreationMode);
             _editor = _preferences.Edit();
 
@@ -86,6 +94,7 @@ namespace NotifyPropertyChangedBase.Android
         /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue)
         {
+            ThrowIfDisposed();
             RegisterPreferencesProperty(key, name, type, defaultValue, null);
         }
 
@@ -118,6 +127,8 @@ namespace NotifyPropertyChangedBase.Android
         /// <exception cref="ArgumentNullException">Parameter <paramref name="type"/> is <c>null</c>.</exception>
         protected void RegisterPreferencesProperty(string key, string name, Type type, object defaultValue, PropertyChangedCallbackHandler propertyChangedCallback)
         {
+            ThrowIfDisposed();
+
             if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentException("Value cannot be white space or null.", nameof(key));
@@ -128,8 +139,8 @@ namespace NotifyPropertyChangedBase.Android
                 throw new ArgumentException($"This instance already contains a registered property with key '{key}'.");
             }
 
-            RegisterProperty(name, type, GetPreferencesValue(key, defaultValue), propertyChangedCallback);
-            _propertyData.Add(key, (name, defaultValue));
+            RegisterProperty(name, type, GetPreferencesValue(key, defaultValue, type), propertyChangedCallback);
+            _propertyData.Add(key, (name, defaultValue, type));
             _nameKeyDictionary.Add(name, key);
         }
 
@@ -141,9 +152,12 @@ namespace NotifyPropertyChangedBase.Android
         /// <exception cref="ArgumentException"><paramref name="propertyName"/> is <c>null</c> or white space.</exception>
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            ThrowIfDisposed();
+
             if (_nameKeyDictionary.ContainsKey(propertyName))
             {
-                SetPreferencesValue(_nameKeyDictionary[propertyName], GetValue(propertyName));
+                string key = _nameKeyDictionary[propertyName];
+                SetPreferencesValue(key, GetValue(propertyName), _propertyData[key].Type);
             }
 
             base.OnPropertyChanged(propertyName);
@@ -154,6 +168,8 @@ namespace NotifyPropertyChangedBase.Android
         /// </summary>
         protected void SaveAllToPreferences()
         {
+            ThrowIfDisposed();
+
             foreach (string name in _nameKeyDictionary.Keys)
             {
                 SaveToPreferences(name);
@@ -166,89 +182,125 @@ namespace NotifyPropertyChangedBase.Android
         /// <param name="propertyName">The name of a registered property whose value should be saved.</param>
         protected void SaveToPreferences(string propertyName)
         {
+            ThrowIfDisposed();
+
             // GetValue will check the propertyName's value for us - no need
             // to check if the property name exists here
-            SetPreferencesValue(_nameKeyDictionary[propertyName], GetValue(propertyName));
+            // TODO: Or do we need to not throw an exception when getting _nameKeyDictionary value?
+            string key = _nameKeyDictionary[propertyName];
+            SetPreferencesValue(key, GetValue(propertyName), _propertyData[key].Type);
         }
 
         private void Listener_SharedPreferenceChanged(string key)
         {
+            ThrowIfDisposed();
+
             if (_propertyData.ContainsKey(key))
             {
-                SetValue(GetPreferencesValue(key, _propertyData[key].defaultValue), _propertyData[key].name);
+                (string Name, object DefaultValue, Type Type) propertyData = _propertyData[key];
+                SetValue(GetPreferencesValue(key, propertyData.DefaultValue, propertyData.Type), propertyData.Name);
             }
         }
 
-        private object GetPreferencesValue(string key, object defaultValue)
+        private object GetPreferencesValue(string key, object defaultValue, Type type)
         {
-            Type valueType = defaultValue?.GetType();
-
-            if (valueType == typeof(bool))
+            if (type == typeof(bool))
             {
                 return _preferences.GetBoolean(key, (bool)defaultValue);
             }
-            else if (valueType == typeof(int))
+            else if (type == typeof(int))
             {
                 return _preferences.GetInt(key, (int)defaultValue);
             }
-            else if (valueType == typeof(string) || valueType == null)
+            else if (type == typeof(string))
             {
                 return _preferences.GetString(key, (string)defaultValue);
             }
-            else if (valueType == typeof(float))
-            {
-                return _preferences.GetFloat(key, (float)defaultValue);
-            }
-            else if (valueType == typeof(long))
-            {
-                return _preferences.GetLong(key, (long)defaultValue);
-            }
-            else if (valueType == typeof(ICollection<string>))
+            else if (type == typeof(ICollection<string>))
             {
                 return _preferences.GetStringSet(key, (ICollection<string>)defaultValue);
             }
-            else
+            else if (type == typeof(float))
             {
-                throw new Exception($"Invalid type of {nameof(defaultValue)}.");
+                return _preferences.GetFloat(key, (float)defaultValue);
             }
+            else if (type == typeof(long))
+            {
+                return _preferences.GetLong(key, (long)defaultValue);
+            }
+
+            throw new ArgumentException($"Invalid type: '{type}'.");
         }
 
-        private void SetPreferencesValue(string key, object newValue)
+        private void SetPreferencesValue(string key, object newValue, Type type)
         {
-            Type valueType = newValue?.GetType();
-
-            if (valueType == typeof(bool))
+            if (type == typeof(bool))
             {
                 _editor.PutBoolean(key, (bool)newValue);
             }
-            else if (valueType == typeof(int))
+            else if (type == typeof(int))
             {
                 _editor.PutInt(key, (int)newValue);
             }
-            else if (valueType == typeof(string) || valueType == null)
+            else if (type == typeof(string))
             {
                 _editor.PutString(key, (string)newValue);
             }
-            else if (valueType == typeof(float))
-            {
-                _editor.PutFloat(key, (float)newValue);
-            }
-            else if (valueType == typeof(long))
-            {
-                _editor.PutLong(key, (long)newValue);
-            }
-            else if (valueType == typeof(ICollection<string>))
+            else if (type == typeof(ICollection<string>))
             {
                 _editor.PutStringSet(key, (ICollection<string>)newValue);
             }
+            else if (type == typeof(float))
+            {
+                _editor.PutFloat(key, (float)newValue);
+            }
+            else if (type == typeof(long))
+            {
+                _editor.PutLong(key, (long)newValue);
+            }
             else
             {
-                throw new Exception($"Invalid type of {nameof(newValue)}.");
+                throw new ArgumentException($"Invalid type: '{type}'.");
             }
 
             _editor.Apply();
         }
 
+        protected void ThrowIfDisposed()
+        {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException(null);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                _isDisposed = true;
+
+                _preferences.Dispose();
+                _editor.Dispose();
+                _listener.Dispose();
+
+                _propertyData.Clear();
+                _nameKeyDictionary.Clear();
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~NotifyPropertyChangedPreferences()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
 
         private sealed class OnSharedPreferenceChangeListener : Java.Lang.Object, ISharedPreferencesOnSharedPreferenceChangeListener
         {
