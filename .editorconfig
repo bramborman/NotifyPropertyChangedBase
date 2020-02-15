@@ -1,9 +1,7 @@
 ﻿# Suppress: EC112
 
-# Topmost EditorConfig file
 root = true
 
-# All Files
 [*]
 charset                     = utf-8-bom
 end_of_line                 = crlf
@@ -12,7 +10,6 @@ indent_style                = space
 insert_final_newline        = true
 trim_trailing_whitespace    = true
 
-# Project Files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,json,vsext,yml,config,props,targets,nuspec,resx,ruleset}]
 indent_size = 2
 

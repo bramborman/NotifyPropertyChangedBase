@@ -315,7 +315,7 @@ namespace NotifyPropertyChangedBase
         private sealed class PropertyData
         {
 #pragma warning disable SA1401 // Fields should be private
-            internal Type Type;
+            internal readonly Type Type;
 
             internal object Value;
             internal PropertyChangedCallbackHandler PropertyChangedCallback;
