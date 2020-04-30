@@ -4,7 +4,7 @@
     <BaseLibraryName>NotifyPropertyChangedBase</BaseLibraryName>
     <Authors>Marian Dolinský</Authors>
     <Company>$(Authors)</Company>
-    <Copyright>© $([System.DateTime]::UtcNow.Year) $(Authors)</Copyright>
+    <Copyright>© $(Authors) $([System.DateTime]::UtcNow.Year)</Copyright>
 
     <Version>0.0.1-debug</Version>
     <FileVersion>0.0.1.0</FileVersion>
