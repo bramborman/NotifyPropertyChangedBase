@@ -11,16 +11,16 @@ NotifyPropertyChangedBase provides a simple to use yet powerful base class `Noti
 This is an open-source project so feel free to send a pull request or open an issue.
 
 ### Pre-release
-[![MyGet](https://img.shields.io/myget/bramborman/vpre/NotifyPropertyChangedBase.svg?label=myget)][MyGet]
+[![GitHub Packages](https://img.shields.io/badge/github-packages-yellow)][GPR]
 [![Build status](https://ci.appveyor.com/api/projects/status/jc9gcr4gldjr8nq6/branch/dev?svg=true)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/dev)
 [![Tests status](https://img.shields.io/appveyor/tests/bramborman/notifypropertychangedbase/dev.svg)](https://ci.appveyor.com/project/bramborman/notifypropertychangedbase/branch/dev)
 [![Code coverage](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev/graph/badge.svg)](https://codecov.io/gh/bramborman/NotifyPropertyChangedBase/branch/dev)
 
 If you want to get updates more frequently or test bugfixes and new features before they go into production and you don't mind the possibility of new bugs, you can use the pre-release version of NotifyPropertyChangedBase from MyGet.org.
 
-[**Download it here**][MyGet]
+[**Get it here**][GPR]
 
-[MyGet]: https://www.myget.org/feed/bramborman/package/nuget/NotifyPropertyChangedBase
+[GPR]: https://github.com/bramborman/NotifyPropertyChangedBase/packages
 
 ## How to use it?
 NotifyPropertyChangedBase library helps you use `INotifyPropertyChanged` interface without needing to write your own logic. The one and only thing you need to do is to make your models inherit from the abstract class `NotifyPropertyChanged`. So instead of worrying about backing stores - variables that hold data of properties - about compairing data or calling the `PropertyChanged` event you will register your property and this class will do the rest.

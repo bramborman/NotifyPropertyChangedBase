@@ -27,7 +27,7 @@ build_script:
 - pwsh: '& ./AppVeyor-Build.ps1'
 deploy:
 - provider: Environment
-  name: MyGet
+  name: GitHub Packages
   on:
     SKIP_DEPLOYMENT: false
 - provider: Environment
